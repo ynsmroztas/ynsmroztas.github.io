@@ -16,11 +16,9 @@ try {
   
   setTimeout(function() {
     try {
-      log('trying-access');
-      log('Auth:' + typeof w.Auth);
+      log('trying-access-Auth:' + typeof w.Auth);
       w.authConfig = { dataset: { next: webhook + '/flag', append: 'true' } };
       w.Auth.loginRedirect({});
-      log('called-redirect');
     } catch(e) {
       log('error1:' + e.message);
     }
