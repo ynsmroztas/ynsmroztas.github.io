@@ -1,0 +1,153 @@
+---
+const socials = [
+  { name: "Twitter / X", handle: "@ynsmroztas", url: "https://twitter.com/ynsmroztas", icon: "twitter" },
+  { name: "GitHub", handle: "@ynsmroztas", url: "https://github.com/ynsmroztas", icon: "github" },
+  { name: "LinkedIn", handle: "@ynsmroztas", url: "https://linkedin.com/in/ynsmroztas", icon: "linkedin" },
+  { name: "Intigriti", handle: "@mitsec", url: "https://app.intigriti.com/profile/mitsec", icon: "shield" },
+  { name: "Instagram", handle: "@ynsmroztas", url: "https://instagram.com/ynsmroztas", icon: "instagram" },
+  { name: "YouTube", handle: "@ynsmroztas", url: "https://youtube.com/@ynsmroztas", icon: "youtube" },
+];
+---
+
+<section class="section connect" id="connect">
+  <div class="container">
+    <div class="connect__layout">
+      <div class="connect__left" data-animate>
+        <span class="section-label">05 / Connect</span>
+        <h2 class="section-title">Let's Work<br/>Together<span style="color: var(--accent)">.</span></h2>
+        <p class="section-subtitle">
+          Interested in collaboration, bug bounty programs, or security consulting? Reach out directly.
+        </p>
+
+        <div class="connect__email">
+          <span class="connect__email-label">Direct Email</span>
+          <a href="mailto:m.i.t@mit.tc" class="connect__email-addr">
+            m.i.t@mit.tc
+          </a>
+        </div>
+
+        <a href="mailto:m.i.t@mit.tc" class="btn btn--primary connect__cta">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Send Email
+        </a>
+      </div>
+
+      <div class="connect__right" data-animate>
+        <div class="connect__socials">
+          {socials.map((social, i) => (
+            <a
+              href={social.url}
+              target="_blank"
+              rel="noopener"
+              class="connect__social-card"
+              style={`animation-delay: ${i * 0.05}s`}
+            >
+              <div class="connect__social-info">
+                <span class="connect__social-name">{social.name}</span>
+                <span class="connect__social-handle">{social.handle}</span>
+              </div>
+              <svg class="connect__social-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .connect__layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .connect__email {
+    margin: 2.5rem 0;
+    padding: 1.5rem 2rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .connect__email-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .connect__email-addr {
+    font-family: var(--font-mono);
+    font-size: 1.15rem;
+    color: var(--accent);
+    font-weight: 600;
+    transition: var(--transition-fast);
+  }
+
+  .connect__email-addr:hover {
+    text-shadow: 0 0 15px var(--accent-glow);
+  }
+
+  .connect__socials {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .connect__social-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.5rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    transition: var(--transition);
+  }
+
+  .connect__social-card:hover {
+    border-color: var(--accent);
+    background: var(--bg-card-hover);
+    transform: translateX(8px);
+  }
+
+  .connect__social-card:hover .connect__social-arrow {
+    color: var(--accent);
+    transform: translate(3px, -3px);
+  }
+
+  .connect__social-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .connect__social-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .connect__social-handle {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .connect__social-arrow {
+    color: var(--text-muted);
+    transition: var(--transition);
+  }
+
+  @media (max-width: 768px) {
+    .connect__layout {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+  }
+</style>

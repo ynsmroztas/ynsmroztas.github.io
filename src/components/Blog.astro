@@ -1,0 +1,135 @@
+---
+// Blog section - this will later pull from src/content/blog/*.md files
+const posts = [
+  {
+    title: "Chaining Email Enumeration to Full DB Dump",
+    date: "2026",
+    tags: ["SSRF", "Brute Force", "Data Exposure"],
+    excerpt: "How I combined email enumeration, credential brute force, and SSRF into a chain that led to a complete database dump of 7,000+ records.",
+    slug: "#",
+    status: "coming-soon"
+  },
+  {
+    title: "DOM Clobbering + Cross-Origin Exploit Chain",
+    date: "2026",
+    tags: ["XSS", "DOM Clobbering", "Challenge"],
+    excerpt: "Walkthrough of the Intigriti March 2026 XSS challenge — exploiting DOM clobbering combined with cross-origin window.open for code execution.",
+    slug: "#",
+    status: "coming-soon"
+  },
+  {
+    title: "Android Pentesting Without Root — FridHunter Approach",
+    date: "2026",
+    tags: ["Android", "Frida", "Mobile Security"],
+    excerpt: "Building a rootless Android pentesting framework using Frida Gadget injection on Termux, and real-world findings across multiple targets.",
+    slug: "#",
+    status: "coming-soon"
+  }
+];
+---
+
+<section class="section blog" id="blog">
+  <div class="container">
+    <div class="blog__header" data-animate>
+      <span class="section-label">04 / Research</span>
+      <h2 class="section-title">Blog & Writeups</h2>
+      <p class="section-subtitle">Security research, vulnerability writeups, and technical deep-dives.</p>
+    </div>
+
+    <div class="blog__grid">
+      {posts.map((post, i) => (
+        <article class="blog__card card" data-animate style={`animation-delay: ${i * 0.1}s`}>
+          <div class="blog__card-top">
+            <span class="blog__card-date">{post.date}</span>
+            {post.status === 'coming-soon' && (
+              <span class="blog__card-status">Coming Soon</span>
+            )}
+          </div>
+          <h3 class="blog__card-title">{post.title}</h3>
+          <p class="blog__card-excerpt">{post.excerpt}</p>
+          <div class="blog__card-tags">
+            {post.tags.map((tag) => (
+              <span class="tag">{tag}</span>
+            ))}
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .blog__header {
+    margin-bottom: 3.5rem;
+  }
+
+  .blog__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .blog__card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    cursor: default;
+  }
+
+  .blog__card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .blog__card-date {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+  }
+
+  .blog__card-status {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--orange);
+    padding: 0.25rem 0.6rem;
+    background: rgba(255, 165, 2, 0.1);
+    border: 1px solid rgba(255, 165, 2, 0.15);
+    border-radius: 100px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .blog__card-title {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1.3;
+    transition: var(--transition-fast);
+  }
+
+  .blog__card:hover .blog__card-title {
+    color: var(--accent);
+  }
+
+  .blog__card-excerpt {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.7;
+    flex: 1;
+  }
+
+  .blog__card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: auto;
+  }
+
+  @media (max-width: 768px) {
+    .blog__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

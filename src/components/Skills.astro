@@ -1,0 +1,219 @@
+---
+const offensiveSkills = [
+  { name: "Web Application Security", level: 95 },
+  { name: "Bug Bounty Hunting", level: 93 },
+  { name: "Mobile App Pentesting (iOS/Android)", level: 90 },
+  { name: "Penetration Testing", level: 88 },
+  { name: "Reverse Engineering", level: 78 },
+];
+
+const devSkills = [
+  { name: "Python", level: 90 },
+  { name: "JavaScript / Node.js", level: 85 },
+  { name: "Bash / Shell Scripting", level: 88 },
+];
+
+const toolbox = [
+  "Burp Suite", "Frida", "objection", "jadx", "MobSF", "Drozer",
+  "apktool", "Shodan", "Kali Linux", "SSL Pinning Bypass",
+  "XSS", "IDOR", "SSRF", "nuclei", "subfinder", "httpx"
+];
+---
+
+<section class="section skills" id="skills">
+  <div class="container">
+    <div class="skills__header" data-animate>
+      <span class="section-label">03 / Arsenal</span>
+      <h2 class="section-title">Skills & Expertise</h2>
+    </div>
+
+    <div class="skills__layout">
+      <div class="skills__col" data-animate>
+        <h3 class="skills__col-title">
+          <span class="skills__col-icon">🔴</span>
+          Offensive Security
+        </h3>
+        <div class="skills__bars">
+          {offensiveSkills.map((skill, i) => (
+            <div class="skills__bar-group" style={`animation-delay: ${i * 0.1}s`}>
+              <div class="skills__bar-info">
+                <span class="skills__bar-name">{skill.name}</span>
+                <span class="skills__bar-percent">{skill.level}%</span>
+              </div>
+              <div class="skills__bar-track">
+                <div class="skills__bar-fill" style={`--target-width: ${skill.level}%`}></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="skills__col" data-animate>
+        <h3 class="skills__col-title">
+          <span class="skills__col-icon">🟢</span>
+          Development
+        </h3>
+        <div class="skills__bars">
+          {devSkills.map((skill, i) => (
+            <div class="skills__bar-group" style={`animation-delay: ${i * 0.1}s`}>
+              <div class="skills__bar-info">
+                <span class="skills__bar-name">{skill.name}</span>
+                <span class="skills__bar-percent">{skill.level}%</span>
+              </div>
+              <div class="skills__bar-track">
+                <div class="skills__bar-fill skills__bar-fill--dev" style={`--target-width: ${skill.level}%`}></div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div class="skills__toolbox">
+          <h4 class="skills__toolbox-title">Toolbox</h4>
+          <div class="skills__toolbox-tags">
+            {toolbox.map((tool) => (
+              <span class="tag">{tool}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .skills__header {
+    margin-bottom: 3.5rem;
+  }
+
+  .skills__layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+
+  .skills__col {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 2.5rem;
+  }
+
+  .skills__col-title {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .skills__col-icon {
+    font-size: 0.9rem;
+  }
+
+  .skills__bars {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .skills__bar-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .skills__bar-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .skills__bar-name {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+  }
+
+  .skills__bar-percent {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .skills__bar-track {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .skills__bar-fill {
+    height: 100%;
+    width: var(--target-width);
+    background: linear-gradient(90deg, var(--accent), rgba(0, 255, 136, 0.6));
+    border-radius: 3px;
+    position: relative;
+    transition: width 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .skills__bar-fill::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--accent-glow);
+  }
+
+  .skills__bar-fill--dev {
+    background: linear-gradient(90deg, var(--accent-secondary), rgba(123, 97, 255, 0.6));
+  }
+
+  .skills__bar-fill--dev::after {
+    background: var(--accent-secondary);
+    box-shadow: 0 0 10px rgba(123, 97, 255, 0.5);
+  }
+
+  .skills__bar-fill--dev + .skills__bar-percent {
+    color: var(--accent-secondary);
+  }
+
+  .skills__toolbox {
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .skills__toolbox-title {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .skills__toolbox-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  @media (max-width: 768px) {
+    .skills__layout {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .skills__col {
+      padding: 1.75rem;
+    }
+  }
+</style>

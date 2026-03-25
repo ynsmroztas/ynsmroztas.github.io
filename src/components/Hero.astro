@@ -1,0 +1,247 @@
+---
+// Hero section
+---
+
+<section class="hero" id="hero">
+  <div class="hero__glow glow-orb glow-orb--green" style="top: -10%; right: -5%;"></div>
+  <div class="hero__glow glow-orb glow-orb--purple" style="bottom: 10%; left: -5%;"></div>
+
+  <div class="container hero__container">
+    <div class="hero__content">
+      <div class="hero__status animate-in">
+        <span class="hero__status-dot"></span>
+        Available for collaboration & bug bounty programs
+      </div>
+
+      <h1 class="hero__title animate-in animate-delay-1">
+        <span class="hero__title-line">Security</span>
+        <span class="hero__title-line">Researcher<span class="hero__title-accent">.</span></span>
+      </h1>
+
+      <p class="hero__subtitle animate-in animate-delay-2">
+        Hi, I'm <strong>Yunus Emre Öztaş</strong> — bug bounty hunter recognized by
+        <span class="hero__highlight">Apple</span>,
+        <span class="hero__highlight">Microsoft</span>,
+        <span class="hero__highlight">Meta</span> &
+        <span class="hero__highlight">IBM</span>.
+        Intigriti Top Hacker. Building offensive tools and finding critical vulnerabilities before the bad guys do.
+      </p>
+
+      <div class="hero__badges animate-in animate-delay-3">
+        <span class="tag">★ Intigriti Top Hacker</span>
+        <span class="tag tag--purple">Apple HOF</span>
+        <span class="tag tag--purple">Microsoft MSRC</span>
+        <span class="tag">Meta Bug Bounty</span>
+        <span class="tag tag--purple">IBM HOF</span>
+      </div>
+
+      <div class="hero__actions animate-in animate-delay-4">
+        <a href="#hof" class="btn btn--primary">
+          View Achievements
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+        </a>
+        <a href="#tools" class="btn btn--outline">Open Source Tools</a>
+      </div>
+    </div>
+
+    <div class="hero__terminal animate-in animate-delay-3">
+      <div class="terminal">
+        <div class="terminal__header">
+          <span class="terminal__dot terminal__dot--red"></span>
+          <span class="terminal__dot terminal__dot--yellow"></span>
+          <span class="terminal__dot terminal__dot--green"></span>
+          <span class="terminal__title">mitsec@kali — ~/recon</span>
+        </div>
+        <div class="terminal__body">
+          <div class="terminal__line">
+            <span class="terminal__prompt">$</span> whoami
+          </div>
+          <div class="terminal__line terminal__output" style="color: var(--accent);">
+            mitsec — security researcher & developer
+          </div>
+          <div class="terminal__line">
+            <span class="terminal__prompt">$</span> cat /etc/specialties
+          </div>
+          <div class="terminal__line terminal__output">
+            web_appsec | mobile_pentest | bug_bounty
+          </div>
+          <div class="terminal__line">
+            <span class="terminal__prompt">$</span> ls ./achievements/
+          </div>
+          <div class="terminal__line terminal__output">
+            apple_hof/ microsoft_msrc/ meta_bounty/ ibm_hof/
+          </div>
+          <div class="terminal__line">
+            <span class="terminal__prompt">$</span> <span class="terminal__cursor">_</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero__scroll">
+    <span>Scroll</span>
+    <div class="hero__scroll-line"></div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-top: 5rem;
+  }
+
+  .hero__container {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 4rem;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    padding: 0.5rem 1rem;
+    background: var(--accent-dim);
+    border: 1px solid rgba(0, 255, 136, 0.1);
+    border-radius: 100px;
+    width: fit-content;
+  }
+
+  .hero__status-dot {
+    width: 7px;
+    height: 7px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+    box-shadow: 0 0 8px var(--accent-glow);
+  }
+
+  .hero__title {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    font-weight: 900;
+    line-height: 1.0;
+    letter-spacing: -0.04em;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero__title-line {
+    display: block;
+  }
+
+  .hero__title-accent {
+    color: var(--accent);
+  }
+
+  .hero__subtitle {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    max-width: 520px;
+    margin-bottom: 2rem;
+  }
+
+  .hero__subtitle strong {
+    color: var(--text-primary);
+  }
+
+  .hero__highlight {
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .hero__badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero__actions {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .hero__terminal {
+    position: relative;
+  }
+
+  .hero__terminal .terminal {
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+  }
+
+  .terminal__line {
+    margin-bottom: 0.4rem;
+  }
+
+  .terminal__cursor {
+    animation: blink 1s step-end infinite;
+    color: var(--accent);
+  }
+
+  .hero__scroll {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .hero__scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @media (max-width: 968px) {
+    .hero__container {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+
+    .hero__terminal {
+      max-width: 500px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      padding-top: 6rem;
+      min-height: auto;
+      padding-bottom: 4rem;
+    }
+
+    .hero__actions {
+      flex-direction: column;
+    }
+
+    .hero__actions .btn {
+      text-align: center;
+      justify-content: center;
+    }
+
+    .hero__scroll {
+      display: none;
+    }
+  }
+</style>
