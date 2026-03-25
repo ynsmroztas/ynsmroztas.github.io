@@ -1,312 +1,95 @@
 ---
-interface Props {
-  title?: string;
-  description?: string;
-}
-
-const {
-  title = "Yunus Emre Öztaş — Security Researcher & Bug Bounty Hunter",
-  description = "Bug bounty hunter recognized by Apple, Microsoft, Meta & IBM. Intigriti Top Hacker. Mobile & web application security specialist."
-} = Astro.props;
+const { title = "Yunus Emre Öztaş — Security Researcher & Bug Bounty Hunter", description = "Bug bounty hunter recognized by Apple, Microsoft, Meta & IBM. Intigriti Top Hacker." } = Astro.props;
 ---
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>{title}</title>
-  <meta name="description" content={description} />
-  <meta name="author" content="Yunus Emre Öztaş" />
-
-  <!-- OG -->
-  <meta property="og:title" content={title} />
-  <meta property="og:description" content={description} />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://ynsmroztas.github.io" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:site" content="@ynsmroztas" />
-
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-
-  <!-- Fonts preload -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <meta name="description" content={description}/>
+  <meta property="og:title" content={title}/><meta property="og:description" content={description}/>
+  <meta property="og:type" content="website"/><meta property="og:url" content="https://ynsmroztas.github.io"/>
+  <meta name="twitter:card" content="summary_large_image"/><meta name="twitter:site" content="@ynsmroztas"/>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 </head>
 <body>
-  <div class="bg-grid"></div>
-
-  <!-- Navigation -->
+  <canvas id="matrixCanvas"></canvas>
   <nav class="nav" id="nav">
     <div class="nav__inner container">
-      <a href="#hero" class="nav__logo">
-        <span class="nav__logo-bracket">[</span>
-        <span class="nav__logo-text">mitsec</span>
-        <span class="nav__logo-bracket">]</span>
-      </a>
-
+      <a href="#hero" class="nav__logo"><span class="nav__b">[</span><span class="nav__t">mitsec</span><span class="nav__b">]</span></a>
       <div class="nav__links" id="navLinks">
         <a href="#hof" class="nav__link">Hall of Fame</a>
         <a href="#tools" class="nav__link">Tools</a>
         <a href="#skills" class="nav__link">Skills</a>
+        <a href="#cves" class="nav__link">CVEs</a>
         <a href="#blog" class="nav__link">Blog</a>
         <a href="#connect" class="nav__link">Connect</a>
       </div>
-
-      <a href="mailto:m.i.t@mit.tc" class="btn btn--ghost nav__cta">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        Contact
-      </a>
-
-      <button class="nav__toggle" id="navToggle" aria-label="Toggle menu">
-        <span></span>
-        <span></span>
-      </button>
+      <div class="nav__right">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"><span id="themeIcon">☀</span></button>
+        <a href="mailto:m.i.t@mit.tc" class="btn btn--ghost nav__cta">Contact</a>
+      </div>
+      <button class="nav__toggle" id="navToggle" aria-label="Menu"><span></span><span></span></button>
     </div>
   </nav>
-
-  <main>
-    <slot />
-  </main>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container footer__inner">
-      <div class="footer__left">
-        <span class="footer__logo">[mitsec]</span>
-        <span class="footer__copy">© 2000–2026 Yunus Emre Öztaş</span>
-      </div>
-      <div class="footer__links">
-        <a href="https://twitter.com/ynsmroztas" target="_blank" rel="noopener">Twitter</a>
-        <a href="https://github.com/ynsmroztas" target="_blank" rel="noopener">GitHub</a>
-        <a href="https://linkedin.com/in/ynsmroztas" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="https://app.intigriti.com/profile/mitsec" target="_blank" rel="noopener">Intigriti</a>
-      </div>
+  <main><slot/></main>
+  <footer class="footer"><div class="container footer__inner">
+    <div class="footer__left"><span class="footer__logo">[mitsec]</span><span class="footer__copy">© 2000–2026 Yunus Emre Öztaş</span></div>
+    <div class="footer__links">
+      <a href="https://twitter.com/ynsmroztas" target="_blank">Twitter</a>
+      <a href="https://github.com/ynsmroztas" target="_blank">GitHub</a>
+      <a href="https://linkedin.com/in/ynsmroztas" target="_blank">LinkedIn</a>
+      <a href="https://app.intigriti.com/profile/mitsec" target="_blank">Intigriti</a>
     </div>
-  </footer>
-
+  </div></footer>
   <style>
-    /* ── Nav ── */
-    .nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 1000;
-      padding: 1rem 0;
-      transition: var(--transition);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      background: rgba(10, 10, 15, 0.8);
-      border-bottom: 1px solid transparent;
-    }
-
-    .nav--scrolled {
-      border-bottom-color: var(--border);
-    }
-
-    .nav__inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .nav__logo {
-      font-family: var(--font-mono);
-      font-size: 1.1rem;
-      font-weight: 700;
-      display: flex;
-      gap: 0.15rem;
-      transition: var(--transition-fast);
-    }
-
-    .nav__logo:hover .nav__logo-text {
-      color: var(--accent);
-    }
-
-    .nav__logo-bracket {
-      color: var(--accent);
-    }
-
-    .nav__logo-text {
-      color: var(--text-primary);
-      transition: var(--transition-fast);
-    }
-
-    .nav__links {
-      display: flex;
-      gap: 2.5rem;
-    }
-
-    .nav__link {
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-      letter-spacing: 0.03em;
-      transition: var(--transition-fast);
-      position: relative;
-    }
-
-    .nav__link::after {
-      content: '';
-      position: absolute;
-      bottom: -4px;
-      left: 0;
-      width: 0;
-      height: 1px;
-      background: var(--accent);
-      transition: var(--transition);
-    }
-
-    .nav__link:hover {
-      color: var(--accent);
-    }
-
-    .nav__link:hover::after {
-      width: 100%;
-    }
-
-    .nav__cta {
-      padding: 0.5rem 1.25rem;
-      font-size: 0.8rem;
-    }
-
-    .nav__toggle {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 4px;
-    }
-
-    .nav__toggle span {
-      display: block;
-      width: 22px;
-      height: 2px;
-      background: var(--text-primary);
-      transition: var(--transition-fast);
-    }
-
-    /* ── Footer ── */
-    .footer {
-      border-top: 1px solid var(--border);
-      padding: 2.5rem 0;
-    }
-
-    .footer__inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .footer__left {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-    }
-
-    .footer__logo {
-      font-family: var(--font-mono);
-      font-weight: 700;
-      color: var(--accent);
-      font-size: 0.9rem;
-    }
-
-    .footer__copy {
-      color: var(--text-muted);
-      font-size: 0.8rem;
-    }
-
-    .footer__links {
-      display: flex;
-      gap: 2rem;
-    }
-
-    .footer__links a {
-      color: var(--text-secondary);
-      font-size: 0.8rem;
-      font-family: var(--font-mono);
-      transition: var(--transition-fast);
-    }
-
-    .footer__links a:hover {
-      color: var(--accent);
-    }
-
-    /* ── Mobile ── */
-    @media (max-width: 768px) {
-      .nav__links {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        flex-direction: column;
-        background: var(--bg-secondary);
-        border-bottom: 1px solid var(--border);
-        padding: 1.5rem var(--gutter);
-        gap: 1.25rem;
-      }
-
-      .nav__links.open {
-        display: flex;
-      }
-
-      .nav__cta {
-        display: none;
-      }
-
-      .nav__toggle {
-        display: flex;
-      }
-
-      .footer__inner {
-        flex-direction: column;
-        gap: 1.5rem;
-        text-align: center;
-      }
-
-      .footer__left {
-        flex-direction: column;
-        gap: 0.5rem;
-      }
+    #matrixCanvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:var(--matrix-opacity)}
+    .nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1rem 0;transition:var(--transition);backdrop-filter:blur(20px);background:rgba(10,10,15,.8);border-bottom:1px solid transparent}
+    html.light .nav{background:rgba(245,245,240,.85)}
+    .nav--scrolled{border-bottom-color:var(--border)}
+    .nav__inner{display:flex;align-items:center;justify-content:space-between}
+    .nav__logo{font-family:var(--font-mono);font-size:1.1rem;font-weight:700;display:flex;gap:.15rem}
+    .nav__logo:hover .nav__t{color:var(--accent)}.nav__b{color:var(--accent)}.nav__t{color:var(--text-primary);transition:var(--transition-fast)}
+    .nav__links{display:flex;gap:2.5rem}
+    .nav__link{font-family:var(--font-mono);font-size:.8rem;color:var(--text-secondary);letter-spacing:.03em;transition:var(--transition-fast);position:relative}
+    .nav__link::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--accent);transition:var(--transition)}
+    .nav__link:hover{color:var(--accent)}.nav__link:hover::after{width:100%}
+    .nav__right{display:flex;align-items:center;gap:1rem}.nav__cta{padding:.5rem 1.25rem;font-size:.8rem}
+    .theme-toggle{background:var(--accent-dim);border:1px solid rgba(0,255,136,.1);border-radius:var(--radius-sm);width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:var(--transition);font-size:1rem}
+    .theme-toggle:hover{border-color:var(--accent);box-shadow:0 0 15px var(--accent-dim)}
+    .nav__toggle{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
+    .nav__toggle span{display:block;width:22px;height:2px;background:var(--text-primary)}
+    .footer{border-top:1px solid var(--border);padding:2.5rem 0}
+    .footer__inner{display:flex;align-items:center;justify-content:space-between}
+    .footer__left{display:flex;align-items:center;gap:1.5rem}
+    .footer__logo{font-family:var(--font-mono);font-weight:700;color:var(--accent);font-size:.9rem}
+    .footer__copy{color:var(--text-muted);font-size:.8rem}
+    .footer__links{display:flex;gap:2rem}
+    .footer__links a{color:var(--text-secondary);font-size:.8rem;font-family:var(--font-mono);transition:var(--transition-fast)}
+    .footer__links a:hover{color:var(--accent)}
+    @media(max-width:768px){
+      .nav__links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:var(--bg-secondary);border-bottom:1px solid var(--border);padding:1.5rem var(--gutter);gap:1.25rem}
+      .nav__links.open{display:flex}.nav__cta{display:none}.nav__toggle{display:flex}
+      .footer__inner{flex-direction:column;gap:1.5rem;text-align:center}.footer__left{flex-direction:column;gap:.5rem}
     }
   </style>
-
   <script>
-    // Nav scroll effect
-    const nav = document.getElementById('nav');
-    window.addEventListener('scroll', () => {
-      nav?.classList.toggle('nav--scrolled', window.scrollY > 50);
-    });
-
-    // Mobile toggle
-    const toggle = document.getElementById('navToggle');
-    const links = document.getElementById('navLinks');
-    toggle?.addEventListener('click', () => {
-      links?.classList.toggle('open');
-    });
-
-    // Close mobile nav on link click
-    links?.querySelectorAll('.nav__link').forEach(link => {
-      link.addEventListener('click', () => links?.classList.remove('open'));
-    });
-
-    // Intersection Observer for scroll animations
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-          }
-        });
-      },
-      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
-    );
-
-    document.querySelectorAll('[data-animate]').forEach(el => observer.observe(el));
+    const canvas=document.getElementById('matrixCanvas'),ctx=canvas.getContext('2d');
+    let w,h,cols,drops=[];
+    const chars='01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+    function initM(){w=canvas.width=window.innerWidth;h=canvas.height=window.innerHeight;cols=Math.floor(w/18);drops=Array(cols).fill(1)}
+    function drawM(){ctx.fillStyle=document.documentElement.classList.contains('light')?'rgba(245,245,240,.08)':'rgba(10,10,15,.06)';ctx.fillRect(0,0,w,h);ctx.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();ctx.font='14px monospace';for(let i=0;i<drops.length;i++){ctx.globalAlpha=Math.random()*.5+.1;ctx.fillText(chars[Math.floor(Math.random()*chars.length)],i*18,drops[i]*18);ctx.globalAlpha=1;if(drops[i]*18>h&&Math.random()>.975)drops[i]=0;drops[i]++}requestAnimationFrame(drawM)}
+    initM();drawM();window.addEventListener('resize',initM);
+    const nav=document.getElementById('nav');window.addEventListener('scroll',()=>nav?.classList.toggle('nav--scrolled',window.scrollY>50));
+    document.getElementById('navToggle')?.addEventListener('click',()=>document.getElementById('navLinks')?.classList.toggle('open'));
+    document.querySelectorAll('.nav__link').forEach(l=>l.addEventListener('click',()=>document.getElementById('navLinks')?.classList.remove('open')));
+    const saved=localStorage.getItem('theme');if(saved==='light')document.documentElement.classList.add('light');
+    function upIcon(){document.getElementById('themeIcon').textContent=document.documentElement.classList.contains('light')?'🌙':'☀'}upIcon();
+    document.getElementById('themeToggle')?.addEventListener('click',()=>{document.documentElement.classList.toggle('light');localStorage.setItem('theme',document.documentElement.classList.contains('light')?'light':'dark');upIcon()});
+    new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('is-visible')}})},{threshold:.1,rootMargin:'0px 0px -40px 0px'}).observe=function(){};
+    const obs=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('is-visible');obs.unobserve(e.target)}})},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+    document.querySelectorAll('[data-animate]').forEach(el=>obs.observe(el));
   </script>
 </body>
 </html>

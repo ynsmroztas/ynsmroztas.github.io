@@ -1,204 +1,56 @@
----
-const tools = [
-  {
-    name: "nextrce",
-    lang: "Python",
-    icon: "⚡",
-    github: "https://github.com/ynsmroztas/nextrce",
-    description: "Automated scanner to detect Remote Code Execution vulnerabilities in Next.js applications. Leverages SSR misconfiguration patterns, prototype pollution chains and deserialization flaws.",
-    tags: ["RCE", "Next.js", "Scanner", "Automation"],
-    terminal: [
-      { type: "cmd", text: "python3 nextrce.py -u https://target.com" },
-      { type: "info", text: "[+] Detecting Next.js version..." },
-      { type: "crit", text: "[!] RCE vector found — SSR deserialization" }
-    ]
-  },
-  {
-    name: "inspectjs",
-    lang: "Python",
-    icon: "🔍",
-    github: "https://github.com/ynsmroztas/inspectjs",
-    description: "Deep JavaScript analysis tool that extracts sensitive information, hidden endpoints, API keys and security-relevant patterns from JS bundles.",
-    tags: ["JS Analysis", "Recon", "Secret Detection", "API Keys"],
-    terminal: [
-      { type: "cmd", text: "python3 inspectjs.py --url https://target.com/app.js" },
-      { type: "warn", text: "[★] API_KEY leaked: sk-prod-xxxxxxxxxxxx" },
-      { type: "warn", text: "[★] Endpoint found: /api/v2/admin/users" }
-    ]
-  },
-  {
-    name: "AndroHunter",
-    lang: "JavaScript / Node.js",
-    icon: "🤖",
-    github: "https://github.com/ynsmroztas/AndroHunter",
-    description: "Automated Android application security testing framework. Decompiles APKs, hunts for exported components, insecure data storage, hardcoded secrets and deep link abuse vectors.",
-    tags: ["Android", "APK Analysis", "Mobile Security", "Deep Links"],
-    terminal: [
-      { type: "cmd", text: "node androHunter.js --apk target.apk" },
-      { type: "crit", text: "[!] Exported Activity: DeepLinkActivity" },
-      { type: "crit", text: "[!] Hardcoded secret in res/values/strings.xml" }
-    ]
-  }
-];
----
-
-<section class="section tools" id="tools">
-  <div class="container">
-    <div class="tools__header" data-animate>
-      <span class="section-label">02 / Open Source</span>
-      <h2 class="section-title">Offensive Tools</h2>
-      <p class="section-subtitle">Purpose-built security tools for the modern bug bounty workflow.</p>
-    </div>
-
-    <div class="tools__grid">
-      {tools.map((tool, i) => (
-        <div class="tools__card card" data-animate style={`animation-delay: ${i * 0.15}s`}>
-          <div class="tools__card-header">
-            <div class="tools__card-meta">
-              <span class="tools__card-icon">{tool.icon}</span>
-              <div>
-                <h3 class="tools__card-name">{tool.name}</h3>
-                <span class="tools__card-lang">{tool.lang}</span>
-              </div>
-            </div>
-            <a href={tool.github} target="_blank" rel="noopener" class="tools__card-github" title="View on GitHub">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-              </svg>
-            </a>
-          </div>
-
-          <p class="tools__card-desc">{tool.description}</p>
-
-          <div class="tools__card-tags">
-            {tool.tags.map((tag) => (
-              <span class="tag">{tag}</span>
-            ))}
-          </div>
-
-          <div class="terminal tools__terminal">
-            <div class="terminal__header">
-              <span class="terminal__dot terminal__dot--red"></span>
-              <span class="terminal__dot terminal__dot--yellow"></span>
-              <span class="terminal__dot terminal__dot--green"></span>
-              <span class="terminal__title">{tool.name}</span>
-            </div>
-            <div class="terminal__body">
-              {tool.terminal.map((line) => (
-                <div class={`terminal__line ${line.type === 'crit' ? 'terminal__line--crit' : line.type === 'warn' ? 'terminal__line--warn' : line.type === 'info' ? 'terminal__line--info' : ''}`}>
-                  {line.type === 'cmd' ? (
-                    <><span class="terminal__prompt">$</span> {line.text}</>
-                  ) : (
-                    line.text
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
+<section class="section tools" id="tools"><div class="container">
+  <div data-animate><span class="section-label">02 / Open Source</span><h2 class="section-title">Offensive Tools</h2><p class="section-subtitle" style="margin-bottom:3rem">Purpose-built security tools — live from GitHub, shuffled on every visit.</p></div>
+  <div class="tools__grid" id="toolsGrid">
+    <div class="tools__loading" data-animate><span class="terminal__prompt">$</span> fetching repos from github.com/ynsmroztas<span style="animation:blink 1s step-end infinite;color:var(--accent)">_</span></div>
   </div>
-</section>
-
+</div></section>
 <style>
-  .tools__header {
-    margin-bottom: 3.5rem;
-  }
-
-  .tools__grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-    gap: 1.5rem;
-  }
-
-  .tools__card {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-  }
-
-  .tools__card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-  }
-
-  .tools__card-meta {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  .tools__card-icon {
-    font-size: 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 50px;
-    height: 50px;
-    background: var(--accent-dim);
-    border-radius: var(--radius);
-    border: 1px solid rgba(0, 255, 136, 0.1);
-  }
-
-  .tools__card-name {
-    font-family: var(--font-mono);
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: var(--text-primary);
-  }
-
-  .tools__card-lang {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    color: var(--text-muted);
-  }
-
-  .tools__card-github {
-    color: var(--text-muted);
-    transition: var(--transition-fast);
-    padding: 0.5rem;
-    border-radius: var(--radius-sm);
-  }
-
-  .tools__card-github:hover {
-    color: var(--accent);
-    background: var(--accent-dim);
-  }
-
-  .tools__card-desc {
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-    line-height: 1.7;
-    flex: 1;
-  }
-
-  .tools__card-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-  }
-
-  .tools__terminal {
-    margin-top: auto;
-  }
-
-  .terminal__line--crit {
-    color: var(--red);
-  }
-
-  .terminal__line--warn {
-    color: var(--orange);
-  }
-
-  .terminal__line--info {
-    color: var(--blue);
-  }
-
-  @media (max-width: 768px) {
-    .tools__grid {
-      grid-template-columns: 1fr;
+  .tools__grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:1.5rem}
+  .tools__loading{font-family:var(--font-mono);font-size:.85rem;color:var(--text-secondary);padding:2rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);grid-column:1/-1}
+  .tool-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2rem;display:flex;flex-direction:column;gap:1rem;transition:var(--transition);position:relative;overflow:hidden}
+  .tool-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:0;transition:var(--transition)}
+  .tool-card:hover{border-color:var(--border-hover);background:var(--bg-card-hover);transform:translateY(-4px)}
+  .tool-card:hover::before{opacity:1}
+  .tool-head{display:flex;justify-content:space-between;align-items:flex-start}
+  .tool-meta{display:flex;align-items:center;gap:.75rem}
+  .tool-icon{font-size:1.4rem;width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:var(--accent-dim);border-radius:10px;border:1px solid rgba(0,255,136,.08)}
+  .tool-name{font-family:var(--font-mono);font-size:1rem;font-weight:700}
+  .tool-lang{font-family:var(--font-mono);font-size:.65rem;color:var(--text-muted)}
+  .tool-gh{color:var(--text-muted);transition:color .2s;padding:.5rem;border-radius:var(--radius-sm)}
+  .tool-gh:hover{color:var(--accent);background:var(--accent-dim)}
+  .tool-desc{color:var(--text-secondary);font-size:.85rem;line-height:1.7;flex:1}
+  .tool-tags{display:flex;flex-wrap:wrap;gap:.4rem}
+  .tool-stats{display:flex;gap:1.5rem;font-family:var(--font-mono);font-size:.72rem;color:var(--text-muted);padding-top:.75rem;border-top:1px solid var(--border)}
+  .tool-stats span{display:flex;align-items:center;gap:.3rem}
+  @media(max-width:768px){.tools__grid{grid-template-columns:1fr}}
+</style>
+<script>
+  const icons={'nextrce':'⚡','inspectjs':'🔍','AndroHunter':'🤖','FridHunter':'🔓','waymore_scanner':'🕷','roon_radio_scanner':'📡'};
+  const langColors={'Python':'var(--accent)','JavaScript':'var(--orange)','Shell':'var(--blue)','HTML':'var(--red)'};
+  const ghSvg='<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>';
+  function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+  async function loadRepos(){
+    const grid=document.getElementById('toolsGrid');
+    try{
+      const r=await fetch('https://api.github.com/users/ynsmroztas/repos?per_page=100&sort=updated');
+      let repos=await r.json();
+      repos=repos.filter(r=>!r.fork&&r.name!=='ynsmroztas'&&r.name!=='ynsmroztas.github.io');
+      repos=shuffle(repos).slice(0,6);
+      grid.innerHTML=repos.map(repo=>{
+        const icon=icons[repo.name]||'📦';
+        const lang=repo.language||'Other';
+        const topics=(repo.topics||[]).slice(0,4);
+        const stars=repo.stargazers_count||0;
+        const forks=repo.forks_count||0;
+        return `<div class="tool-card">
+          <div class="tool-head"><div class="tool-meta"><span class="tool-icon">${icon}</span><div><div class="tool-name">${repo.name}</div><div class="tool-lang">${lang}</div></div></div><a href="${repo.html_url}" target="_blank" class="tool-gh" title="View on GitHub">${ghSvg}</a></div>
+          <div class="tool-desc">${repo.description||'Security tool by @ynsmroztas'}</div>
+          <div class="tool-tags">${topics.map(t=>`<span class="tag">${t}</span>`).join('')}${topics.length===0?`<span class="tag">${lang}</span><span class="tag">Security</span>`:''}</div>
+          <div class="tool-stats"><span>★ ${stars}</span><span>⑂ ${forks}</span><span>${new Date(repo.updated_at).toLocaleDateString('en-GB',{month:'short',year:'numeric'})}</span></div>
+        </div>`}).join('');
+    }catch(e){
+      grid.innerHTML=`<div class="tools__loading"><span class="terminal__prompt">[error]</span> Could not fetch repos — <a href="https://github.com/ynsmroztas" target="_blank" style="color:var(--accent)">view on GitHub ↗</a></div>`;
     }
   }
-</style>
+  loadRepos();
+</script>

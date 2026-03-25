@@ -1,0 +1,47 @@
+---
+const cves=[
+  {id:"CVE-2021-3129",target:"Laravel / Ignition",severity:"Critical",cvss:"9.8",desc:"Remote Code Execution via Ignition debug mode. Phar deserialization chain leading to arbitrary command execution.",color:"red",year:"2021"},
+  {id:"CVE-2023-38646",target:"Metabase",severity:"Critical",cvss:"9.8",desc:"Pre-auth Remote Code Execution in Metabase via H2 JDBC connection string injection.",color:"red",year:"2023"},
+  {id:"CVE-2025-29927",target:"Next.js",severity:"High",cvss:"7.5",desc:"Middleware authorization bypass via x-middleware-subrequest header manipulation in Next.js applications.",color:"orange",year:"2025"},
+  {id:"CVE-2025-55182",target:"Next.js RSC",severity:"Critical",cvss:"9.1",desc:"Remote Code Execution via React Server Components with UTF-16LE WAF bypass technique.",color:"red",year:"2025"},
+];
+---
+<section class="section cves" id="cves"><div class="container">
+  <div data-animate><span class="section-label">04 / Research</span><h2 class="section-title">CVE & Vulnerability Timeline</h2><p class="section-subtitle" style="margin-bottom:3rem">Security vulnerabilities researched, exploited, and reported.</p></div>
+  <div class="cve__timeline">
+    {cves.map((c,i)=>(
+      <div class={`cve__item cve__item--${c.color}`} data-animate style={`transition-delay:${i*.15}s`}>
+        <div class="cve__line"><div class="cve__dot"></div></div>
+        <div class="cve__card">
+          <div class="cve__card-head">
+            <span class="cve__id">{c.id}</span>
+            <div class="cve__meta">
+              <span class={`tag tag--${c.color}`}>{c.severity} — CVSS {c.cvss}</span>
+              <span class="cve__year">{c.year}</span>
+            </div>
+          </div>
+          <span class="cve__target">{c.target}</span>
+          <p class="cve__desc">{c.desc}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+</div></section>
+<style>
+  .cve__timeline{position:relative;padding-left:2rem}
+  .cve__timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--accent),var(--accent-secondary),transparent)}
+  .cve__item{position:relative;margin-bottom:2rem}
+  .cve__line{position:absolute;left:-2rem;top:1.5rem;width:2rem;display:flex;align-items:center}
+  .cve__dot{width:12px;height:12px;border-radius:50%;border:2px solid var(--accent);background:var(--bg-primary);position:absolute;left:-5px}
+  .cve__item--red .cve__dot{border-color:var(--red);box-shadow:0 0 10px rgba(255,71,87,.4)}
+  .cve__item--orange .cve__dot{border-color:var(--orange);box-shadow:0 0 10px rgba(255,165,2,.4)}
+  .cve__card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem 2rem;margin-left:1rem;transition:var(--transition)}
+  .cve__card:hover{border-color:var(--border-hover);transform:translateX(8px)}
+  .cve__card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;flex-wrap:wrap;gap:.5rem}
+  .cve__id{font-family:var(--font-mono);font-size:1.1rem;font-weight:700;color:var(--text-primary)}
+  .cve__meta{display:flex;align-items:center;gap:.75rem}
+  .cve__year{font-family:var(--font-mono);font-size:.72rem;color:var(--text-muted)}
+  .cve__target{font-family:var(--font-mono);font-size:.78rem;color:var(--accent);display:block;margin-bottom:.5rem}
+  .cve__desc{color:var(--text-secondary);font-size:.88rem;line-height:1.7}
+  @media(max-width:768px){.cve__card{padding:1.25rem}.cve__card-head{flex-direction:column;align-items:flex-start}}
+</style>

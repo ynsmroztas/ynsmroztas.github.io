@@ -1,213 +1,31 @@
 ---
-const hallOfFame = [
-  {
-    name: "Intigriti",
-    desc: "Bug Bounty Platform",
-    detail: "Ranked among the platform's highest-performing security researchers. Consistently delivering critical vulnerability reports across multiple private and public programs.",
-    badge: "★ Top Hacker",
-    icon: "🏆",
-    accentColor: "var(--accent)"
-  },
-  {
-    name: "Apple",
-    desc: "Security Research HOF",
-    detail: "Acknowledged in Apple's Security Research Hall of Fame for responsible disclosure of vulnerabilities affecting Apple products and services.",
-    badge: "HOF Member",
-    icon: "",
-    accentColor: "#a8a8a8"
-  },
-  {
-    name: "Microsoft",
-    desc: "MSRC — Security Response Center",
-    detail: "Recognized by Microsoft Security Response Center for identifying vulnerabilities across Microsoft's products and cloud infrastructure.",
-    badge: "MSRC Acknowledged",
-    icon: "🪟",
-    accentColor: "#3b82f6"
-  },
-  {
-    name: "Meta",
-    desc: "Facebook / Instagram / WhatsApp",
-    detail: "Listed in Meta's Bug Bounty Hall of Fame for reporting critical security issues affecting Facebook, Instagram, and Meta's broader platform ecosystem.",
-    badge: "Bug Bounty HOF",
-    icon: "📘",
-    accentColor: "#7b61ff"
-  },
-  {
-    name: "IBM",
-    desc: "IBM Security Hall of Fame",
-    detail: "Inducted into IBM's Security Hall of Fame for disclosing critical vulnerabilities affecting IBM's enterprise products and cloud services.",
-    badge: "Hall of Fame",
-    icon: "💎",
-    accentColor: "#3b82f6"
-  }
+const hof=[
+  {name:"Intigriti",desc:"Bug Bounty Platform",detail:"Ranked among the platform's highest-performing security researchers across multiple programs.",badge:"★ Top Hacker",icon:"🏆"},
+  {name:"Apple",desc:"Security Research HOF",detail:"Acknowledged for responsible disclosure of vulnerabilities affecting Apple products and services.",badge:"HOF Member",icon:"🍎"},
+  {name:"Microsoft",desc:"MSRC — Security Response Center",detail:"Recognized for identifying vulnerabilities across Microsoft's products and cloud infrastructure.",badge:"MSRC Acknowledged",icon:"🪟"},
+  {name:"Meta",desc:"Facebook / Instagram / WhatsApp",detail:"Listed for reporting critical security issues across Meta's broader platform ecosystem.",badge:"Bug Bounty HOF",icon:"📘"},
+  {name:"IBM",desc:"IBM Security Hall of Fame",detail:"Inducted for disclosing critical vulnerabilities affecting IBM's enterprise products.",badge:"Hall of Fame",icon:"💎"},
 ];
-
-const stats = [
-  { value: "15+", label: "HOF Entries" },
-  { value: "200+", label: "Vulns Reported" },
-  { value: "50+", label: "P1 Critical Bugs" },
-  { value: "5+", label: "Years Experience" },
-];
+const stats=[{value:"15+",label:"HOF Entries"},{value:"200+",label:"Vulns Reported"},{value:"50+",label:"P1 Critical"},{value:"5+",label:"Years Exp."}];
 ---
-
-<section class="section hof" id="hof">
-  <div class="container">
-    <div class="hof__header" data-animate>
-      <span class="section-label">01 / Achievements</span>
-      <h2 class="section-title">Hall of Fame</h2>
-      <p class="section-subtitle">Recognized by industry leaders for responsible vulnerability disclosure.</p>
-    </div>
-
-    <div class="hof__grid">
-      {hallOfFame.map((item, i) => (
-        <div class="hof__card card" data-animate style={`animation-delay: ${i * 0.1}s`}>
-          <div class="hof__card-top">
-            <span class="hof__card-icon">{item.icon}</span>
-            <span class="hof__card-badge" style={`--badge-color: ${item.accentColor}`}>{item.badge}</span>
-          </div>
-          <h3 class="hof__card-name">{item.name}</h3>
-          <span class="hof__card-desc">{item.desc}</span>
-          <p class="hof__card-detail">{item.detail}</p>
-        </div>
-      ))}
-    </div>
-
-    <p class="hof__more" data-animate>…and many more Hall of Fame recognitions across global organizations</p>
-
-    <div class="hof__stats" data-animate>
-      {stats.map((stat) => (
-        <div class="hof__stat">
-          <span class="hof__stat-value">{stat.value}</span>
-          <span class="hof__stat-label">{stat.label}</span>
-        </div>
-      ))}
-    </div>
-  </div>
-</section>
-
+<section class="section hof" id="hof"><div class="container">
+  <div data-animate><span class="section-label">01 / Achievements</span><h2 class="section-title">Hall of Fame</h2><p class="section-subtitle" style="margin-bottom:3rem">Recognized by industry leaders for responsible vulnerability disclosure.</p></div>
+  <div class="hof__grid">{hof.map((h,i)=>(<div class="card" data-animate style={`transition-delay:${i*.1}s`}><div class="hof__top"><span style="font-size:1.8rem">{h.icon}</span><span class="hof__badge">{h.badge}</span></div><h3 class="hof__name">{h.name}</h3><span class="hof__desc">{h.desc}</span><p class="hof__detail">{h.detail}</p></div>))}</div>
+  <p class="hof__more" data-animate>…and many more recognitions across global organizations</p>
+  <div class="hof__stats" data-animate="scale">{stats.map(s=>(<div class="hof__stat"><span class="hof__sv">{s.value}</span><span class="hof__sl">{s.label}</span></div>))}</div>
+</div></section>
 <style>
-  .hof__header {
-    margin-bottom: 3.5rem;
-  }
-
-  .hof__grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 1.25rem;
-    margin-bottom: 2rem;
-  }
-
-  .hof__card {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .hof__card-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 0.25rem;
-  }
-
-  .hof__card-icon {
-    font-size: 1.8rem;
-  }
-
-  .hof__card-badge {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    font-weight: 600;
-    padding: 0.3rem 0.75rem;
-    border-radius: 100px;
-    background: color-mix(in srgb, var(--badge-color) 15%, transparent);
-    color: var(--badge-color);
-    border: 1px solid color-mix(in srgb, var(--badge-color) 20%, transparent);
-    letter-spacing: 0.03em;
-  }
-
-  .hof__card-name {
-    font-family: var(--font-display);
-    font-size: 1.4rem;
-    font-weight: 700;
-  }
-
-  .hof__card-desc {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    letter-spacing: 0.03em;
-  }
-
-  .hof__card-detail {
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-    line-height: 1.7;
-  }
-
-  .hof__more {
-    text-align: center;
-    color: var(--text-muted);
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    font-style: italic;
-    margin-bottom: 3rem;
-  }
-
-  .hof__stats {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
-    padding: 2.5rem;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hof__stats::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--accent), var(--accent-secondary), var(--accent));
-  }
-
-  .hof__stat {
-    text-align: center;
-  }
-
-  .hof__stat-value {
-    display: block;
-    font-family: var(--font-display);
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 900;
-    color: var(--text-primary);
-    letter-spacing: -0.03em;
-    line-height: 1;
-    margin-bottom: 0.5rem;
-  }
-
-  .hof__stat-label {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  @media (max-width: 768px) {
-    .hof__grid {
-      grid-template-columns: 1fr;
-    }
-
-    .hof__stats {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 2rem;
-      padding: 2rem;
-    }
-  }
+  .hof__grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.25rem;margin-bottom:2rem}
+  .hof__top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem}
+  .hof__badge{font-family:var(--font-mono);font-size:.7rem;font-weight:600;padding:.3rem .75rem;border-radius:100px;background:var(--accent-dim);color:var(--accent);border:1px solid rgba(0,255,136,.08)}
+  .hof__name{font-family:var(--font-display);font-size:1.4rem;font-weight:700;margin-bottom:.3rem}
+  .hof__desc{font-family:var(--font-mono);font-size:.75rem;color:var(--text-muted);display:block;margin-bottom:.6rem}
+  .hof__detail{color:var(--text-secondary);font-size:.9rem;line-height:1.7}
+  .hof__more{text-align:center;color:var(--text-muted);font-family:var(--font-mono);font-size:.85rem;font-style:italic;margin-bottom:3rem}
+  .hof__stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;padding:2.5rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);position:relative;overflow:hidden}
+  .hof__stats::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent-secondary),var(--accent))}
+  .hof__stat{text-align:center}
+  .hof__sv{display:block;font-family:var(--font-display);font-size:clamp(2rem,4vw,3rem);font-weight:900;letter-spacing:-.03em;line-height:1;margin-bottom:.5rem}
+  .hof__sl{font-family:var(--font-mono);font-size:.75rem;color:var(--text-muted);letter-spacing:.08em;text-transform:uppercase}
+  @media(max-width:768px){.hof__grid{grid-template-columns:1fr}.hof__stats{grid-template-columns:repeat(2,1fr);padding:2rem}}
 </style>

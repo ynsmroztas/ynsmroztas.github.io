@@ -1,22 +1,5 @@
-# dependencies
 node_modules/
-
-# build
 dist/
-
-# environment
 .env
-.env.*
-
-# editor
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# OS
-.DS_Store
-Thumbs.db
-
-# astro
 .astro/
+.DS_Store

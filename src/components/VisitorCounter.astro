@@ -1,0 +1,66 @@
+<section class="visitor" id="visitor">
+  <div class="container">
+    <div class="vis__panel" data-animate="scale">
+      <div class="vis__head"><div class="vis__head-l"><span class="vis__dot"></span><span class="vis__head-t">NETWORK MONITOR — ACTIVE</span></div><span class="vis__head-time" id="liveTime"></span></div>
+      <div class="vis__grid">
+        <div class="vis__block"><span class="vis__label">YOUR IP ADDRESS</span><span class="vis__val" id="vIP">scanning...</span></div>
+        <div class="vis__block"><span class="vis__label">GEOLOCATION</span><span class="vis__val" id="vLoc">triangulating...</span></div>
+        <div class="vis__block"><span class="vis__label">ISP / ORG</span><span class="vis__val" id="vISP">resolving...</span></div>
+        <div class="vis__block vis__block--accent"><span class="vis__label">TOTAL VISITORS</span><span class="vis__val vis__val--big" id="vCount">---</span></div>
+      </div>
+      <div class="vis__term"><div id="vLog" class="vis__log"><div><span class="vp">[system]</span> Initializing network scan...</div></div></div>
+      <div class="vis__foot"><span>* Your data is not stored. Client-side demonstration only.</span></div>
+    </div>
+  </div>
+</section>
+<style>
+  .visitor{padding:2rem 0 0}
+  .vis__panel{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;position:relative}
+  .vis__panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent-secondary),var(--accent))}
+  .vis__head{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid var(--border);background:rgba(0,255,136,.02)}
+  .vis__head-l{display:flex;align-items:center;gap:.6rem}
+  .vis__dot{width:8px;height:8px;background:var(--accent);border-radius:50%;animation:pulse 1.5s ease-in-out infinite;box-shadow:0 0 10px var(--accent-glow)}
+  .vis__head-t{font-family:var(--font-mono);font-size:.72rem;color:var(--accent);letter-spacing:.12em;font-weight:600}
+  .vis__head-time{font-family:var(--font-mono);font-size:.72rem;color:var(--text-muted)}
+  .vis__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border)}
+  .vis__block{background:var(--bg-card);padding:1.25rem 1.5rem;display:flex;flex-direction:column;gap:.4rem}
+  .vis__block--accent{background:rgba(0,255,136,.03)}
+  .vis__label{font-family:var(--font-mono);font-size:.6rem;color:var(--text-muted);letter-spacing:.15em;font-weight:500}
+  .vis__val{font-family:var(--font-mono);font-size:.95rem;color:var(--text-primary);font-weight:600;word-break:break-all}
+  .vis__val--big{font-size:1.8rem;color:var(--accent);letter-spacing:-.02em}
+  .vis__term{border-top:1px solid var(--border);padding:1rem 1.5rem;max-height:120px;overflow-y:auto}
+  .vis__log{font-family:var(--font-mono);font-size:.7rem;line-height:1.8;color:var(--text-secondary)}
+  .vp{color:var(--accent);font-weight:600}.vw{color:var(--orange)}.vi{color:var(--blue)}.vs{color:var(--accent)}
+  .vis__foot{border-top:1px solid var(--border);padding:.75rem 1.5rem}
+  .vis__foot span{font-family:var(--font-mono);font-size:.6rem;color:var(--text-muted);font-style:italic}
+  @media(max-width:768px){.vis__grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:480px){.vis__grid{grid-template-columns:1fr}}
+</style>
+<script>
+  const log=document.getElementById('vLog'),ipE=document.getElementById('vIP'),locE=document.getElementById('vLoc'),ispE=document.getElementById('vISP'),cntE=document.getElementById('vCount'),timeE=document.getElementById('liveTime');
+  function addL(p,m,c='vp'){const d=document.createElement('div');d.innerHTML=`<span class="${c}">[${p}]</span> ${m}`;log.appendChild(d);log.scrollTop=log.scrollHeight}
+  function updTime(){const n=new Date();timeE.textContent=n.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'})+' UTC+'+(-n.getTimezoneOffset()/60)}
+  setInterval(updTime,1000);updTime();
+  const sl=ms=>new Promise(r=>setTimeout(r,ms));
+  async function fetchInfo(){
+    try{
+      addL('scan','Querying network interfaces...','vi');
+      const r=await fetch('https://ipapi.co/json/');const d=await r.json();
+      await sl(400);addL('dns','Resolving IP address...','vi');await sl(300);
+      ipE.textContent=d.ip||'unknown';addL('result','IP: '+d.ip,'vs');
+      await sl(300);addL('geo','Running geolocation lookup...','vi');await sl(400);
+      locE.textContent=(d.city||'?')+', '+(d.region||'?')+', '+(d.country_name||'?');addL('result','Location: '+d.city+', '+d.country_name,'vs');
+      await sl(200);ispE.textContent=d.org||d.isp||'unknown';addL('result','ISP: '+(d.org||'unknown'),'vs');
+      await sl(300);addL('scan','Network fingerprint complete','vs');
+    }catch(e){ipE.textContent='protected';locE.textContent='VPN/proxy detected';ispE.textContent='—';addL('warn','Could not resolve — VPN/proxy active','vw')}
+  }
+  async function fetchCount(){
+    try{
+      addL('counter','Fetching visitor statistics...','vi');
+      const r=await fetch('https://api.countapi.xyz/hit/ynsmroztas.github.io/visits');const d=await r.json();
+      await sl(500);animC(d.value||0);addL('result','Total visitors: '+d.value,'vs');
+    }catch(e){let c=parseInt(localStorage.getItem('mv')||'0')+1;localStorage.setItem('mv',c.toString());animC(c);addL('warn','Using local counter','vw')}
+  }
+  function animC(t){let s=performance.now();(function step(ts){const p=Math.min((ts-s)/1500,1);cntE.textContent=Math.floor((1-Math.pow(1-p,3))*t).toLocaleString();if(p<1)requestAnimationFrame(step)})(s)}
+  setTimeout(()=>{fetchInfo();fetchCount()},800);
+</script>
