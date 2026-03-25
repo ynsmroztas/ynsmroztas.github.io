@@ -2,9 +2,34 @@
 const off=[{n:"Web Application Security",l:95},{n:"Bug Bounty Hunting",l:93},{n:"Mobile App Pentesting",l:90},{n:"Penetration Testing",l:88},{n:"Reverse Engineering",l:78}];
 const dev=[{n:"Python",l:90},{n:"JavaScript / Node.js",l:85},{n:"Bash / Shell Scripting",l:88}];
 const tb=["Burp Suite","Frida","objection","jadx","MobSF","Drozer","apktool","Shodan","Kali Linux","nuclei","subfinder","httpx","SSL Pinning Bypass","XSS","IDOR","SSRF"];
+const radarData=[
+  {label:"Web AppSec",value:95},
+  {label:"Mobile",value:90},
+  {label:"Recon",value:88},
+  {label:"Exploit Dev",value:82},
+  {label:"Reverse Eng.",value:78},
+  {label:"Tooling",value:92},
+];
 ---
 <section class="section skills" id="skills"><div class="container">
   <div data-animate><span class="section-label">03 / Arsenal</span><h2 class="section-title">Skills & Expertise</h2></div>
+  <div class="sk__top-layout">
+    <div class="sk__radar-wrap" data-animate="scale">
+      <canvas id="radarChart" width="380" height="380"></canvas>
+    </div>
+    <div class="sk__legend" data-animate="right">
+      <h3 class="sk__legend-t">Skill Radar</h3>
+      <div class="sk__legend-items">
+        {radarData.map(r=>(
+          <div class="sk__legend-row">
+            <span class="sk__legend-dot"></span>
+            <span class="sk__legend-name">{r.label}</span>
+            <span class="sk__legend-val">{r.value}%</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
   <div class="sk__layout">
     <div class="sk__col" data-animate="left">
       <h3 class="sk__col-t">🔴 Offensive Security</h3>
@@ -18,7 +43,17 @@ const tb=["Burp Suite","Frida","objection","jadx","MobSF","Drozer","apktool","Sh
   </div>
 </div></section>
 <style>
-  .sk__layout{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:3rem}
+  .sk__top-layout{display:grid;grid-template-columns:380px 1fr;gap:3rem;align-items:center;margin:3rem 0}
+  .sk__radar-wrap{display:flex;justify-content:center;align-items:center}
+  #radarChart{max-width:100%;height:auto}
+  .sk__legend-t{font-family:var(--font-display);font-size:1.1rem;font-weight:700;margin-bottom:1.25rem;display:flex;align-items:center;gap:.5rem}
+  .sk__legend-t::before{content:'◈';color:var(--accent);font-size:.9rem}
+  .sk__legend-items{display:flex;flex-direction:column;gap:.6rem}
+  .sk__legend-row{display:flex;align-items:center;gap:.6rem;font-family:var(--font-mono);font-size:.8rem}
+  .sk__legend-dot{width:8px;height:8px;background:var(--accent);border-radius:2px;flex-shrink:0;box-shadow:0 0 6px var(--accent-glow)}
+  .sk__legend-name{color:var(--text-secondary);flex:1}
+  .sk__legend-val{color:var(--accent);font-weight:600;font-size:.78rem}
+  .sk__layout{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
   .sk__col{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2.5rem}
   .sk__col-t{font-family:var(--font-display);font-size:1.25rem;font-weight:700;margin-bottom:2rem;display:flex;align-items:center;gap:.75rem}
   .sk__bars{display:flex;flex-direction:column;gap:1.5rem}
@@ -27,6 +62,7 @@ const tb=["Burp Suite","Frida","objection","jadx","MobSF","Drozer","apktool","Sh
   .sk__pct{font-family:var(--font-mono);font-size:.78rem;color:var(--accent);font-weight:600}
   .sk__pct--p{color:var(--accent-secondary)}
   .sk__track{width:100%;height:6px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden}
+  html.light .sk__track{background:rgba(0,0,0,.06)}
   .sk__fill{height:100%;width:var(--w);background:linear-gradient(90deg,var(--accent),rgba(0,255,136,.6));border-radius:3px;position:relative}
   .sk__fill::after{content:'';position:absolute;right:0;top:50%;transform:translateY(-50%);width:8px;height:8px;background:var(--accent);border-radius:50%;box-shadow:0 0 10px var(--accent-glow)}
   .sk__fill--p{background:linear-gradient(90deg,var(--accent-secondary),rgba(123,97,255,.6))}
@@ -34,5 +70,129 @@ const tb=["Burp Suite","Frida","objection","jadx","MobSF","Drozer","apktool","Sh
   .sk__tb{margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--border)}
   .sk__tb-t{font-family:var(--font-mono);font-size:.8rem;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem}
   .sk__tb-tags{display:flex;flex-wrap:wrap;gap:.4rem}
-  @media(max-width:768px){.sk__layout{grid-template-columns:1fr}.sk__col{padding:1.75rem}}
+  @media(max-width:968px){
+    .sk__top-layout{grid-template-columns:1fr;gap:2rem;justify-items:center}
+    .sk__radar-wrap{max-width:320px;width:100%}
+    #radarChart{width:320px;height:320px}
+  }
+  @media(max-width:768px){
+    .sk__layout{grid-template-columns:1fr}
+    .sk__col{padding:1.75rem}
+    .sk__top-layout{gap:1.5rem}
+    .sk__radar-wrap{max-width:280px}
+    #radarChart{width:280px;height:280px}
+  }
 </style>
+<script>
+  // ═══ RADAR CHART ═══
+  (function(){
+    const canvas=document.getElementById('radarChart');
+    if(!canvas)return;
+    const ctx=canvas.getContext('2d');
+    const dpr=window.devicePixelRatio||1;
+    const cssW=canvas.width;const cssH=canvas.height;
+    canvas.width=cssW*dpr;canvas.height=cssH*dpr;
+    canvas.style.width=cssW+'px';canvas.style.height=cssH+'px';
+    ctx.scale(dpr,dpr);
+
+    const data=[
+      {label:"Web AppSec",value:95},
+      {label:"Mobile",value:90},
+      {label:"Recon",value:88},
+      {label:"Exploit Dev",value:82},
+      {label:"Reverse Eng.",value:78},
+      {label:"Tooling",value:92},
+    ];
+    const n=data.length;
+    const cx=cssW/2,cy=cssH/2;
+    const maxR=Math.min(cx,cy)-50;
+    const levels=5;
+
+    function getStyle(prop){return getComputedStyle(document.documentElement).getPropertyValue(prop).trim()}
+    function isLight(){return document.documentElement.classList.contains('light')}
+
+    let animProg=0;
+    let animStarted=false;
+
+    function draw(){
+      ctx.clearRect(0,0,cssW,cssH);
+      const accent=getStyle('--accent')||'#00ff88';
+      const muted=getStyle('--text-muted')||'#55536a';
+      const secondary=getStyle('--text-secondary')||'#8a88a0';
+      const gridColor=isLight()?'rgba(0,0,0,.08)':'rgba(255,255,255,.06)';
+
+      // Grid
+      for(let lv=1;lv<=levels;lv++){
+        const r=maxR*(lv/levels);
+        ctx.beginPath();
+        for(let i=0;i<=n;i++){
+          const a=-Math.PI/2+(2*Math.PI/n)*(i%n);
+          const x=cx+r*Math.cos(a);const y=cy+r*Math.sin(a);
+          i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+        }
+        ctx.closePath();ctx.strokeStyle=gridColor;ctx.lineWidth=1;ctx.stroke();
+      }
+
+      // Spokes
+      for(let i=0;i<n;i++){
+        const a=-Math.PI/2+(2*Math.PI/n)*i;
+        ctx.beginPath();ctx.moveTo(cx,cy);
+        ctx.lineTo(cx+maxR*Math.cos(a),cy+maxR*Math.sin(a));
+        ctx.strokeStyle=gridColor;ctx.lineWidth=1;ctx.stroke();
+      }
+
+      // Data polygon
+      ctx.beginPath();
+      for(let i=0;i<=n;i++){
+        const idx=i%n;
+        const a=-Math.PI/2+(2*Math.PI/n)*idx;
+        const r=maxR*(data[idx].value/100)*animProg;
+        const x=cx+r*Math.cos(a);const y=cy+r*Math.sin(a);
+        i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+      }
+      ctx.closePath();
+      const fillC=isLight()?'rgba(0,184,94,.12)':'rgba(0,255,136,.1)';
+      ctx.fillStyle=fillC;ctx.fill();
+      ctx.strokeStyle=accent;ctx.lineWidth=2;ctx.stroke();
+
+      // Dots
+      for(let i=0;i<n;i++){
+        const a=-Math.PI/2+(2*Math.PI/n)*i;
+        const r=maxR*(data[i].value/100)*animProg;
+        const x=cx+r*Math.cos(a);const y=cy+r*Math.sin(a);
+        ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);
+        ctx.fillStyle=accent;ctx.fill();
+        ctx.beginPath();ctx.arc(x,y,7,0,Math.PI*2);
+        ctx.strokeStyle=accent;ctx.lineWidth=1;ctx.globalAlpha=.3;ctx.stroke();ctx.globalAlpha=1;
+      }
+
+      // Labels
+      ctx.font='500 11px JetBrains Mono, monospace';ctx.textAlign='center';ctx.textBaseline='middle';
+      for(let i=0;i<n;i++){
+        const a=-Math.PI/2+(2*Math.PI/n)*i;
+        const lr=maxR+28;
+        const x=cx+lr*Math.cos(a);const y=cy+lr*Math.sin(a);
+        ctx.fillStyle=secondary;
+        ctx.fillText(data[i].label,x,y);
+      }
+    }
+
+    function animate(ts){
+      if(!animStarted)return;
+      animProg=Math.min(animProg+0.025,1);
+      draw();
+      if(animProg<1)requestAnimationFrame(animate);
+    }
+
+    // Start animation on scroll into view
+    const rObs=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting&&!animStarted){animStarted=true;requestAnimationFrame(animate);rObs.unobserve(e.target)}})},{threshold:.3});
+    rObs.observe(canvas);
+
+    // Redraw on theme change
+    const tBtn=document.getElementById('themeToggle');
+    tBtn?.addEventListener('click',()=>setTimeout(draw,50));
+
+    // Initial static draw
+    draw();
+  })();
+</script>

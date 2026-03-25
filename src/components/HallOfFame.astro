@@ -6,16 +6,16 @@ const hof=[
   {name:"Meta",desc:"Facebook / Instagram / WhatsApp",detail:"Listed for reporting critical security issues across Meta's broader platform ecosystem.",badge:"Bug Bounty HOF",icon:"📘"},
   {name:"IBM",desc:"IBM Security Hall of Fame",detail:"Inducted for disclosing critical vulnerabilities affecting IBM's enterprise products.",badge:"Hall of Fame",icon:"💎"},
 ];
-const stats=[{value:"15+",label:"HOF Entries"},{value:"200+",label:"Vulns Reported"},{value:"50+",label:"P1 Critical"},{value:"5+",label:"Years Exp."}];
+const stats=[{value:"100+",label:"HOF Entries"},{value:"2430+",label:"Vulns Reported"},{value:"1100+",label:"P1 Critical"},{value:"120+",label:"Years Exp."}];
 ---
 <section class="section hof" id="hof"><div class="container">
   <div data-animate><span class="section-label">01 / Achievements</span><h2 class="section-title">Hall of Fame</h2><p class="section-subtitle" style="margin-bottom:3rem">Recognized by industry leaders for responsible vulnerability disclosure.</p></div>
   <div class="hof__grid">{hof.map((h,i)=>(<div class="card" data-animate style={`transition-delay:${i*.1}s`}><div class="hof__top"><span style="font-size:1.8rem">{h.icon}</span><span class="hof__badge">{h.badge}</span></div><h3 class="hof__name">{h.name}</h3><span class="hof__desc">{h.desc}</span><p class="hof__detail">{h.detail}</p></div>))}</div>
   <p class="hof__more" data-animate>…and many more recognitions across global organizations</p>
-  <div class="hof__stats" data-animate="scale">{stats.map(s=>(<div class="hof__stat"><span class="hof__sv">{s.value}</span><span class="hof__sl">{s.label}</span></div>))}</div>
+  <div class="hof__stats" data-animate="scale">{stats.map(s=>(<div class="hof__stat"><span class="hof__sv" data-count={parseInt(s.value)}>{s.value}</span><span class="hof__sl">{s.label}</span></div>))}</div>
 </div></section>
 <style>
-  .hof__grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.25rem;margin-bottom:2rem}
+  .hof__grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin-bottom:2rem}
   .hof__top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem}
   .hof__badge{font-family:var(--font-mono);font-size:.7rem;font-weight:600;padding:.3rem .75rem;border-radius:100px;background:var(--accent-dim);color:var(--accent);border:1px solid rgba(0,255,136,.08)}
   .hof__name{font-family:var(--font-display);font-size:1.4rem;font-weight:700;margin-bottom:.3rem}
@@ -25,7 +25,27 @@ const stats=[{value:"15+",label:"HOF Entries"},{value:"200+",label:"Vulns Report
   .hof__stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;padding:2.5rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);position:relative;overflow:hidden}
   .hof__stats::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent-secondary),var(--accent))}
   .hof__stat{text-align:center}
-  .hof__sv{display:block;font-family:var(--font-display);font-size:clamp(2rem,4vw,3rem);font-weight:900;letter-spacing:-.03em;line-height:1;margin-bottom:.5rem}
-  .hof__sl{font-family:var(--font-mono);font-size:.75rem;color:var(--text-muted);letter-spacing:.08em;text-transform:uppercase}
-  @media(max-width:768px){.hof__grid{grid-template-columns:1fr}.hof__stats{grid-template-columns:repeat(2,1fr);padding:2rem}}
+  .hof__sv{display:block;font-family:var(--font-display);font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-.03em;line-height:1;margin-bottom:.5rem}
+  .hof__sl{font-family:var(--font-mono);font-size:.7rem;color:var(--text-muted);letter-spacing:.08em;text-transform:uppercase}
+  @media(max-width:768px){
+    .hof__grid{grid-template-columns:1fr}
+    .hof__stats{grid-template-columns:repeat(2,1fr);padding:1.5rem;gap:1.25rem}
+  }
+  @media(max-width:400px){
+    .hof__stats{grid-template-columns:1fr;padding:1.25rem}
+  }
 </style>
+<script>
+  // Animated counter on scroll
+  const statEls=document.querySelectorAll('.hof__sv');
+  const cObs=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){
+    const el=e.target;const target=parseInt(el.dataset.count)||0;const suffix=el.textContent.replace(/[0-9]/g,'');
+    let start=performance.now();
+    (function step(ts){const p=Math.min((ts-start)/1800,1);const ease=1-Math.pow(1-p,3);
+      el.textContent=Math.floor(ease*target)+suffix;
+      if(p<1)requestAnimationFrame(step);
+    })(start);
+    cObs.unobserve(el);
+  }})},{threshold:.3});
+  statEls.forEach(el=>cObs.observe(el));
+</script>

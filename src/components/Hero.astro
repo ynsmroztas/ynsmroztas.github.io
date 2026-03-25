@@ -53,8 +53,21 @@
   .hero__actions{display:flex;gap:1rem}
   .hero__scroll{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;font-family:var(--font-mono);font-size:.7rem;color:var(--text-muted);letter-spacing:.15em;text-transform:uppercase}
   .hero__scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--accent),transparent);animation:pulse 2s ease-in-out infinite}
-  @media(max-width:968px){.hero__c{grid-template-columns:1fr;gap:3rem}}
-  @media(max-width:768px){.hero{padding-top:6rem;min-height:auto;padding-bottom:4rem}.hero__actions{flex-direction:column}.hero__actions .btn{text-align:center;justify-content:center}.hero__scroll{display:none}}
+  @media(max-width:968px){.hero__c{grid-template-columns:1fr;gap:3rem}.hero__terminal{max-width:500px}}
+  @media(max-width:768px){
+    .hero{padding-top:5.5rem;min-height:auto;padding-bottom:3rem}
+    .hero__title{font-size:clamp(2.2rem,8vw,3.5rem);min-height:auto}
+    .hero__sub{font-size:1rem}
+    .hero__badges{gap:.35rem}
+    .hero__actions{flex-direction:column;gap:.75rem}
+    .hero__actions .btn{text-align:center;justify-content:center;width:100%}
+    .hero__scroll{display:none}
+    .hero__status{font-size:.7rem;padding:.4rem .75rem}
+  }
+  @media(max-width:480px){
+    .hero{padding-top:5rem;padding-bottom:2rem}
+    .hero__title{font-size:2rem}
+  }
 </style>
 <script>
   const l1=document.getElementById('tw1'),l2=document.getElementById('tw2');let i=0,j=0;
