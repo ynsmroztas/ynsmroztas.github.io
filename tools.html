@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tools — mitsec</title>
+<meta name="description" content="Zero-dependency offensive security tooling by @ynsmroztas.">
+<meta name="author" content="Yunus Emre Öztaş">
+<meta property="og:title" content="Tools — mitsec">
+<meta property="og:description" content="Zero-dependency offensive security tooling by @ynsmroztas.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%F0%9F%91%BE</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<canvas id="matrix"></canvas><div class="bg-grid"></div><div class="bg-glow"></div>
+
+<header class="hdr">
+  <div class="wrap hdr-in">
+    <a class="brand" href="index.html"><span class="dot"></span>mit<b>sec</b></a>
+    <nav class="main"><a href="index.html">Home</a><a href="writeups.html">Writeups</a><a href="tools.html" class="active">Tools</a><a href="research.html">Research</a><a href="lab.html">Lab</a></nav>
+    <div class="hdr-actions">
+      <button class="kbtn" data-pal><span>⌕</span><span class="t">Search</span><span class="kbd">⌘K</span></button>
+      <button class="icon-btn" id="themeBtn" onclick="toggleTheme()">☀</button>
+      <button class="icon-btn burger" id="burger">≡</button>
+    </div>
+  </div>
+</header>
+
+<main><div class="wrap">
+  <section>
+    <p class="eyebrow">Arsenal</p><h2>Offensive tooling</h2>
+    <p class="muted" style="max-width:62ch">Every tool is pure Python stdlib — no pip, no vendoring. Colored terminal output, JSON/JSONL export, stdin pipeline support and severity-based exit codes, so they chain straight into <span class="mono" style="color:var(--neon)">subfinder | httpx | tool --stdin</span>.</p>
+    <div class="filters" data-filter-group="#toolGrid" id="toolChips" style="margin-top:24px"><button class="chip on" data-tag="all">all</button><button class="chip" data-tag="exploit">exploit</button><button class="chip" data-tag="mobile">mobile</button><button class="chip" data-tag="recon">recon</button><button class="chip" data-tag="scanner">scanner</button></div>
+    <div class="grid g3" id="toolGrid">
+      <article class="card rv in" data-tag="exploit">
+        <div class="top"><h3 class="mono">NextSniper</h3><span class="tag n">exploit</span></div>
+        <p>Next.js exploitation scanner — CVE-2025-29927 &amp; CVE-2025-55182 middleware bypass + RSC traversal modules. Confirmed RCE on production AWS EC2.</p>
+        <div class="foot"><span>Python · stdlib only</span><a href="https://github.com/ynsmroztas" target="_blank" rel="noopener" style="color:var(--neon)">github ↗</a></div>
+      </article>
+      <article class="card rv in" data-tag="mobile">
+        <div class="top"><h3 class="mono">FridHunter</h3><span class="tag n">mobile</span></div>
+        <p>Rootless Android pentest suite via Frida Gadget injection on Termux. 8-layer SSL pinning bypass, secret scanner, schema-aware deeplink fuzzer, autopilot.</p>
+        <div class="foot"><span>Python · stdlib only</span><a href="https://github.com/ynsmroztas" target="_blank" rel="noopener" style="color:var(--neon)">github ↗</a></div>
+      </article>
+      <article class="card rv in" data-tag="recon">
+        <div class="top"><h3 class="mono">NextScope</h3><span class="tag n">recon</span></div>
+        <p>Next.js / Vercel bundle intelligence — chunk harvesting, source-map recovery, endpoint &amp; secret extraction with an HTML report per target.</p>
+        <div class="foot"><span>Python · stdlib only</span><a href="https://github.com/ynsmroztas" target="_blank" rel="noopener" style="color:var(--neon)">github ↗</a></div>
+      </article>
+      <article class="card rv in" data-tag="scanner">
+        <div class="top"><h3 class="mono">HeaderHunter</h3><span class="tag n">scanner</span></div>
+        <p>POST endpoint discovery + HTML form parsing with body-parameter injection across SQLi / XSS / SSTI / RCE / LFI / CRLF / Open Redirect.</p>
+        <div class="foot"><span>Python · stdlib only</span><a href="https://github.com/ynsmroztas" target="_blank" rel="noopener" style="color:var(--neon)">github ↗</a></div>
+      </article>
+      <article class="card rv in" data-tag="exploit">
+        <div class="top"><h3 class="mono">FortiSniper</h3><span class="tag n">exploit</span></div>
+        <p>CVE-2026-21643 scanner for FortiClientEMS — PostgreSQL injection via Site header, CAST-trick error extraction, time-based blind fallback.</p>
+        <div class="foot"><span>Python · stdlib only</span><a href="https://github.com/ynsmroztas" target="_blank" rel="noopener" style="color:var(--neon)">github ↗</a></div>
+      </article>
+      <article class="card rv in" data-tag="recon">
+        <div class="top"><h3 class="mono">ShodanMap</h3><span class="tag n">recon</span></div>
+        <p>Shodan REST asset mapper — multi-query harvest, DNS domain API, IP↔port↔domain↔cert correlation and httpx target generation.</p>
+        <div class="foot"><span>Python · stdlib only</span><a href="https://github.com/ynsmroztas" target="_blank" rel="noopener" style="color:var(--neon)">github ↗</a></div>
+      </article>
+      <article class="card rv in" data-tag="recon">
+        <div class="top"><h3 class="mono">JSHunter</h3><span class="tag n">recon</span></div>
+        <p>JavaScript source intelligence — endpoint, secret and sink discovery across bundled front-end assets.</p>
+        <div class="foot"><span>Python · stdlib only</span><a href="https://github.com/ynsmroztas" target="_blank" rel="noopener" style="color:var(--neon)">github ↗</a></div>
+      </article>
+      <article class="card rv in" data-tag="scanner">
+        <div class="top"><h3 class="mono">WebProbe v2</h3><span class="tag n">scanner</span></div>
+        <p>Fast HTTP probe with fingerprinting, tech detection and pipeline-friendly JSONL output.</p>
+        <div class="foot"><span>Python · stdlib only</span><a href="https://github.com/ynsmroztas" target="_blank" rel="noopener" style="color:var(--neon)">github ↗</a></div>
+      </article>
+      <article class="card rv in" data-tag="exploit">
+        <div class="top"><h3 class="mono">SandboxSniper</h3><span class="tag n">exploit</span></div>
+        <p>FortiSandbox unauthenticated OS command injection scanner (CVE-2026-39808) with canary-based false-positive prevention.</p>
+        <div class="foot"><span>Python · stdlib only</span><a href="https://github.com/ynsmroztas" target="_blank" rel="noopener" style="color:var(--neon)">github ↗</a></div>
+      </article></div>
+  </section>
+</div></main>
+<footer>
+  <div class="wrap foot-in">
+    <div>© 2026 Yunus Emre Öztaş — <span style="color:var(--neon)">mitsec</span></div>
+    <div>built in the terminal · hosted on github pages</div>
+    <div><a href="mailto:m.i.t@mit.tc">m.i.t@mit.tc</a></div>
+  </div>
+</footer>
+
+<div class="pal-bd" id="palBd">
+  <div class="pal">
+    <input id="palInput" placeholder="Search tools, writeups, CVEs, links…" autocomplete="off">
+    <div class="pal-list" id="palList"></div>
+    <div class="pal-foot"><span>↑↓ navigate</span><span>↵ open</span><span>esc close</span></div>
+  </div>
+</div>
+
+<script src="assets/render.js"></script>
+<script src="assets/app.js"></script>
+</body></html>

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lab — mitsec</title>
+<meta name="description" content="Interactive sandbox terminal.">
+<meta name="author" content="Yunus Emre Öztaş">
+<meta property="og:title" content="Lab — mitsec">
+<meta property="og:description" content="Interactive sandbox terminal.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%F0%9F%91%BE</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<canvas id="matrix"></canvas><div class="bg-grid"></div><div class="bg-glow"></div>
+
+<header class="hdr">
+  <div class="wrap hdr-in">
+    <a class="brand" href="index.html"><span class="dot"></span>mit<b>sec</b></a>
+    <nav class="main"><a href="index.html">Home</a><a href="writeups.html">Writeups</a><a href="tools.html">Tools</a><a href="research.html">Research</a><a href="lab.html" class="active">Lab</a></nav>
+    <div class="hdr-actions">
+      <button class="kbtn" data-pal><span>⌕</span><span class="t">Search</span><span class="kbd">⌘K</span></button>
+      <button class="icon-btn" id="themeBtn" onclick="toggleTheme()">☀</button>
+      <button class="icon-btn burger" id="burger">≡</button>
+    </div>
+  </div>
+</header>
+
+<main><div class="wrap">
+  <section>
+    <p class="eyebrow">Lab</p><h2>Sandbox terminal</h2>
+    <p class="muted" style="max-width:62ch">A harmless in-browser shell. Try <span class="mono" style="color:var(--neon)">help</span>, <span class="mono" style="color:var(--neon)">tools</span>, <span class="mono" style="color:var(--neon)">cves</span>.</p>
+    <div class="term rv" style="margin-top:26px">
+      <div class="term-bar"><i></i><i></i><i></i><span>mitsec@lab — sandbox</span></div>
+      <div style="padding:16px">
+        <div class="lab-out" id="labOut"></div>
+        <div class="lab-in"><span class="mono" style="color:var(--neon);align-self:center">$</span><input id="labIn" placeholder="type a command…" autocomplete="off" spellcheck="false"></div>
+      </div>
+    </div>
+  </section>
+</div></main>
+<footer>
+  <div class="wrap foot-in">
+    <div>© 2026 Yunus Emre Öztaş — <span style="color:var(--neon)">mitsec</span></div>
+    <div>built in the terminal · hosted on github pages</div>
+    <div><a href="mailto:m.i.t@mit.tc">m.i.t@mit.tc</a></div>
+  </div>
+</footer>
+
+<div class="pal-bd" id="palBd">
+  <div class="pal">
+    <input id="palInput" placeholder="Search tools, writeups, CVEs, links…" autocomplete="off">
+    <div class="pal-list" id="palList"></div>
+    <div class="pal-foot"><span>↑↓ navigate</span><span>↵ open</span><span>esc close</span></div>
+  </div>
+</div>
+
+<script src="assets/render.js"></script>
+<script src="assets/app.js"></script>
+</body></html>

@@ -1,0 +1,282 @@
+{
+  "handle": "@ynsmroztas",
+  "alias": "mitsec",
+  "email": "m.i.t@mit.tc",
+  "stats": [
+    {
+      "n": "100+",
+      "l": "HOF Entries"
+    },
+    {
+      "n": "2430+",
+      "l": "Vulns Reported"
+    },
+    {
+      "n": "1100+",
+      "l": "P1 Critical"
+    },
+    {
+      "n": "12+",
+      "l": "Years Exp"
+    }
+  ],
+  "hof": [
+    "APPLE",
+    "MICROSOFT",
+    "META",
+    "IBM",
+    "INTIGRITI",
+    "YESWEHACK",
+    "BUGCROWD",
+    "HACKERONE",
+    "T-MOBILE",
+    "SBB",
+    "TÜV RHEINLAND",
+    "HARMAN"
+  ],
+  "tools": [
+    {
+      "name": "NextSniper",
+      "tag": "exploit",
+      "desc": "Next.js exploitation scanner — CVE-2025-29927 & CVE-2025-55182 middleware bypass + RSC traversal modules. Confirmed RCE on production AWS EC2.",
+      "lang": "Python",
+      "url": "https://github.com/ynsmroztas"
+    },
+    {
+      "name": "FridHunter",
+      "tag": "mobile",
+      "desc": "Rootless Android pentest suite via Frida Gadget injection on Termux. 8-layer SSL pinning bypass, secret scanner, schema-aware deeplink fuzzer, autopilot.",
+      "lang": "Python",
+      "url": "https://github.com/ynsmroztas"
+    },
+    {
+      "name": "NextScope",
+      "tag": "recon",
+      "desc": "Next.js / Vercel bundle intelligence — chunk harvesting, source-map recovery, endpoint & secret extraction with an HTML report per target.",
+      "lang": "Python",
+      "url": "https://github.com/ynsmroztas"
+    },
+    {
+      "name": "HeaderHunter",
+      "tag": "scanner",
+      "desc": "POST endpoint discovery + HTML form parsing with body-parameter injection across SQLi / XSS / SSTI / RCE / LFI / CRLF / Open Redirect.",
+      "lang": "Python",
+      "url": "https://github.com/ynsmroztas"
+    },
+    {
+      "name": "FortiSniper",
+      "tag": "exploit",
+      "desc": "CVE-2026-21643 scanner for FortiClientEMS — PostgreSQL injection via Site header, CAST-trick error extraction, time-based blind fallback.",
+      "lang": "Python",
+      "url": "https://github.com/ynsmroztas"
+    },
+    {
+      "name": "ShodanMap",
+      "tag": "recon",
+      "desc": "Shodan REST asset mapper — multi-query harvest, DNS domain API, IP↔port↔domain↔cert correlation and httpx target generation.",
+      "lang": "Python",
+      "url": "https://github.com/ynsmroztas"
+    },
+    {
+      "name": "JSHunter",
+      "tag": "recon",
+      "desc": "JavaScript source intelligence — endpoint, secret and sink discovery across bundled front-end assets.",
+      "lang": "Python",
+      "url": "https://github.com/ynsmroztas"
+    },
+    {
+      "name": "WebProbe v2",
+      "tag": "scanner",
+      "desc": "Fast HTTP probe with fingerprinting, tech detection and pipeline-friendly JSONL output.",
+      "lang": "Python",
+      "url": "https://github.com/ynsmroztas"
+    },
+    {
+      "name": "SandboxSniper",
+      "tag": "exploit",
+      "desc": "FortiSandbox unauthenticated OS command injection scanner (CVE-2026-39808) with canary-based false-positive prevention.",
+      "lang": "Python",
+      "url": "https://github.com/ynsmroztas"
+    }
+  ],
+  "posts": [
+    {
+      "title": "Chaining Email Enumeration to Full DB Dump",
+      "tag": "exploit",
+      "date": "2026-07-12",
+      "read": "11 min",
+      "desc": "A low-severity user enumeration primitive escalated into an unauthenticated database dump through a chained IDOR and a leaky export endpoint."
+    },
+    {
+      "title": "DOM Clobbering + Cross-Origin Exploit Chain",
+      "tag": "web",
+      "date": "2026-06-02",
+      "read": "9 min",
+      "desc": "Turning a harmless HTML injection into account takeover by clobbering a script-loader config object and pivoting through a permissive postMessage handler."
+    },
+    {
+      "title": "Android Pentesting Without Root — FridHunter",
+      "tag": "mobile",
+      "date": "2026-05-18",
+      "read": "14 min",
+      "desc": "Gadget injection workflow on Termux: repacking, 8-layer pinning bypass, and automated secret extraction on non-rooted devices."
+    },
+    {
+      "title": "CVE-2025-55182 — Next.js RSC Deserialization to RCE",
+      "tag": "exploit",
+      "date": "2026-04-27",
+      "read": "12 min",
+      "desc": "Walkthrough of the React Server Components request path, the UTF-16LE WAF bypass, and a reliable exploitation primitive."
+    },
+    {
+      "title": "SOAP APIs Are Still a Goldmine",
+      "tag": "api",
+      "date": "2026-03-15",
+      "read": "8 min",
+      "desc": "WSDL harvesting, operation enumeration and auth-boundary testing on legacy telecom stacks."
+    },
+    {
+      "title": "Recon at Scale: subfinder → httpx → custom",
+      "tag": "recon",
+      "date": "2026-02-08",
+      "read": "7 min",
+      "desc": "The stdin/JSONL pipeline convention behind every tool I ship, and why zero-dependency Python wins on remote boxes."
+    }
+  ],
+  "cves": [
+    {
+      "id": "CVE-2025-55182",
+      "y": "2025",
+      "sev": "Critical",
+      "cvss": "9.1",
+      "target": "Next.js RSC",
+      "desc": "React Server Components deserialization leading to remote code execution."
+    },
+    {
+      "id": "CVE-2025-29927",
+      "y": "2025",
+      "sev": "High",
+      "cvss": "7.5",
+      "target": "Next.js",
+      "desc": "Middleware authorization bypass via crafted internal subrequest header."
+    },
+    {
+      "id": "CVE-2023-38646",
+      "y": "2023",
+      "sev": "Critical",
+      "cvss": "9.8",
+      "target": "Metabase",
+      "desc": "Pre-authentication remote code execution through the setup token endpoint."
+    },
+    {
+      "id": "CVE-2021-3129",
+      "y": "2021",
+      "sev": "Critical",
+      "cvss": "9.8",
+      "target": "Laravel / Ignition",
+      "desc": "Debug-mode file write chained to RCE via log poisoning."
+    }
+  ],
+  "skills": [
+    {
+      "n": "Web Application Security",
+      "v": 95
+    },
+    {
+      "n": "Bug Bounty Hunting",
+      "v": 93
+    },
+    {
+      "n": "Tooling & Automation",
+      "v": 92
+    },
+    {
+      "n": "Mobile App Pentesting",
+      "v": 90
+    },
+    {
+      "n": "Python",
+      "v": 90
+    },
+    {
+      "n": "Recon & Attack Surface",
+      "v": 88
+    },
+    {
+      "n": "Bash / Shell",
+      "v": 88
+    },
+    {
+      "n": "Exploit Development",
+      "v": 82
+    },
+    {
+      "n": "Reverse Engineering",
+      "v": 78
+    }
+  ],
+  "social": [
+    {
+      "n": "Email",
+      "u": "mailto:m.i.t@mit.tc",
+      "i": "✉"
+    },
+    {
+      "n": "GitHub",
+      "u": "https://github.com/ynsmroztas",
+      "i": "⌥"
+    },
+    {
+      "n": "X / Twitter",
+      "u": "https://twitter.com/ynsmroztas",
+      "i": "𝕏"
+    },
+    {
+      "n": "LinkedIn",
+      "u": "https://linkedin.com/in/ynsmroztas",
+      "i": "in"
+    },
+    {
+      "n": "Intigriti",
+      "u": "https://app.intigriti.com/profile/mitsec",
+      "i": "◆"
+    },
+    {
+      "n": "Instagram",
+      "u": "https://instagram.com/ynsmroztas",
+      "i": "◎"
+    },
+    {
+      "n": "YouTube",
+      "u": "https://youtube.com/@ynsmroztas",
+      "i": "▶"
+    },
+    {
+      "n": "Bugcrowd",
+      "u": "https://bugcrowd.com/ynsmroztas",
+      "i": "◈"
+    }
+  ],
+  "nav": [
+    {
+      "n": "Home",
+      "u": "index.html"
+    },
+    {
+      "n": "Writeups",
+      "u": "writeups.html"
+    },
+    {
+      "n": "Tools",
+      "u": "tools.html"
+    },
+    {
+      "n": "Research",
+      "u": "research.html"
+    },
+    {
+      "n": "Lab",
+      "u": "lab.html"
+    }
+  ]
+}
