@@ -50,16 +50,14 @@
       </div>
     </section>
     <div class="ticker"><div class="ticker-track">
-      <span>query-string password</span><span>OAuth scheme</span><span>AndroScope</span><span>PKCE</span>
-      <span>query-string password</span><span>OAuth scheme</span><span>AndroScope</span><span>PKCE</span>
+      <span>mTLS observer</span><span>query-string password</span><span>OAuth scheme</span><span>AndroScope</span>
+      <span>mTLS observer</span><span>query-string password</span><span>OAuth scheme</span><span>AndroScope</span>
     </div></div>
     <div class="tools" style="margin:8px 0 72px">
-      <a class="tool" href="creds-query.html"><div class="top"><h3>Password in the query string</h3><span class="pill">mobile</span></div><p>AndroScope on com.labnet.console. Login PUT the plaintext password in the URL. The error SDK copied the same URL. Vendor IDs stripped.</p><div class="meta">2026 · field case · redacted</div></a>
-      <a class="tool" href="oauth-scheme.html"><div class="top"><h3>Custom scheme, no PKCE</h3><span class="pill">mobile</span></div><p>AndroScope on com.vulnapp.portal. Unverified OAuth redirect plus no code_challenge.</p><div class="meta">2026 · field case · redacted</div></a>
+      <a class="tool" href="mtls-lab.html"><div class="top"><h3>mTLS on the device</h3><span class="pill">mobile</span></div><p>AndroScope defense module. Software PKCS12 vs AndroidKeyStore. No public bypass kit.</p><div class="meta">2026 · field note</div></a>
+      <a class="tool" href="creds-query.html"><div class="top"><h3>Password in the query string</h3><span class="pill">mobile</span></div><p>RN login put the password in the URL. Error SDK copied it.</p><div class="meta">2026 · field case · redacted</div></a>
+      <a class="tool" href="oauth-scheme.html"><div class="top"><h3>Custom scheme, no PKCE</h3><span class="pill">mobile</span></div><p>Unverified OAuth redirect plus no code_challenge.</p><div class="meta">2026 · field case · redacted</div></a>
       <a class="tool" href="androscope.html"><div class="top"><h3>AndroScope — the instrument</h3><span class="pill">mobile</span></div><p>Rootless model, static engine, radar scoring, live-session rules.</p><div class="meta">2026-07 · 16 min</div></a>
-      <div class="tool"><div class="top"><h3>Email enum to a dump</h3><span class="pill">web</span></div><p>User enum to an unauthenticated export through a leaky IDOR.</p><div class="meta">2026-07-12 · 11 min</div></div>
-      <div class="tool"><div class="top"><h3>DOM clobbering chain</h3><span class="pill">web</span></div><p>HTML injection to account takeover via a loose postMessage handler.</p><div class="meta">2026-06-02 · 9 min</div></div>
-      <div class="tool"><div class="top"><h3>CVE-2025-55182 — RSC</h3><span class="pill">note</span></div><p>React Server Components request path. Kept high-level.</p><div class="meta">2026-04-27 · 12 min</div></div>
     </div>
   </main>
   <footer><div class="wrap foot"><div>© 2026 Yunus Emre Öztaş — mitsec</div><div>m.i.t@mit.tc</div></div></footer>
