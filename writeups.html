@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="assets/css/site.css"/>
   <link rel="stylesheet" href="assets/css/theme.css"/>
+  <link rel="stylesheet" href="assets/css/live.css"/>
   <script>(function(){try{var t=localStorage.getItem('mitsec-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 </head>
 <body>
@@ -26,49 +27,42 @@
       <button class="burger" data-burger aria-label="Menu">☰</button>
     </div>
   </header>
-  <main class="wrap" style="padding:48px 22px 80px">
-    <p class="h-k">Field notes</p>
-    <h2>Writeups</h2>
-    <p class="lead">Long form. The AndroScope paper lives on its own page because it is the current flagship.</p>
-    <div class="tools" style="margin-top:28px">
-      <a class="tool" href="androscope.html">
-        <div class="top"><h3>AndroScope — the instrument</h3><span class="pill">mobile</span></div>
-        <p>Rootless model, static engine, radar scoring, live-session rules, and the difference versus AndroHunter.</p>
-        <div class="meta">2026-07 · 16 min</div>
-      </a>
-      <div class="tool">
-        <div class="top"><h3>Chaining email enumeration to a full DB dump</h3><span class="pill">exploit</span></div>
-        <p>Low-severity user enum to unauthenticated export through an IDOR on a leaky dump endpoint.</p>
-        <div class="meta">2026-07-12 · 11 min</div>
+  <main class="wrap">
+    <section class="page-hero slim">
+      <div>
+        <p class="h-k">Field notes</p>
+        <h1>Writeups</h1>
+        <div class="livebar">
+          <span class="chip on">● live</span>
+          <span class="chip">clk <span data-clock>--:--:--</span></span>
+          <span class="chip">long form</span>
+        </div>
+        <p class="lead">The AndroScope paper is the flagship. The rest stay short.</p>
       </div>
-      <div class="tool">
-        <div class="top"><h3>DOM clobbering + cross-origin chain</h3><span class="pill">web</span></div>
-        <p>HTML injection to account takeover by clobbering a loader config and a loose postMessage handler.</p>
-        <div class="meta">2026-06-02 · 9 min</div>
+      <div>
+        <div class="scope mini-scope">
+          <canvas data-radar></canvas>
+          <div class="beam"></div>
+          <div class="ring"></div>
+          <div class="scanline"></div>
+          <div class="scope-hud"><div class="top"><span>notes // live</span><span>lab</span></div><div class="bot"><span>radar</span><span data-clock>--:--:--</span></div></div>
+        </div>
       </div>
-      <div class="tool">
-        <div class="top"><h3>CVE-2025-55182 — RSC deserialization</h3><span class="pill">exploit</span></div>
-        <p>React Server Components request path and a reliable primitive. WAF notes kept high-level.</p>
-        <div class="meta">2026-04-27 · 12 min</div>
-      </div>
-      <div class="tool">
-        <div class="top"><h3>SOAP APIs are still a goldmine</h3><span class="pill">api</span></div>
-        <p>WSDL harvest, operation enum, auth-boundary work on legacy telecom stacks.</p>
-        <div class="meta">2026-03-15 · 8 min</div>
-      </div>
-      <div class="tool">
-        <div class="top"><h3>Recon at scale: subfinder → httpx → custom</h3><span class="pill">recon</span></div>
-        <p>Stdin / JSONL convention behind the tools I ship, and why zero-dependency Python still wins on jump boxes.</p>
-        <div class="meta">2026-02-08 · 7 min</div>
-      </div>
+    </section>
+    <div class="ticker"><div class="ticker-track">
+      <span>AndroScope</span><span>RSC notes</span><span>SOAP still pays</span><span>recon pipelines</span>
+      <span>AndroScope</span><span>RSC notes</span><span>SOAP still pays</span><span>recon pipelines</span>
+    </div></div>
+    <div class="tools" style="margin:8px 0 72px">
+      <a class="tool" href="androscope.html"><div class="top"><h3>AndroScope — the instrument</h3><span class="pill">mobile</span></div><p>Rootless model, static engine, radar scoring, live-session rules.</p><div class="meta">2026-07 · 16 min</div></a>
+      <div class="tool"><div class="top"><h3>Email enum to a dump</h3><span class="pill">web</span></div><p>User enum to an unauthenticated export through a leaky IDOR.</p><div class="meta">2026-07-12 · 11 min</div></div>
+      <div class="tool"><div class="top"><h3>DOM clobbering chain</h3><span class="pill">web</span></div><p>HTML injection to account takeover via a loose postMessage handler.</p><div class="meta">2026-06-02 · 9 min</div></div>
+      <div class="tool"><div class="top"><h3>CVE-2025-55182 — RSC</h3><span class="pill">note</span></div><p>React Server Components request path. Kept high-level.</p><div class="meta">2026-04-27 · 12 min</div></div>
+      <div class="tool"><div class="top"><h3>SOAP APIs</h3><span class="pill">api</span></div><p>WSDL harvest and auth-boundary work on legacy stacks.</p><div class="meta">2026-03-15 · 8 min</div></div>
+      <div class="tool"><div class="top"><h3>Recon at scale</h3><span class="pill">recon</span></div><p>subfinder → httpx → custom. Stdin / JSONL on jump boxes.</p><div class="meta">2026-02-08 · 7 min</div></div>
     </div>
   </main>
-  <footer>
-    <div class="wrap foot">
-      <div>© 2026 Yunus Emre Öztaş — mitsec</div>
-      <div>m.i.t@mit.tc</div>
-    </div>
-  </footer>
+  <footer><div class="wrap foot"><div>© 2026 Yunus Emre Öztaş — mitsec</div><div>m.i.t@mit.tc</div></div></footer>
   <script src="assets/js/theme.js"></script>
   <script src="assets/js/site.js"></script>
 </body>
