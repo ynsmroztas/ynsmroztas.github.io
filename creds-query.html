@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Password in the query string — mitsec</title>
+  <meta name="description" content="Redacted AndroScope case: plaintext password in a login URL, then copied into a third-party error SDK breadcrumb."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/site.css"/>
+  <link rel="stylesheet" href="assets/css/theme.css"/>
+  <link rel="stylesheet" href="assets/css/live.css"/>
+  <style>
+    .term{background:#07090c;border:1px solid var(--line-2);border-radius:16px;padding:14px 16px;font-family:var(--mono);font-size:12px;line-height:1.55;color:#9fe7b8;overflow:auto;margin:16px 0 24px;white-space:pre-wrap}
+    .term .dim{color:#6b7280}.term .hi{color:#fbbf24}.term .bad{color:#fb7185}.term .ok{color:#34d399}
+    .tag-row{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 20px}
+  </style>
+  <script>(function(){try{var t=localStorage.getItem('mitsec-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body>
+  <div class="bg"></div>
+  <header class="nav">
+    <div class="wrap nav-in">
+      <a class="brand" href="index.html"><i></i><b>mit</b> <span>sec</span></a>
+      <nav class="links" data-links>
+        <a href="index.html">Home</a>
+        <a href="androscope.html">AndroScope</a>
+        <a href="tools.html">Tools</a>
+        <a class="on" href="writeups.html">Writeups</a>
+        <a href="research.html">Research</a>
+      </nav>
+      <button class="burger" data-burger aria-label="Menu">☰</button>
+    </div>
+  </header>
+  <main class="wrap">
+    <section class="page-hero slim">
+      <div>
+        <p class="meta">WRITEUP · MOBILE · RN BRIDGE · 2026 · @YNSMROZTAS</p>
+        <h1>Password in the query string</h1>
+        <div class="livebar">
+          <span class="chip on">● live</span>
+          <span class="chip">clk <span data-clock>--:--:--</span></span>
+          <span class="chip">com.labnet.console</span>
+        </div>
+        <p class="lead">AndroScope runtime on an authorized lab build. Vendor host, account, and SDK project IDs stripped. Original captures are not published.</p>
+      </div>
+      <div>
+        <div class="scope mini-scope">
+          <canvas data-radar></canvas>
+          <div class="beam"></div>
+          <div class="ring"></div>
+          <div class="scanline"></div>
+          <div class="scope-hud"><div class="top"><span>rn // live</span><span>unrooted</span></div><div class="bot"><span>radar</span><span data-clock>--:--:--</span></div></div>
+        </div>
+      </div>
+    </section>
+    <article class="prose">
+      <div class="tag-row">
+        <span class="chip on">AndroScope</span>
+        <span class="chip">React Native</span>
+        <span class="chip">FH-ID · traffic</span>
+        <span class="chip">no root</span>
+      </div>
+      <h2>Summary</h2>
+      <p>Lab package <code>com.labnet.console</code> (build 4.x, React Native) sent the login as <code>POST</code> — but put <code>email</code> and the <strong>plaintext password</strong> in the <em>query string</em>, not the body. TLS was on. That is not the bug. The bug is that a high-value secret was placed in the one field every proxy, WAF, access log, and error SDK treats as safe metadata.</p>
+      <p>AndroScope watched the in-process React Native bridge while the operator tapped Sign in. The same full URL showed up in two other modules in that session: the error-monitoring SDK breadcrumb, and the cookie helper. Vendor names from the original program are not on this page.</p>
+      <div class="call">Class: secret in URL query. Transport: TLS. Consumers: first-party request logs + third-party error SDK. Fix: move fields into the POST body.</div>
+
+      <h2>What AndroScope printed</h2>
+      <p>Reconstructed frame. Real account, host, captcha token, and SDK ingest URL removed.</p>
+      <pre class="term"><span class="dim">[RN-native]</span> NetworkingModule
+  POST  https://login.labnet.example/session/login<span class="bad">?email=lab.user%40example.com&password=[REDACTED]&remember_user=1</span>
+
+<span class="dim">[RN-native]</span> error-sdk.Breadcrumb
+  method=POST
+  url=https://login.labnet.example/session/login<span class="bad">?email=…&password=[REDACTED]</span>
+  type=http
+
+<span class="dim">[RN-native]</span> CookieManagerModule
+  <span class="hi">same URL handed to the cookie helper</span>
+
+<span class="ok">[keychain]</span> setGenericPassword
+  arg0=lab.user@example.com
+  arg2=<span class="bad">[REDACTED]</span>
+
+mitsec@com.labnet.console:</pre>
+
+      <h2>Why the URL is the wrong place</h2>
+      <p>The request already declared <code>Content-Type: application/json</code>. The body was available and unused for these fields. Query strings are copied into access logs, load-balancer traces, WAF events, and — here — an HTTP breadcrumb the error SDK later ships with any event.</p>
+      <p>AndroScope did not need a proxy or a broken TLS stack. The values existed on the RN bridge <em>before</em> the socket. Empty log would have meant the operator never hit login. This log is the opposite.</p>
+
+      <h2>Two consumers in one session</h2>
+      <ol>
+        <li><strong>Error-monitoring SDK.</strong> Breadcrumb <code>url</code> was the raw login URL, password included. Whether a server-side scrubber later deletes it is a control on one consumer. It does not fix first-party request logs.</li>
+        <li><strong>Cookie helper.</strong> The same URL was passed into a module that has no reason to see a password.</li>
+      </ol>
+      <p>This page does not name the SDK project, ingest host, or hook the vendor’s production org. That stays in the private report.</p>
+
+      <h2>Impact (class)</h2>
+      <p>Anyone who can read URL logs — on the vendor side or inside the error project — can read the password of any user whose session produced a recorded request. Dashboard-class accounts often administer network gear. Treat the secret as high, even though the path is “just logging.”</p>
+
+      <h2>Fix</h2>
+      <ul>
+        <li>Move <code>email</code>, <code>password</code>, and <code>remember_user</code> into the POST body.</li>
+        <li>After that, the breadcrumb and cookie helper stop inheriting the secret for free.</li>
+        <li>Defence in depth: scrub the login path in the error SDK, and purge historical URL logs that already stored the parameter.</li>
+      </ul>
+
+      <h2>Environment</h2>
+      <table>
+        <tbody>
+          <tr><td>Package</td><td><code>com.labnet.console</code> (redacted)</td></tr>
+          <tr><td>Framework</td><td>React Native</td></tr>
+          <tr><td>Runtime</td><td>AndroScope, gadget-in-target, unrooted</td></tr>
+          <tr><td>Account</td><td>Researcher lab account — rotated, not published</td></tr>
+        </tbody>
+      </table>
+      <p class="meta" style="margin-top:40px">YUNUS EMRE ÖZTAŞ · MITSEC · LAB BUILD ONLY</p>
+    </article>
+  </main>
+  <footer>
+    <div class="wrap foot">
+      <div>© 2026 Yunus Emre Öztaş — mitsec</div>
+      <div><a href="writeups.html">Writeups</a> · <a href="androscope.html">AndroScope</a></div>
+    </div>
+  </footer>
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/site.js"></script>
+</body>
+</html>
