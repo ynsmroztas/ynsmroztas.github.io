@@ -29,9 +29,13 @@
 .pgstat-in span{border:1px solid var(--line-2);border-radius:14px;padding:16px 14px;background:var(--ink-2)}
 .pgstat-in b{display:block;font-family:var(--display);font-size:28px;color:var(--ph);line-height:1}
 .pgstat-in i{display:block;margin-top:6px;font-style:normal;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
-.bg:after{content:"";position:absolute;inset:0;background:url("../img/wolf.svg") 50% 12% / min(64vh,520px) no-repeat;opacity:.13;mix-blend-mode:screen;pointer-events:none}
-.wolf-title{display:flex;align-items:center;gap:16px;margin:14px 0 0;min-width:0}
-.wolf-title img{width:88px;height:88px;object-fit:cover;object-position:center 20%;border-radius:20px;flex:none;background:#06070a;box-shadow:0 0 24px var(--glow,rgba(124,255,178,.28))}
-.wolf-title .type{font-family:var(--display);font-weight:800;line-height:.9;font-size:clamp(28px,5vw,56px);letter-spacing:-.05em;color:var(--title,#f4fff8);white-space:nowrap}
-.wolf-title em{font-style:normal;color:var(--ph,#7cffb2);text-shadow:0 0 22px var(--glow,rgba(124,255,178,.45))}
-@media (max-width:800px){.live-map{grid-template-columns:1fr 1fr}.shot-row{grid-template-columns:1fr}.media-full img{aspect-ratio:16/9}.pgstat-in{grid-template-columns:1fr}.wolf-title{flex-wrap:wrap}.wolf-title .type{white-space:normal}}
+.bg:after{content:"ANDROSCOPE";position:absolute;left:50%;top:14%;transform:translateX(-50%) rotate(-10deg);font-family:Syne,Sora,sans-serif;font-weight:800;font-size:clamp(72px,16vw,240px);letter-spacing:-.07em;color:var(--ph);opacity:.07;white-space:nowrap;pointer-events:none;user-select:none}
+.wordmark{margin:10px 0 0;font-family:var(--display);font-weight:800;line-height:.88;font-size:clamp(34px,6.4vw,72px);letter-spacing:-.055em;color:var(--title);display:flex;align-items:center;flex-wrap:wrap}
+.wordmark em{font-style:normal;color:var(--ph);text-shadow:0 0 26px var(--glow);display:inline-flex;align-items:center}
+.wordmark .o{display:inline-block;width:.72em;height:.72em;margin:0 .04em -.04em;border:.085em solid var(--ph);border-radius:50%;position:relative;box-shadow:0 0 18px var(--glow);flex:none}
+.wordmark .o:before,.wordmark .o:after{content:"";position:absolute;background:var(--ph);left:50%;top:50%;transform:translate(-50%,-50%)}
+.wordmark .o:before{width:.085em;height:70%}
+.wordmark .o:after{width:70%;height:.085em}
+.brand .mark{width:28px;height:28px;border-radius:8px;flex:none;display:grid;place-items:center;border:1px solid var(--line);background:var(--ink-2);color:var(--ph)}
+.brand .mark svg{width:18px;height:18px;display:block}
+@media (max-width:800px){.live-map{grid-template-columns:1fr 1fr}.shot-row{grid-template-columns:1fr}.media-full img{aspect-ratio:16/9}.pgstat-in{grid-template-columns:1fr}.wordmark{font-size:clamp(30px,11vw,52px)}}
