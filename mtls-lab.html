@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>mTLS on the device — mitsec</title>
+  <meta name="description" content="AndroScope field note: client certificates in software vs AndroidKeyStore. No public bypass kit."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/site.css"/>
+  <link rel="stylesheet" href="assets/css/theme.css"/>
+  <link rel="stylesheet" href="assets/css/live.css"/>
+  <style>
+    .term{background:#07090c;border:1px solid var(--line-2);border-radius:16px;padding:14px 16px;font-family:var(--mono);font-size:12px;line-height:1.55;color:#9fe7b8;overflow:auto;margin:16px 0 24px;white-space:pre-wrap}
+    .term .dim{color:#6b7280}.term .hi{color:#fbbf24}.term .ok{color:#34d399}.term .bad{color:#fb7185}
+    .diag{width:100%;border:1px solid var(--line-2);border-radius:18px;background:var(--panel);margin:12px 0 28px;display:block}
+    .tag-row{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 20px}
+  </style>
+  <script>(function(){try{var t=localStorage.getItem('mitsec-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body>
+  <div class="bg"></div>
+  <header class="nav">
+    <div class="wrap nav-in">
+      <a class="brand" href="index.html"><i></i><b>mit</b> <span>sec</span></a>
+      <nav class="links" data-links>
+        <a href="index.html">Home</a>
+        <a href="androscope.html">AndroScope</a>
+        <a href="tools.html">Tools</a>
+        <a class="on" href="writeups.html">Writeups</a>
+        <a href="research.html">Research</a>
+      </nav>
+      <button class="burger" data-burger aria-label="Menu">☰</button>
+    </div>
+  </header>
+  <main class="wrap">
+    <section class="page-hero slim">
+      <div>
+        <p class="meta">WRITEUP · MOBILE · TLS · 2026 · @YNSMROZTAS</p>
+        <h1>mTLS on the device</h1>
+        <div class="livebar">
+          <span class="chip on">● live</span>
+          <span class="chip">clk <span data-clock>--:--:--</span></span>
+          <span class="chip">module · defense</span>
+        </div>
+        <p class="lead">AndroScope already ships an mTLS observer. This note is the surface, not a public break kit.</p>
+      </div>
+      <div>
+        <div class="scope mini-scope">
+          <canvas data-radar></canvas>
+          <div class="beam"></div>
+          <div class="ring"></div>
+          <div class="scanline"></div>
+          <div class="scope-hud"><div class="top"><span>mtls // live</span><span>observe</span></div><div class="bot"><span>radar</span><span data-clock>--:--:--</span></div></div>
+        </div>
+      </div>
+    </section>
+    <article class="prose">
+      <div class="tag-row">
+        <span class="chip on">AndroScope</span>
+        <span class="chip">mTLS observer</span>
+        <span class="chip">AndroidKeyStore</span>
+        <span class="chip">lab only</span>
+      </div>
+
+      <h2>What mTLS actually adds</h2>
+      <p>Ordinary TLS authenticates the server. Mutual TLS asks the client to present a certificate the server already issued. A proxy that only swaps the server cert still fails the handshake — it has no client key.</p>
+      <svg class="diag" viewBox="0 0 860 280" role="img" aria-label="TLS vs mTLS">
+        <rect width="860" height="280" fill="#0b0d10" rx="18"/>
+        <text x="40" y="42" fill="#7cffb2" font-family="IBM Plex Mono,monospace" font-size="13">TLS</text>
+        <text x="40" y="72" fill="#9ca3af" font-family="Sora,sans-serif" font-size="14">client → server cert check → channel</text>
+        <text x="40" y="108" fill="#6b7280" font-family="IBM Plex Mono,monospace" font-size="12">one-way trust</text>
+        <line x1="430" y1="24" x2="430" y2="256" stroke="#1f2937"/>
+        <text x="460" y="42" fill="#7cffb2" font-family="IBM Plex Mono,monospace" font-size="13">mTLS</text>
+        <text x="460" y="72" fill="#e5e7eb" font-family="Sora,sans-serif" font-size="14">client cert + key → server checks both</text>
+        <text x="460" y="108" fill="#6b7280" font-family="IBM Plex Mono,monospace" font-size="12">two-way trust</text>
+        <rect x="40" y="150" width="160" height="72" rx="10" fill="#111827" stroke="#374151"/>
+        <text x="58" y="192" fill="#9fe7b8" font-family="IBM Plex Mono,monospace" font-size="12">APP</text>
+        <rect x="250" y="150" width="160" height="72" rx="10" fill="#111827" stroke="#374151"/>
+        <text x="268" y="192" fill="#9fe7b8" font-family="IBM Plex Mono,monospace" font-size="12">SERVER</text>
+        <rect x="460" y="150" width="160" height="72" rx="10" fill="#111827" stroke="#7cffb2"/>
+        <text x="478" y="192" fill="#7cffb2" font-family="IBM Plex Mono,monospace" font-size="12">APP + CERT</text>
+        <rect x="660" y="150" width="160" height="72" rx="10" fill="#111827" stroke="#7cffb2"/>
+        <text x="678" y="192" fill="#7cffb2" font-family="IBM Plex Mono,monospace" font-size="12">SERVER</text>
+      </svg>
+
+      <h2>Enrollment, in one picture</h2>
+      <p>Lab apps that roll their own client identity usually: ask the server for a nonce, generate a key pair on device, sign the nonce, receive a signed client cert, stash the private key next to it. The interesting question is <em>where</em> that private key lives after enrollment.</p>
+      <svg class="diag" viewBox="0 0 860 220" role="img" aria-label="enrollment flow">
+        <rect width="860" height="220" fill="#0b0d10" rx="18"/>
+        <text x="36" y="48" fill="#fbbf24" font-family="IBM Plex Mono,monospace" font-size="13">01 challenge</text>
+        <text x="36" y="72" fill="#9ca3af" font-family="Sora,sans-serif" font-size="13">nonce from server</text>
+        <text x="240" y="48" fill="#fbbf24" font-family="IBM Plex Mono,monospace" font-size="13">02 prove</text>
+        <text x="240" y="72" fill="#9ca3af" font-family="Sora,sans-serif" font-size="13">sign nonce on device</text>
+        <text x="444" y="48" fill="#fbbf24" font-family="IBM Plex Mono,monospace" font-size="13">03 issue</text>
+        <text x="444" y="72" fill="#9ca3af" font-family="Sora,sans-serif" font-size="13">client cert returns</text>
+        <text x="648" y="48" fill="#fbbf24" font-family="IBM Plex Mono,monospace" font-size="13">04 rest</text>
+        <text x="648" y="72" fill="#9ca3af" font-family="Sora,sans-serif" font-size="13">key stored — where?</text>
+        <text x="36" y="150" fill="#34d399" font-family="IBM Plex Mono,monospace" font-size="13">AndroidKeyStore / TEE  → hardware-bound</text>
+        <text x="36" y="180" fill="#fb7185" font-family="IBM Plex Mono,monospace" font-size="13">software KeyPairGenerator + P12 on disk  → exportable class</text>
+      </svg>
+
+      <h2>What AndroScope is allowed to say</h2>
+      <p>The defense deck already has an mTLS observer. In an authorized lab build it answers three questions. It does not publish a second APK, a TrustAll manager, or a PEM dump.</p>
+      <pre class="term"><span class="dim">E</span>  DEFENSE
+<span class="ok">50</span>  TLS pinning observer
+<span class="ok">55</span>  mTLS observer                 <span class="hi">★</span>
+
+<span class="hi">session — lab.sample.app</span>
+<span class="ok">[mTLS]</span> client-cert API present
+<span class="ok">[mTLS]</span> store class: software KeyStore / PKCS12
+<span class="bad">[mTLS]</span> AndroidKeyStore: not used for this alias
+<span class="dim">[mTLS]</span> password for the bag is derived at runtime
+         — derived ≠ hardware-bound
+
+mitsec@lab.sample.app:</pre>
+
+      <h2>The actual finding class</h2>
+      <p>A PKCS12 bag encrypted with a long PBKDF2 stretch still decrypts <em>inside the process</em> when the app wants to speak mTLS. If the key was built with a software <code>KeyPairGenerator</code> and never entered AndroidKeyStore, that object is a normal Java key. Runtime instrumentation of an authorized lab build can see the same object the app already unlocked.</p>
+      <p>That is not “PBKDF2 is weak.” It is “the key is not sealed to hardware.” The public writeup stops there.</p>
+      <div class="call">AndroScope reports the store class and whether KeyStore was used. It does not ship the extraction recipe or a Burp import path on this site.</div>
+
+      <h2>Fix</h2>
+      <ul>
+        <li>Generate and keep the client key in AndroidKeyStore. StrongBox when the device has it. Do not mark the key exportable.</li>
+        <li>Do not keep a software PKCS12 of that key “just in case.”</li>
+        <li>Treat a runtime-derived file password as disk obfuscation, not as a TEE.</li>
+        <li>On the server, bind the client cert to device posture you actually trust — not only to “somebody presented a cert we once signed.”</li>
+      </ul>
+
+      <h2>Credit</h2>
+      <p>Enrollment shape and the software-vs-KeyStore distinction are well covered in a public demo by <a href="https://kiratliygt.medium.com/how-to-bypass-mtls-on-android-with-frida-45c5e71373e8" rel="noopener" target="_blank">kiratliygt</a>. This page is an AndroScope note, not a reprint, and not a bypass manual.</p>
+      <p class="meta" style="margin-top:40px">YUNUS EMRE ÖZTAŞ · MITSEC · LAB BUILD ONLY</p>
+    </article>
+  </main>
+  <footer>
+    <div class="wrap foot">
+      <div>© 2026 Yunus Emre Öztaş — mitsec</div>
+      <div><a href="writeups.html">Writeups</a> · <a href="androscope.html">AndroScope</a></div>
+    </div>
+  </footer>
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/site.js"></script>
+</body>
+</html>
