@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="AndroScope">
+  <rect width="64" height="64" rx="12" fill="#06070a"/>
+  <circle cx="32" cy="32" r="26" fill="none" stroke="#7cffb2" stroke-width="2"/>
+  <path fill="#7cffb2" d="M18 36 L22 22 L30 16 L34 22 L40 14 L46 24 L48 34 L42 44 L34 48 L26 44 L20 46 Z"/>
+  <path fill="#06070a" d="M24 30 L30 26 L33 32 L28 36 Z"/>
+  <circle cx="29" cy="30" r="1.6" fill="#7cffb2"/>
+</svg>

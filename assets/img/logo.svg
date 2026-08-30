@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 220" role="img" aria-label="AndroScope">
+  <rect width="640" height="220" fill="#06070a"/>
+  <g fill="#7cffb2">
+    <path d="M40 150 L70 70 L118 42 L148 78 L176 38 L214 88 L228 128 L196 168 L150 182 L108 168 L72 176 Z"/>
+    <path fill="#06070a" d="M86 118 L118 96 L132 122 L108 138 Z"/>
+    <circle cx="114" cy="116" r="5" fill="#7cffb2"/>
+  </g>
+  <text x="250" y="118" fill="#7cffb2" font-family="Syne,Arial Black,sans-serif" font-size="54" font-weight="800" letter-spacing="-2">ANDRO</text>
+  <text x="250" y="168" fill="#c8e8d4" font-family="IBM Plex Mono,monospace" font-size="16" letter-spacing="8">SCOPE · MITSEC</text>
+</svg>
