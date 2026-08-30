@@ -29,24 +29,39 @@
 
   <main class="wrap">
     <section class="hero">
-      <div>
+      <div class="reveal">
         <div class="kicker">available for private programs</div>
-        <div class="stage3d" data-tilt>
-          <h1 class="title3d">ANDRO<br><em>SCOPE</em></h1>
+        <div class="stage3d">
+          <h1 class="title3d">ANDRO<em>SCOPE</em></h1>
+        </div>
+        <div class="live-row">
+          <span class="chip on">● live radar</span>
+          <span class="chip">clk <span data-clock>--:--:--</span></span>
+          <span class="chip">prepare · assess · runtime</span>
         </div>
         <p class="sub">Rootless Android pentest framework by <strong>Yunus Emre Öztaş</strong> (@ynsmroztas / mitsec). Map a target once. Audit the surface. Drive a live session while you actually use the app.</p>
         <div class="row">
-          <a class="btn" href="androscope.html">What AndroScope is →</a>
+          <a class="btn" href="androscope.html">Open the instrument →</a>
           <a class="btn ghost" href="https://x.com/ynsmroztas" target="_blank" rel="noopener">Follow the research</a>
         </div>
       </div>
-      <figure class="hero-fig">
-        <img src="assets/img/wordmark-3d.jpg" alt="ANDROSCOPE 3D wordmark"/>
-        <div class="float-card">
-          <b>PREPARE → ASSESS → RUNTIME</b>
-          operator model · gadget lives in the target
+      <div class="reveal d2">
+        <div class="scope">
+          <canvas data-radar></canvas>
+          <div class="scanline"></div>
+          <div class="scope-hud">
+            <div class="top"><span>androscope // mitsec</span><span>sweep</span></div>
+            <div class="bot"><span>surface armed</span><span data-clock>--:--:--</span></div>
+          </div>
         </div>
-      </figure>
+        <div class="telemetry">
+          <div class="tel"><b>FH-ID</b>stable finding keys</div>
+          <div class="tel"><b>WAIT</b>first-frame attach</div>
+          <div class="tel"><b>38+</b>surface modules</div>
+          <div class="tel"><b>0 root</b>gadget in target</div>
+        </div>
+        <div class="console" data-console></div>
+      </div>
     </section>
 
     <div class="stats">
@@ -96,9 +111,9 @@
       <h2>38+ purpose-built surfaces.</h2>
       <div class="mods">
         <div class="mod"><h4>Defense</h4><p>Pinning, RASP, Play Integrity, biometric and Cronet paths — observed, not promised as a universal kill-switch.</p></div>
-        <div class="mod"><h4>Traffic &amp; secrets</h4><p>Request and WebSocket intercept, token and crypto dump, gRPC/protobuf, keystore and prefs.</p></div>
-        <div class="mod"><h4>IPC &amp; deeplinks</h4><p>Intent hunter (capture · replay · inject), schema fuzzer, provider probe, confused-deputy checks.</p></div>
-        <div class="mod"><h4>Native &amp; niche</h4><p>.so tracer, memory sweep, Lottie / PDF.js / Cordova / RN bridge surfaces when the binary actually has them.</p></div>
+        <div class="mod"><h4>Traffic & secrets</h4><p>Request and WebSocket intercept, token and crypto dump, gRPC/protobuf, keystore and prefs.</p></div>
+        <div class="mod"><h4>IPC & deeplinks</h4><p>Intent hunter (capture · replay · inject), schema fuzzer, provider probe, confused-deputy checks.</p></div>
+        <div class="mod"><h4>Native & niche</h4><p>.so tracer, memory sweep, Lottie / PDF.js / Cordova / RN bridge surfaces when the binary actually has them.</p></div>
       </div>
       <p style="margin-top:22px"><a class="btn" href="androscope.html">Full technical writeup</a></p>
     </section>
