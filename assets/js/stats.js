@@ -1,79 +1,56 @@
 (function () {
   const NS = "mitsec-site";
-  const GC = "https://ynsmroztas.goatcounter.com";
-  const path = location.pathname || "/";
-  const key = (path.replace(/^\//, "").replace(/[^a-z0-9._-]+/gi, "-") || "home");
-  const sess = "mitsec-hit-" + key;
-
-  function chip(bar, attr, text) {
-    var el = bar.querySelector("[" + attr + "]");
-    if (!el) {
-      el = document.createElement("span");
-      el.className = "chip";
-      el.setAttribute(attr, "");
-      bar.appendChild(el);
-    }
-    el.textContent = text;
-  }
-
-  function paint(views, live) {
-    document.querySelectorAll(".livebar").forEach(function (bar) {
-      if (views != null) chip(bar, "data-reads", views + " views");
-      if (live != null) chip(bar, "data-live", live + " reading");
-    });
-    document.querySelectorAll("[data-reads]").forEach(function (el) {
-      if (views != null) el.textContent = views + " views";
-    });
-  }
+  const path = (location.pathname.replace(/^\//, "").replace(/[^a-z0-9._-]+/gi, "-") || "home");
+  const day = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+  const seen = "mitsec-v-" + path;
+  const seenDay = "mitsec-d-" + path + "-" + day;
 
   function api(name, op) {
-    return fetch("https://api.counterapi.dev/v1/" + NS + "/" + name + "/" + op)
+    return fetch("https://api.counterapi.dev/v1/" + NS + "/" + encodeURIComponent(name) + "/" + op)
       .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
       .then(function (d) { return Number(d.count || d.value || 0); });
   }
 
-  function gcCount(p) {
-    return fetch(GC + "/counter/" + encodeURIComponent(p) + ".json")
-      .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
-      .then(function (d) {
-        var raw = String(d.count || d.count_unique || "0").replace(/[^0-9]/g, "");
-        return Number(raw || 0);
-      });
-  }
-
-  if (!document.querySelector("script[data-goatcounter]")) {
-    var s = document.createElement("script");
-    s.async = true;
-    s.src = "https://gc.zgo.at/count.js";
-    s.setAttribute("data-goatcounter", GC + "/count");
-    document.head.appendChild(s);
-  }
-
-  function fromGcThenFallback() {
-    gcCount(path).then(function (n) {
-      paint(n, null);
-    }).catch(function () {
-      var doHit = !sessionStorage.getItem(sess);
-      if (doHit) sessionStorage.setItem(sess, "1");
-      api(key, doHit ? "up" : "hit").then(function (n) { paint(n, null); }).catch(function () {});
+  function read(name, bump) {
+    return api(name, bump ? "up" : "hit").catch(function () {
+      return bump ? api(name, "up") : Promise.resolve(0);
     });
   }
-  setTimeout(fromGcThenFallback, 800);
 
-  api("live-" + key, "up").then(function (n) { paint(null, n); }).catch(function () {});
-  window.addEventListener("pagehide", function () {
-    try { navigator.sendBeacon("https://api.counterapi.dev/v1/" + NS + "/live-" + key + "/down"); } catch (e) {}
+  var bar = document.querySelector("[data-pgstat]");
+  if (!bar) {
+    bar = document.createElement("div");
+    bar.className = "pgstat";
+    bar.setAttribute("data-pgstat", "");
+    bar.innerHTML =
+      '<div class="pgstat-in">' +
+        '<span><b data-st-total>—</b><i>total reads</i></span>' +
+        '<span><b data-st-today>—</b><i>today</i></span>' +
+        '<span><b data-st-now>—</b><i>reading now</i></span>' +
+      "</div>";
+    var foot = document.querySelector("footer");
+    if (foot) foot.parentNode.insertBefore(bar, foot);
+    else document.body.appendChild(bar);
+  }
+
+  var bumpTotal = !sessionStorage.getItem(seen);
+  var bumpDay = !sessionStorage.getItem(seenDay);
+  if (bumpTotal) sessionStorage.setItem(seen, "1");
+  if (bumpDay) sessionStorage.setItem(seenDay, "1");
+
+  read(path, bumpTotal).then(function (n) {
+    var el = document.querySelector("[data-st-total]");
+    if (el) el.textContent = n;
   });
-
-  document.querySelectorAll("[data-count]").forEach(function (el) {
-    var p = el.getAttribute("data-count") || "";
-    var gcPath = p === "home" ? "/" : "/" + p.replace(/^\//, "");
-    gcCount(gcPath).then(function (n) {
-      el.textContent = n + " views";
-    }).catch(function () {
-      api(p.replace(/[^a-z0-9._-]+/gi, "-") || "home", "hit").then(function (n) {
-        el.textContent = n + " views";
-      }).catch(function () { el.textContent = "—"; });
-    });
+  read(path + "-" + day, bumpDay).then(function (n) {
+    var el = document.querySelector("[data-st-today]");
+    if (el) el.textContent = n;
+  });
+  api("now-" + path, "up").then(function (n) {
+    var el = document.querySelector("[data-st-now]");
+    if (el) el.textContent = n;
+  }).catch(function () {});
+  window.addEventListener("pagehide", function () {
+    try { navigator.sendBeacon("https://api.counterapi.dev/v1/" + NS + "/now-" + path + "/down"); } catch (e) {}
   });
 })();
