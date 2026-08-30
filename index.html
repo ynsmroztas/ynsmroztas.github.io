@@ -4,12 +4,13 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>mitsec — AndroScope / Yunus Emre Öztaş</title>
-  <meta name="description" content="AndroScope is a rootless Android pentest framework by ynsmroztas / mitsec. Prepare, assess, runtime — on a real unrooted phone."/>
+  <meta name="description" content="AndroScope is a rootless Android pentest framework by ynsmroztas / mitsec."/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="assets/css/site.css"/>
   <link rel="stylesheet" href="assets/css/theme.css"/>
+  <link rel="stylesheet" href="assets/css/live.css"/>
   <script>(function(){try{var t=localStorage.getItem('mitsec-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 </head>
 <body>
@@ -23,7 +24,7 @@
         <a href="tools.html">Tools</a>
         <a href="writeups.html">Writeups</a>
         <a href="research.html">Research</a>
-        <a class="cta" href="androscope.html">Read the paper</a>
+        <a class="cta" href="oauth-scheme.html">Field case</a>
       </nav>
       <button class="burger" data-burger aria-label="Menu">☰</button>
     </div>
@@ -41,12 +42,14 @@
         <p class="sub">Rootless Android pentest framework by <strong>Yunus Emre Öztaş</strong> (@ynsmroztas / mitsec). Map a target once. Audit the surface. Drive a live session while you actually use the app.</p>
         <div class="row">
           <a class="btn" href="androscope.html">Open the instrument →</a>
-          <a class="btn ghost" href="https://x.com/ynsmroztas" target="_blank" rel="noopener">Follow the research</a>
+          <a class="btn ghost" href="oauth-scheme.html">Latest field case</a>
         </div>
       </div>
       <div class="hero-scope reveal d2">
         <div class="scope">
           <canvas data-radar></canvas>
+          <div class="beam"></div>
+          <div class="ring"></div>
           <div class="scanline"></div>
           <div class="scope-hud">
             <div class="top"><span>androscope // mitsec</span><span>sweep</span></div>
@@ -68,6 +71,16 @@
       <div class="stat"><b>1100+</b><span>P1 critical</span></div>
       <div class="stat"><b>12+</b><span>Years exp</span></div>
     </div>
+    <section>
+      <p class="h-k">Field case</p>
+      <h2>Custom scheme, no PKCE.</h2>
+      <p class="lead">AndroScope on an authorized lab build of <code>com.vulnapp.portal</code>. OAuth came back on an unverified custom scheme. The authorize URL had no code_challenge. Vendor names stripped.</p>
+      <a class="tool" href="oauth-scheme.html" style="margin-top:16px;max-width:560px">
+        <div class="top"><h3>Read the redacted case</h3><span class="pill">mobile</span></div>
+        <p>What the session transcript showed, why the two issues stack, and the fix — without a public exploit kit.</p>
+        <div class="meta">2026 · writeup</div>
+      </a>
+    </section>
   </main>
   <div class="marquee">
     <div class="marquee-track">
@@ -79,25 +92,13 @@
     <section>
       <p class="h-k">The instrument</p>
       <h2>One app, mapped end to end.</h2>
-      <p class="lead">AndroScope is not a background spy APK. It is an operator console plus a target-side runtime. You open the target, you walk the flows, the session writes evidence.</p>
+      <p class="lead">AndroScope is not a background spy APK. It is an operator console plus a target-side runtime.</p>
       <div class="grid2">
         <img class="shot" src="assets/img/hud.jpg" alt="AndroScope operator HUD mock"/>
         <div>
-          <div class="card" style="margin-bottom:12px">
-            <div class="tag">01 · PREPARE</div>
-            <h3>Surface before you touch the UI</h3>
-            <p>Manifest, exported components, deeplink schemas, DEX strings, signing block, framework fingerprints. Findings get FH-IDs so a report can cite them.</p>
-          </div>
-          <div class="card" style="margin-bottom:12px">
-            <div class="tag">02 · ASSESS</div>
-            <h3>Radar, not a dump</h3>
-            <p>Exported activities, backup flags, WebView bridges, weak SDK floors. Risk is calibrated — one exported editor is not a critical RCE.</p>
-          </div>
-          <div class="card">
-            <div class="tag">03 · RUNTIME</div>
-            <h3>You drive. The target is instrumented.</h3>
-            <p>Gadget lives inside the authorized lab build. AndroScope does not sit behind another Play-signed app and watch it. Android process isolation forbids that.</p>
-          </div>
+          <div class="card" style="margin-bottom:12px"><div class="tag">01 · PREPARE</div><h3>Surface before you touch the UI</h3><p>Manifest, components, schemas, DEX strings. Findings get FH-IDs.</p></div>
+          <div class="card" style="margin-bottom:12px"><div class="tag">02 · ASSESS</div><h3>Radar, not a dump</h3><p>Risk is calibrated — one exported editor is not a critical RCE.</p></div>
+          <div class="card"><div class="tag">03 · RUNTIME</div><h3>You drive. The target is instrumented.</h3><p>Gadget lives inside the authorized lab build.</p></div>
         </div>
       </div>
     </section>
@@ -105,35 +106,12 @@
       <p class="h-k">Modules</p>
       <h2>38+ purpose-built surfaces.</h2>
       <div class="mods">
-        <div class="mod"><h4>Defense</h4><p>Pinning, RASP, Play Integrity, biometric and Cronet paths — observed, not promised as a universal kill-switch.</p></div>
-        <div class="mod"><h4>Traffic & secrets</h4><p>Request and WebSocket intercept, token and crypto dump, gRPC/protobuf, keystore and prefs.</p></div>
-        <div class="mod"><h4>IPC & deeplinks</h4><p>Intent hunter (capture · replay · inject), schema fuzzer, provider probe, confused-deputy checks.</p></div>
-        <div class="mod"><h4>Native & niche</h4><p>.so tracer, memory sweep, Lottie / PDF.js / Cordova / RN bridge surfaces when the binary actually has them.</p></div>
+        <div class="mod"><h4>Defense</h4><p>Pinning, RASP, Play Integrity — observed, not a universal kill-switch.</p></div>
+        <div class="mod"><h4>Traffic & secrets</h4><p>Request intercept, tokens, gRPC, keystore and prefs.</p></div>
+        <div class="mod"><h4>IPC & deeplinks</h4><p>Intent hunter, schema fuzzer, provider probe.</p></div>
+        <div class="mod"><h4>Native & niche</h4><p>.so tracer and bridges when the binary actually has them.</p></div>
       </div>
       <p style="margin-top:22px"><a class="btn" href="androscope.html">Full technical writeup</a></p>
-    </section>
-    <section>
-      <p class="h-k">Also shipping</p>
-      <h2>The rest of the arsenal.</h2>
-      <p class="lead">Stdlib-first scanners. AndroScope is the mobile flagship. These stay in the lab for web and infra.</p>
-      <div class="tools" style="margin-top:22px">
-        <a class="tool" href="https://github.com/ynsmroztas/nextssrf" target="_blank" rel="noopener">
-          <div class="top"><h3>NextSniper</h3><span class="pill">exploit</span></div>
-          <p>Next.js middleware / RSC scanners used on production surfaces.</p>
-          <div class="meta">Python · GitHub</div>
-        </a>
-        <a class="tool" href="https://github.com/ynsmroztas/AndroHunter" target="_blank" rel="noopener">
-          <div class="top"><h3>AndroHunter</h3><span class="pill">mobile</span></div>
-          <p>On-device operator APK. Installed-app inventory, intent and provider probes, proxy, script desk.</p>
-          <div class="meta">Java / Kotlin · device</div>
-        </a>
-        <a class="tool" href="https://github.com/ynsmroztas/cPanelSniper" target="_blank" rel="noopener">
-          <div class="top"><h3>cPanelSniper</h3><span class="pill">exploit</span></div>
-          <p>CVE-2026-41940 research scanner for WHM session-file issues.</p>
-          <div class="meta">Python · stdlib</div>
-        </a>
-      </div>
-      <p style="margin-top:16px"><a class="btn ghost" href="tools.html">All tools</a></p>
     </section>
   </main>
   <footer>
