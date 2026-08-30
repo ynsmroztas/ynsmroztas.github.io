@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Stats — mitsec</title>
+  <link rel="stylesheet" href="assets/css/site.css"/>
+  <link rel="stylesheet" href="assets/css/theme.css"/>
+  <link rel="stylesheet" href="assets/css/live.css"/>
+  <script>(function(){try{var t=localStorage.getItem('mitsec-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body>
+  <div class="bg"></div>
+  <header class="nav">
+    <div class="wrap nav-in">
+      <a class="brand" href="index.html"><i></i><b>mit</b> <span>sec</span></a>
+      <nav class="links" data-links>
+        <a href="index.html">Home</a>
+        <a href="androscope.html">AndroScope</a>
+        <a href="writeups.html">Writeups</a>
+        <a class="on" href="stats.html">Stats</a>
+      </nav>
+      <button class="burger" data-burger aria-label="Menu">☰</button>
+    </div>
+  </header>
+  <main class="wrap">
+    <section class="page-hero slim">
+      <div>
+        <p class="h-k">Telemetry</p>
+        <h1>Page views</h1>
+        <div class="livebar">
+          <span class="chip on">● live</span>
+          <span class="chip">clk <span data-clock>--:--:--</span></span>
+        </div>
+        <p class="lead">Counts only. No names, no emails, no IP list on this site. Country-level charts live on GoatCounter after you create the site.</p>
+      </div>
+      <div>
+        <div class="scope mini-scope">
+          <canvas data-radar></canvas>
+          <div class="beam"></div>
+          <div class="ring"></div>
+          <div class="scanline"></div>
+          <div class="scope-hud"><div class="top"><span>stats // live</span><span>anon</span></div><div class="bot"><span>radar</span><span data-clock>--:--:--</span></div></div>
+        </div>
+      </div>
+    </section>
+    <div class="tools" style="margin:8px 0 72px">
+      <a class="tool" href="index.html"><div class="top"><h3>Home</h3><span class="pill" data-count="home">—</span></div><p>Landing.</p></a>
+      <a class="tool" href="androscope.html"><div class="top"><h3>AndroScope</h3><span class="pill" data-count="androscope.html">—</span></div><p>Instrument writeup.</p></a>
+      <a class="tool" href="oauth-scheme.html"><div class="top"><h3>Custom scheme</h3><span class="pill" data-count="oauth-scheme.html">—</span></div><p>OAuth field case.</p></a>
+      <a class="tool" href="creds-query.html"><div class="top"><h3>Query-string password</h3><span class="pill" data-count="creds-query.html">—</span></div><p>RN login URL case.</p></a>
+      <a class="tool" href="writeups.html"><div class="top"><h3>Writeups index</h3><span class="pill" data-count="writeups.html">—</span></div><p>List.</p></a>
+      <a class="tool" href="tools.html"><div class="top"><h3>Tools</h3><span class="pill" data-count="tools.html">—</span></div><p>Arsenal.</p></a>
+    </div>
+    <p class="lead" style="margin-bottom:48px">Dashboard: <a href="https://ynsmroztas.goatcounter.com" target="_blank" rel="noopener">ynsmroztas.goatcounter.com</a> — create that site once, point it at ynsmroztas.github.io.</p>
+  </main>
+  <footer><div class="wrap foot"><div>© 2026 mitsec</div></div></footer>
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/site.js"></script>
+  <script src="assets/js/stats.js"></script>
+</body>
+</html>
