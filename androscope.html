@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>AndroScope — technical writeup · mitsec</title>
+  <meta name="description" content="What AndroScope is, how the PREPARE → ASSESS → RUNTIME model works, and why it is not a background spy APK."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/site.css"/>
+</head>
+<body>
+  <div class="bg"></div>
+  <header class="nav">
+    <div class="wrap nav-in">
+      <a class="brand" href="index.html"><i></i><b>mit</b> <span>sec</span></a>
+      <nav class="links" data-links>
+        <a href="index.html">Home</a>
+        <a class="on" href="androscope.html">AndroScope</a>
+        <a href="tools.html">Tools</a>
+        <a href="writeups.html">Writeups</a>
+        <a href="research.html">Research</a>
+        <a class="cta" href="index.html">mitsec</a>
+      </nav>
+      <button class="burger" data-burger aria-label="Menu">☰</button>
+    </div>
+  </header>
+
+  <article class="wrap article">
+    <p class="meta">WRITEUP · MOBILE · JUL 2026 · 16 MIN · @YNSMROZTAS</p>
+    <h1>AndroScope</h1>
+    <p style="font-size:22px;color:#fff;margin-top:0">A rootless Android pentest framework. Not a spy in the status bar.</p>
+    <div class="toc">
+      <a href="#what">What it is</a>
+      <a href="#why">Why gadget</a>
+      <a href="#pipeline">Pipeline</a>
+      <a href="#static">Static engine</a>
+      <a href="#radar">Radar</a>
+      <a href="#runtime">Runtime</a>
+      <a href="#arsenal">Arsenal</a>
+      <a href="#not">What it is not</a>
+      <a href="#hunter">vs AndroHunter</a>
+    </div>
+
+    <figure>
+      <img src="assets/img/reticle.jpg" alt="AndroScope reticle plate" style="border-radius:18px;border:1px solid var(--line-2)"/>
+      <figcaption>ANDROSCOPE / MITSEC — instrument plate</figcaption>
+    </figure>
+
+    <h2 id="what">What it is</h2>
+    <p>AndroScope is the mobile research bench I built after years of hunting on Android without wanting a rooted daily driver. The public pitch is simple: patch an authorized lab APK once, load a Frida Gadget into that package, then run a full <strong>PREPARE → ASSESS → RUNTIME</strong> loop on a real, unrooted phone.</p>
+    <p>The important sentence is the second one. AndroScope does not attach to a random Play Store process from the outside. Android will not let a normal third-party app walk into another app’s address space. The runtime lives <em>inside the target you were allowed to instrument</em>. You open that target. You tap through login, WebView, pay, share, deeplink. The session log is a transcript of <em>your</em> gestures, not a ghost service.</p>
+    <div class="call">Design rule: instrument the target. Do not pretend a second APK can police every other APK in the background. That story is not how the platform works, and I will not sell it.</div>
+
+    <h2 id="why">Why Gadget, not “Frida server on a rooted lab”</h2>
+    <p>Most public Android labs assume Magisk + <code>frida-server</code> + USB. That is fine for an emulator farm. It is a poor model for bug bounty phones that stay on a carrier network, stay unrooted, and still need to exercise Play Integrity adjacent flows.</p>
+    <p>Gadget is Frida’s in-process library. The dynamic linker runs its constructor when the lab build starts. From that moment the operator console can load modules, pause at first frame (<code>wait</code>) or let the app run and race (<code>resume</code>), and regenerate JS without packing the APK again.</p>
+    <p>I am not publishing a packing cookbook here. The point of this page is the operator model and the analysis surface — not a recipe for shipping someone else’s package with a foreign <code>.so</code>.</p>
+
+    <figure>
+      <img src="assets/img/pipeline.jpg" alt="PREPARE ASSESS RUNTIME" style="border-radius:18px;border:1px solid var(--line-2)"/>
+      <figcaption>Three stages, one session id</figcaption>
+    </figure>
+
+    <h2 id="pipeline">The pipeline</h2>
+    <table>
+      <thead><tr><th>Stage</th><th>Input</th><th>Output</th></tr></thead>
+      <tbody>
+        <tr><td>PREPARE</td><td>APK bytes</td><td>Package identity, SDK floor, components, schemas, DEX strings, signing block</td></tr>
+        <tr><td>ASSESS</td><td>Surface + rules</td><td>FH-ID findings, confidence, MASVS-shaped notes, a plan</td></tr>
+        <tr><td>RUNTIME</td><td>Lab build + operator</td><td>Verified events while the target is actually used</td></tr>
+      </tbody>
+    </table>
+    <p>Each finding is hashed into a stable FH-ID so a report can say “FH-7A91, exported editor activity, MEDIUM” instead of pasting a screenshot of a dashboard. Plans are generated from the surface that exists — if there is no FileProvider, there is no FileProvider step.</p>
+
+    <h2 id="static">Static engine</h2>
+    <p>PREPARE is boring on purpose. Binary XML in <code>AndroidManifest.xml</code> is not text. AndroScope walks ResChunk headers, the string pool (UTF-8 and UTF-16), the resource map, and typed values: strings, booleans, ints, resource refs. From that it reads exported flags, <code>allowBackup</code>, <code>minSdkVersion</code> / <code>targetSdkVersion</code>, providers, intent-filters, and deeplink hosts.</p>
+    <p>DEX is treated as a string table first. MUTF-8 entries from <code>string_ids</code> are scanned for URL shapes, key-shaped literals, and a small secret grammar. It is not decompiler theater. If a string is not in the table, AndroScope does not invent it.</p>
+    <p>The APK signing block is detected (v2 / v3 magic) so the report can say “v1 + v2” instead of “probably signed.” Nested APKs (plugins, instant modules) are copied out of the zip into a fresh buffer before parse — no shared-buffer tricks.</p>
+
+    <figure>
+      <img src="assets/img/surface.jpg" alt="Attack surface map" style="border-radius:18px;border:1px solid var(--line-2)"/>
+      <figcaption>Surface map — activities, services, receivers, providers, deeplinks, WebView, native</figcaption>
+    </figure>
+
+    <h3>What “surface” means here</h3>
+    <ul>
+      <li><strong>Activities / services / receivers / providers</strong> with exported state and intent-filters.</li>
+      <li><strong>Deeplinks</strong> as scheme + host + pathPrefix, not a single “has deeplinks: yes” bit.</li>
+      <li><strong>Permissions</strong> as declared vs used, with a short dangerous set highlighted.</li>
+      <li><strong>WebView / JS bridge</strong> only when the binary actually references those APIs.</li>
+      <li><strong>Native</strong> as present <code>.so</code> ABIs, not a fake disassembly pane.</li>
+    </ul>
+
+    <h2 id="radar">Radar and honesty</h2>
+    <p>Early drafts of the UI lied. A lab sample with one exported activity was painted CRITICAL. That is how you train hunters to file junk. The scoring I use now is conservative:</p>
+    <ul>
+      <li>A single exported activity on a notes app → MEDIUM, not HIGH.</li>
+      <li><code>allowBackup=true</code> on modern targetSdk → MEDIUM with context, not “data exfil guaranteed.”</li>
+      <li>Old targetSdk → LOW or MEDIUM depending on the rest of the surface.</li>
+      <li>Hardcoded secrets in DEX → HIGH only when the pattern plus entropy plus usage context agree.</li>
+    </ul>
+    <p>Radar then chains what exists. Exported provider + open path + backup is a path. Exported provider alone is a finding. The difference matters when you write for Apple, Meta, or a private program that has seen a thousand “exported=true” reports.</p>
+
+    <h2 id="runtime">How a live test actually feels</h2>
+    <p>This is the question I get most: “I install AndroScope, I open WhatsApp, AndroScope watches in the background — right?”</p>
+    <p>No.</p>
+    <p>Authorized workflow:</p>
+    <ol>
+      <li>You have the APK you are allowed to test (your build, the program’s lab build, a package in scope).</li>
+      <li>PREPARE / ASSESS run on that file. Surface and plan exist before any hook fires.</li>
+      <li>A lab variant of <em>that</em> package is instrumented. The original store build stays untouched.</li>
+      <li>You launch the lab variant. <code>wait</code> holds the first frame until modules attach. <code>resume</code> lets the app run; you accept the race.</li>
+      <li>You use the app the way a user would. Deeplink from Notes. Open the in-app browser. Hit pay. Background and restore.</li>
+      <li>The console prints verified lines only when the corresponding API actually ran. Empty log means you did not hit the surface, not that the surface is safe.</li>
+      <li>You export evidence. You uninstall the lab variant. You do not leave an instrumented package on a daily phone.</li>
+    </ol>
+    <figure>
+      <img src="assets/img/hud.jpg" alt="Operator HUD" style="border-radius:18px;border:1px solid var(--line-2)"/>
+      <figcaption>Operator HUD — surface, plan, labs. Decorative counts in the mock; live numbers come from the APK you drop.</figcaption>
+    </figure>
+    <p>The “background” feeling is real in one sense only: once the gadget is inside the target, you can put AndroScope’s console aside and use the target with both thumbs. The process doing the work is still the target process.</p>
+
+    <h2 id="arsenal">Arsenal, grouped by surface</h2>
+    <p>The July 2026 public thread listed 38+ modules. They are grouped so a plan can pick a shelf instead of dumping every script into every session.</p>
+    <div class="mods">
+      <div class="mod"><h4>Defense</h4><p>TLS pinning variants, RASP heartbeats, Play Integrity client calls, biometric gates, Cronet.</p></div>
+      <div class="mod"><h4>Traffic &amp; secrets</h4><p>HTTP / WS intercept, token and crypto dumpers, gRPC and protobuf, keystore and shared prefs.</p></div>
+      <div class="mod"><h4>IPC</h4><p>Live intent capture and replay, schema-aware deeplink fuzz, provider and confused-deputy probes.</p></div>
+      <div class="mod"><h4>Native</h4><p>.so tracer, memory sweep for high-entropy blobs, interaction tracer for UI-driven native calls.</p></div>
+      <div class="mod"><h4>Niche</h4><p>Lottie zip paths, PDF.js / Cordova LFI-shaped loads, OAuth PKCE, React Native bridge and storage.</p></div>
+      <div class="mod"><h4>Regen</h4><p>Rebuild the JS toolkit for the same gadget without packing the APK a second time.</p></div>
+    </div>
+    <p>Modules that do not match the surface stay dark. A pure Compose app without a WebView does not get a WebView chapter in the report. That is the whole point of PREPARE.</p>
+
+    <h2 id="not">What AndroScope is not</h2>
+    <ul>
+      <li>Not a Play Store product that silently hooks whatever you open.</li>
+      <li>Not a replacement for AndroHunter. Hunter is the on-device Swiss army knife. Scope is the session framework.</li>
+      <li>Not a guarantee that Integrity / RASP / pinning will fall on every target. Those are observations plus fallbacks, scored honestly.</li>
+      <li>Not a dump of 0-days. The July note mentioned Android 0-days under research, with sandbox escape as the interesting direction. They are not part of this writeup.</li>
+    </ul>
+
+    <h2 id="hunter">AndroScope vs AndroHunter</h2>
+    <table>
+      <thead><tr><th></th><th>AndroHunter</th><th>AndroScope</th></tr></thead>
+      <tbody>
+        <tr><td>Shape</td><td>Installed APK on the phone</td><td>Framework + operator + lab target</td></tr>
+        <tr><td>Root</td><td>Most modules no</td><td>Designed rootless via gadget-in-target</td></tr>
+        <tr><td>Sees other apps</td><td>Package manager, exported IPC, what the OS already exposes</td><td>Only the instrumented lab package at runtime</td></tr>
+        <tr><td>Best at</td><td>On-device recon and intent work</td><td>Planned sessions with evidence IDs</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Status</h2>
+    <p>AndroScope is being opened in limited form. The static auditor and the operator UI are the public face. The packer and the full module pack stay in the private tree until I am done cutting anything that looks like a general-purpose injector.</p>
+    <p>If you are on a private program and you already work with me, you get the session build. If you found this page from the site, you get the model, the scoring rules, and the distinction I wish more tool landing pages would print in the first screen.</p>
+    <p class="meta" style="margin-top:40px">YUNUS EMRE ÖZTAŞ · MITSEC · M.I.T@MIT.TC</p>
+  </article>
+
+  <footer>
+    <div class="wrap foot">
+      <div>© 2026 Yunus Emre Öztaş — mitsec</div>
+      <div><a href="index.html">Home</a> · <a href="tools.html">Tools</a> · <a href="https://x.com/ynsmroztas">X</a></div>
+    </div>
+  </footer>
+  <script src="assets/js/site.js"></script>
+</body>
+</html>

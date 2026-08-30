@@ -1,81 +1,62 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Research — mitsec</title>
-<meta name="description" content="CVE disclosures and Hall of Fame recognitions.">
-<meta name="author" content="Yunus Emre Öztaş">
-<meta property="og:title" content="Research — mitsec">
-<meta property="og:description" content="CVE disclosures and Hall of Fame recognitions.">
-<meta property="og:type" content="website">
-<meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%F0%9F%91%BE</text></svg>">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css">
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Research — mitsec</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/site.css"/>
 </head>
 <body>
-<canvas id="matrix"></canvas><div class="bg-grid"></div><div class="bg-glow"></div>
-
-<header class="hdr">
-  <div class="wrap hdr-in">
-    <a class="brand" href="index.html"><span class="dot"></span>mit<b>sec</b></a>
-    <nav class="main"><a href="index.html">Home</a><a href="writeups.html">Writeups</a><a href="tools.html">Tools</a><a href="research.html" class="active">Research</a><a href="lab.html">Lab</a></nav>
-    <div class="hdr-actions">
-      <button class="kbtn" data-pal><span>⌕</span><span class="t">Search</span><span class="kbd">⌘K</span></button>
-      <button class="icon-btn" id="themeBtn" onclick="toggleTheme()">☀</button>
-      <button class="icon-btn burger" id="burger">≡</button>
+  <div class="bg"></div>
+  <header class="nav">
+    <div class="wrap nav-in">
+      <a class="brand" href="index.html"><i></i><b>mit</b> <span>sec</span></a>
+      <nav class="links" data-links>
+        <a href="index.html">Home</a>
+        <a href="androscope.html">AndroScope</a>
+        <a href="tools.html">Tools</a>
+        <a href="writeups.html">Writeups</a>
+        <a class="on" href="research.html">Research</a>
+      </nav>
+      <button class="burger" data-burger aria-label="Menu">☰</button>
     </div>
-  </div>
-</header>
+  </header>
+  <main class="wrap" style="padding:48px 22px 80px">
+    <p class="h-k">Public IDs</p>
+    <h2>Selected CVE notes</h2>
+    <p class="lead">A short public slice. Private-program work stays off this list.</p>
+    <table>
+      <thead><tr><th>ID</th><th>Year</th><th>Sev</th><th>Target</th><th></th></tr></thead>
+      <tbody>
+        <tr><td>CVE-2025-55182</td><td>2025</td><td>Critical</td><td>Next.js RSC</td><td>RSC deserialization → RCE class</td></tr>
+        <tr><td>CVE-2025-29927</td><td>2025</td><td>High</td><td>Next.js</td><td>Middleware auth bypass via internal header</td></tr>
+        <tr><td>CVE-2026-41940</td><td>2026</td><td>Critical</td><td>cPanel / WHM</td><td>Session-file issue — see cPanelSniper</td></tr>
+        <tr><td>CVE-2026-39808</td><td>2026</td><td>Critical</td><td>FortiSandbox</td><td>Unauth command injection class</td></tr>
+        <tr><td>CVE-2026-44578</td><td>2026</td><td>High</td><td>Next.js</td><td>WebSocket upgrade SSRF class</td></tr>
+        <tr><td>CVE-2023-38646</td><td>2023</td><td>Critical</td><td>Metabase</td><td>Pre-auth RCE via setup token path</td></tr>
+        <tr><td>CVE-2021-3129</td><td>2021</td><td>Critical</td><td>Laravel / Ignition</td><td>Debug file write chained to RCE</td></tr>
+      </tbody>
+    </table>
 
-<main><div class="wrap">
-  <section>
-    <p class="eyebrow">Disclosure</p><h2>CVEs &amp; recognition</h2>
-    <div class="stats" id="statGrid" style="margin:26px 0 40px"><div class="stat rv in"><b>100+</b><span>HOF Entries</span></div><div class="stat rv in"><b>2430+</b><span>Vulns Reported</span></div><div class="stat rv in"><b>1100+</b><span>P1 Critical</span></div><div class="stat rv in"><b>12+</b><span>Years Exp</span></div></div>
-    <div class="tl" id="cveList">
-      <div class="tl-item rv in">
-        <div class="y">2025</div>
-        <h3>CVE-2025-55182 <span class="tag crit">Critical · CVSS 9.1</span></h3>
-        <p class="muted" style="margin:0">Next.js RSC — React Server Components deserialization leading to remote code execution.</p>
-      </div>
-      <div class="tl-item rv in">
-        <div class="y">2025</div>
-        <h3>CVE-2025-29927 <span class="tag high">High · CVSS 7.5</span></h3>
-        <p class="muted" style="margin:0">Next.js — Middleware authorization bypass via crafted internal subrequest header.</p>
-      </div>
-      <div class="tl-item rv in">
-        <div class="y">2023</div>
-        <h3>CVE-2023-38646 <span class="tag crit">Critical · CVSS 9.8</span></h3>
-        <p class="muted" style="margin:0">Metabase — Pre-authentication remote code execution through the setup token endpoint.</p>
-      </div>
-      <div class="tl-item rv in">
-        <div class="y">2021</div>
-        <h3>CVE-2021-3129 <span class="tag crit">Critical · CVSS 9.8</span></h3>
-        <p class="muted" style="margin:0">Laravel / Ignition — Debug-mode file write chained to RCE via log poisoning.</p>
-      </div></div>
-    <h3 style="margin:44px 0 16px" class="mono">Hall of Fame</h3>
-    <div class="grid g3" id="hofGrid"><div class="card rv in" style="padding:16px 18px"><span class="mono" style="color:var(--neon)">APPLE</span></div><div class="card rv in" style="padding:16px 18px"><span class="mono" style="color:var(--neon)">MICROSOFT</span></div><div class="card rv in" style="padding:16px 18px"><span class="mono" style="color:var(--neon)">META</span></div><div class="card rv in" style="padding:16px 18px"><span class="mono" style="color:var(--neon)">IBM</span></div><div class="card rv in" style="padding:16px 18px"><span class="mono" style="color:var(--neon)">INTIGRITI</span></div><div class="card rv in" style="padding:16px 18px"><span class="mono" style="color:var(--neon)">YESWEHACK</span></div><div class="card rv in" style="padding:16px 18px"><span class="mono" style="color:var(--neon)">BUGCROWD</span></div><div class="card rv in" style="padding:16px 18px"><span class="mono" style="color:var(--neon)">HACKERONE</span></div><div class="card rv in" style="padding:16px 18px"><span class="mono" style="color:var(--neon)">T-MOBILE</span></div><div class="card rv in" style="padding:16px 18px"><span class="mono" style="color:var(--neon)">SBB</span></div><div class="card rv in" style="padding:16px 18px"><span class="mono" style="color:var(--neon)">TÜV RHEINLAND</span></div><div class="card rv in" style="padding:16px 18px"><span class="mono" style="color:var(--neon)">HARMAN</span></div></div>
-  </section>
-</div></main>
-<footer>
-  <div class="wrap foot-in">
-    <div>© 2026 Yunus Emre Öztaş — <span style="color:var(--neon)">mitsec</span></div>
-    <div>built in the terminal · hosted on github pages</div>
-    <div><a href="mailto:m.i.t@mit.tc">m.i.t@mit.tc</a></div>
-  </div>
-</footer>
-
-<div class="pal-bd" id="palBd">
-  <div class="pal">
-    <input id="palInput" placeholder="Search tools, writeups, CVEs, links…" autocomplete="off">
-    <div class="pal-list" id="palList"></div>
-    <div class="pal-foot"><span>↑↓ navigate</span><span>↵ open</span><span>esc close</span></div>
-  </div>
-</div>
-
-<script src="assets/render.js"></script>
-<script src="assets/app.js"></script>
-</body></html>
+    <p class="h-k" style="margin-top:48px">Hall of fame</p>
+    <h2>Programs</h2>
+    <p class="lead">APPLE · MICROSOFT · META · IBM · INTIGRITI · YESWEHACK · BUGCROWD · HACKERONE · T-MOBILE · SBB · TÜV RHEINLAND · HARMAN</p>
+    <div class="stats" style="margin-top:20px">
+      <div class="stat"><b>100+</b><span>HoF entries</span></div>
+      <div class="stat"><b>2430+</b><span>Vulns reported</span></div>
+      <div class="stat"><b>1100+</b><span>P1 critical</span></div>
+      <div class="stat"><b>12+</b><span>Years exp</span></div>
+    </div>
+  </main>
+  <footer>
+    <div class="wrap foot">
+      <div>© 2026 Yunus Emre Öztaş — mitsec</div>
+      <div>m.i.t@mit.tc</div>
+    </div>
+  </footer>
+  <script src="assets/js/site.js"></script>
+</body>
+</html>

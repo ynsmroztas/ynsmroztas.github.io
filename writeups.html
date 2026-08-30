@@ -1,96 +1,72 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Writeups — mitsec</title>
-<meta name="description" content="Technical writeups on web, mobile and API exploitation.">
-<meta name="author" content="Yunus Emre Öztaş">
-<meta property="og:title" content="Writeups — mitsec">
-<meta property="og:description" content="Technical writeups on web, mobile and API exploitation.">
-<meta property="og:type" content="website">
-<meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%F0%9F%91%BE</text></svg>">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css">
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Writeups — mitsec</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/site.css"/>
 </head>
 <body>
-<canvas id="matrix"></canvas><div class="bg-grid"></div><div class="bg-glow"></div>
-
-<header class="hdr">
-  <div class="wrap hdr-in">
-    <a class="brand" href="index.html"><span class="dot"></span>mit<b>sec</b></a>
-    <nav class="main"><a href="index.html">Home</a><a href="writeups.html" class="active">Writeups</a><a href="tools.html">Tools</a><a href="research.html">Research</a><a href="lab.html">Lab</a></nav>
-    <div class="hdr-actions">
-      <button class="kbtn" data-pal><span>⌕</span><span class="t">Search</span><span class="kbd">⌘K</span></button>
-      <button class="icon-btn" id="themeBtn" onclick="toggleTheme()">☀</button>
-      <button class="icon-btn burger" id="burger">≡</button>
+  <div class="bg"></div>
+  <header class="nav">
+    <div class="wrap nav-in">
+      <a class="brand" href="index.html"><i></i><b>mit</b> <span>sec</span></a>
+      <nav class="links" data-links>
+        <a href="index.html">Home</a>
+        <a href="androscope.html">AndroScope</a>
+        <a href="tools.html">Tools</a>
+        <a class="on" href="writeups.html">Writeups</a>
+        <a href="research.html">Research</a>
+      </nav>
+      <button class="burger" data-burger aria-label="Menu">☰</button>
     </div>
-  </div>
-</header>
-
-<main><div class="wrap">
-  <section>
-    <p class="eyebrow">Writeups</p><h2>Research &amp; exploitation notes</h2>
-    <p class="muted" style="max-width:62ch">Full chains, dead ends included. Everything here comes from disclosed or authorized work.</p>
-    <div class="filters" data-filter-group="#postGrid" id="postChips" style="margin-top:24px"><button class="chip on" data-tag="all">all</button><button class="chip" data-tag="exploit">exploit</button><button class="chip" data-tag="web">web</button><button class="chip" data-tag="mobile">mobile</button><button class="chip" data-tag="api">api</button><button class="chip" data-tag="recon">recon</button></div>
-    <div class="grid g3" id="postGrid">
-      <article class="card rv in" data-tag="exploit">
-        <div class="top"><span class="tag c">exploit</span><span class="mono" style="font-size:12px;color:var(--tx-3)">2026-07-12</span></div>
-        <h3>Chaining Email Enumeration to Full DB Dump</h3>
-        <p>A low-severity user enumeration primitive escalated into an unauthenticated database dump through a chained IDOR and a leaky export endpoint.</p>
-        <div class="foot"><span>11 min read</span><a href="#" style="color:var(--neon)">read →</a></div>
-      </article>
-      <article class="card rv in" data-tag="web">
-        <div class="top"><span class="tag c">web</span><span class="mono" style="font-size:12px;color:var(--tx-3)">2026-06-02</span></div>
-        <h3>DOM Clobbering + Cross-Origin Exploit Chain</h3>
-        <p>Turning a harmless HTML injection into account takeover by clobbering a script-loader config object and pivoting through a permissive postMessage handler.</p>
-        <div class="foot"><span>9 min read</span><a href="#" style="color:var(--neon)">read →</a></div>
-      </article>
-      <article class="card rv in" data-tag="mobile">
-        <div class="top"><span class="tag c">mobile</span><span class="mono" style="font-size:12px;color:var(--tx-3)">2026-05-18</span></div>
-        <h3>Android Pentesting Without Root — FridHunter</h3>
-        <p>Gadget injection workflow on Termux: repacking, 8-layer pinning bypass, and automated secret extraction on non-rooted devices.</p>
-        <div class="foot"><span>14 min read</span><a href="#" style="color:var(--neon)">read →</a></div>
-      </article>
-      <article class="card rv in" data-tag="exploit">
-        <div class="top"><span class="tag c">exploit</span><span class="mono" style="font-size:12px;color:var(--tx-3)">2026-04-27</span></div>
-        <h3>CVE-2025-55182 — Next.js RSC Deserialization to RCE</h3>
-        <p>Walkthrough of the React Server Components request path, the UTF-16LE WAF bypass, and a reliable exploitation primitive.</p>
-        <div class="foot"><span>12 min read</span><a href="#" style="color:var(--neon)">read →</a></div>
-      </article>
-      <article class="card rv in" data-tag="api">
-        <div class="top"><span class="tag c">api</span><span class="mono" style="font-size:12px;color:var(--tx-3)">2026-03-15</span></div>
-        <h3>SOAP APIs Are Still a Goldmine</h3>
-        <p>WSDL harvesting, operation enumeration and auth-boundary testing on legacy telecom stacks.</p>
-        <div class="foot"><span>8 min read</span><a href="#" style="color:var(--neon)">read →</a></div>
-      </article>
-      <article class="card rv in" data-tag="recon">
-        <div class="top"><span class="tag c">recon</span><span class="mono" style="font-size:12px;color:var(--tx-3)">2026-02-08</span></div>
-        <h3>Recon at Scale: subfinder → httpx → custom</h3>
-        <p>The stdin/JSONL pipeline convention behind every tool I ship, and why zero-dependency Python wins on remote boxes.</p>
-        <div class="foot"><span>7 min read</span><a href="#" style="color:var(--neon)">read →</a></div>
-      </article></div>
-  </section>
-</div></main>
-<footer>
-  <div class="wrap foot-in">
-    <div>© 2026 Yunus Emre Öztaş — <span style="color:var(--neon)">mitsec</span></div>
-    <div>built in the terminal · hosted on github pages</div>
-    <div><a href="mailto:m.i.t@mit.tc">m.i.t@mit.tc</a></div>
-  </div>
-</footer>
-
-<div class="pal-bd" id="palBd">
-  <div class="pal">
-    <input id="palInput" placeholder="Search tools, writeups, CVEs, links…" autocomplete="off">
-    <div class="pal-list" id="palList"></div>
-    <div class="pal-foot"><span>↑↓ navigate</span><span>↵ open</span><span>esc close</span></div>
-  </div>
-</div>
-
-<script src="assets/render.js"></script>
-<script src="assets/app.js"></script>
-</body></html>
+  </header>
+  <main class="wrap" style="padding:48px 22px 80px">
+    <p class="h-k">Field notes</p>
+    <h2>Writeups</h2>
+    <p class="lead">Long form. The AndroScope paper lives on its own page because it is the current flagship.</p>
+    <div class="tools" style="margin-top:28px">
+      <a class="tool" href="androscope.html">
+        <div class="top"><h3>AndroScope — the instrument</h3><span class="pill">mobile</span></div>
+        <p>Rootless model, static engine, radar scoring, live-session rules, and the difference versus AndroHunter.</p>
+        <div class="meta">2026-07 · 16 min</div>
+      </a>
+      <div class="tool">
+        <div class="top"><h3>Chaining email enumeration to a full DB dump</h3><span class="pill">exploit</span></div>
+        <p>Low-severity user enum to unauthenticated export through an IDOR on a leaky dump endpoint.</p>
+        <div class="meta">2026-07-12 · 11 min</div>
+      </div>
+      <div class="tool">
+        <div class="top"><h3>DOM clobbering + cross-origin chain</h3><span class="pill">web</span></div>
+        <p>HTML injection to account takeover by clobbering a loader config and a loose postMessage handler.</p>
+        <div class="meta">2026-06-02 · 9 min</div>
+      </div>
+      <div class="tool">
+        <div class="top"><h3>CVE-2025-55182 — RSC deserialization</h3><span class="pill">exploit</span></div>
+        <p>React Server Components request path and a reliable primitive. WAF notes kept high-level.</p>
+        <div class="meta">2026-04-27 · 12 min</div>
+      </div>
+      <div class="tool">
+        <div class="top"><h3>SOAP APIs are still a goldmine</h3><span class="pill">api</span></div>
+        <p>WSDL harvest, operation enum, auth-boundary work on legacy telecom stacks.</p>
+        <div class="meta">2026-03-15 · 8 min</div>
+      </div>
+      <div class="tool">
+        <div class="top"><h3>Recon at scale: subfinder → httpx → custom</h3><span class="pill">recon</span></div>
+        <p>Stdin / JSONL convention behind the tools I ship, and why zero-dependency Python still wins on jump boxes.</p>
+        <div class="meta">2026-02-08 · 7 min</div>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <div class="wrap foot">
+      <div>© 2026 Yunus Emre Öztaş — mitsec</div>
+      <div>m.i.t@mit.tc</div>
+    </div>
+  </footer>
+  <script src="assets/js/site.js"></script>
+</body>
+</html>
