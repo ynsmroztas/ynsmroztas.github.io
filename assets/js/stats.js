@@ -1,12 +1,9 @@
 (function () {
   const NS = "mitsec-site";
-  const GC = "ynsmroztas";
-  const key = (location.pathname.replace(/^\//, "").replace(/[^a-z0-9._-]+/gi, "-") || "home");
+  const GC = "https://ynsmroztas.goatcounter.com";
+  const path = location.pathname || "/";
+  const key = (path.replace(/^\//, "").replace(/[^a-z0-9._-]+/gi, "-") || "home");
   const sess = "mitsec-hit-" + key;
-
-  function setText(sel, text) {
-    document.querySelectorAll(sel).forEach(function (el) { el.textContent = text; });
-  }
 
   function chip(bar, attr, text) {
     var el = bar.querySelector("[" + attr + "]");
@@ -24,7 +21,9 @@
       if (views != null) chip(bar, "data-reads", views + " views");
       if (live != null) chip(bar, "data-live", live + " reading");
     });
-    setText("[data-reads]", views != null ? views + " views" : "—");
+    document.querySelectorAll("[data-reads]").forEach(function (el) {
+      if (views != null) el.textContent = views + " views";
+    });
   }
 
   function api(name, op) {
@@ -33,34 +32,48 @@
       .then(function (d) { return Number(d.count || d.value || 0); });
   }
 
-  var doHit = !sessionStorage.getItem(sess);
-  if (doHit) sessionStorage.setItem(sess, "1");
-  api(key, doHit ? "up" : "hit").then(function (n) {
-    paint(n, null);
-  }).catch(function () {
-    paint(null, null);
-  });
-
-  api("live-" + key, "up").then(function (n) {
-    paint(null, n);
-  }).catch(function () {});
-  window.addEventListener("pagehide", function () {
-    try { navigator.sendBeacon("https://api.counterapi.dev/v1/" + NS + "/live-" + key + "/down"); } catch (e) {}
-  });
-
-  document.querySelectorAll("[data-count]").forEach(function (el) {
-    var p = el.getAttribute("data-count");
-    if (!p) return;
-    api(p.replace(/[^a-z0-9._-]+/gi, "-"), "hit").then(function (n) {
-      el.textContent = n + " views";
-    }).catch(function () { el.textContent = "—"; });
-  });
+  function gcCount(p) {
+    return fetch(GC + "/counter/" + encodeURIComponent(p) + ".json")
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
+      .then(function (d) {
+        var raw = String(d.count || d.count_unique || "0").replace(/[^0-9]/g, "");
+        return Number(raw || 0);
+      });
+  }
 
   if (!document.querySelector("script[data-goatcounter]")) {
     var s = document.createElement("script");
     s.async = true;
     s.src = "https://gc.zgo.at/count.js";
-    s.setAttribute("data-goatcounter", "https://" + GC + ".goatcounter.com/count");
+    s.setAttribute("data-goatcounter", GC + "/count");
     document.head.appendChild(s);
   }
+
+  function fromGcThenFallback() {
+    gcCount(path).then(function (n) {
+      paint(n, null);
+    }).catch(function () {
+      var doHit = !sessionStorage.getItem(sess);
+      if (doHit) sessionStorage.setItem(sess, "1");
+      api(key, doHit ? "up" : "hit").then(function (n) { paint(n, null); }).catch(function () {});
+    });
+  }
+  setTimeout(fromGcThenFallback, 800);
+
+  api("live-" + key, "up").then(function (n) { paint(null, n); }).catch(function () {});
+  window.addEventListener("pagehide", function () {
+    try { navigator.sendBeacon("https://api.counterapi.dev/v1/" + NS + "/live-" + key + "/down"); } catch (e) {}
+  });
+
+  document.querySelectorAll("[data-count]").forEach(function (el) {
+    var p = el.getAttribute("data-count") || "";
+    var gcPath = p === "home" ? "/" : "/" + p.replace(/^\//, "");
+    gcCount(gcPath).then(function (n) {
+      el.textContent = n + " views";
+    }).catch(function () {
+      api(p.replace(/[^a-z0-9._-]+/gi, "-") || "home", "hit").then(function (n) {
+        el.textContent = n + " views";
+      }).catch(function () { el.textContent = "—"; });
+    });
+  });
 })();
