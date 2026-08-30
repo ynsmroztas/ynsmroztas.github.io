@@ -73,16 +73,21 @@
     <section>
       <p class="h-k">Field cases</p>
       <h2>AndroScope, in the field.</h2>
-      <p class="lead">Authorized lab builds. Vendor names stripped. No public exploit kit.</p>
+      <p class="lead">Authorized lab builds. No public exploit kit.</p>
       <div class="tools" style="margin-top:16px">
+        <a class="tool" href="mtls-lab.html">
+          <div class="top"><h3>mTLS on the device</h3><span class="pill">mobile</span></div>
+          <p>Defense module. Software PKCS12 vs AndroidKeyStore.</p>
+          <div class="meta">2026 · field note</div>
+        </a>
         <a class="tool" href="creds-query.html">
           <div class="top"><h3>Password in the query string</h3><span class="pill">mobile</span></div>
-          <p>RN login put the password in the URL. The error SDK copied it. <code>com.labnet.console</code>.</p>
+          <p>RN login put the password in the URL.</p>
           <div class="meta">2026 · redacted</div>
         </a>
         <a class="tool" href="oauth-scheme.html">
           <div class="top"><h3>Custom scheme, no PKCE</h3><span class="pill">mobile</span></div>
-          <p>OAuth returned on an unverified scheme with no code_challenge. <code>com.vulnapp.portal</code>.</p>
+          <p>Unverified OAuth redirect plus no code_challenge.</p>
           <div class="meta">2026 · redacted</div>
         </a>
       </div>
