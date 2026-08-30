@@ -1,0 +1,19 @@
+.scope{position:relative}
+.scope .beam{position:absolute;inset:10%;border-radius:50%;pointer-events:none;background:conic-gradient(from 0deg,transparent 0 300deg,rgba(var(--radar),.38) 360deg);animation:spin 3.6s linear infinite;mix-blend-mode:screen;opacity:.7}
+@keyframes spin{to{transform:rotate(360deg)}}
+.scope .ring{position:absolute;inset:18%;border-radius:50%;border:1px solid rgba(var(--radar),.22);animation:ping 2.8s ease-out infinite;pointer-events:none}
+.scope .ring.d2{inset:28%;animation-delay:.7s}
+@keyframes ping{0%{transform:scale(.7);opacity:.6}100%{transform:scale(1.15);opacity:0}}
+.live-map{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:18px 0 28px}
+.cell{border:1px solid var(--line-2);border-radius:14px;padding:14px 12px;background:var(--panel);min-height:92px}
+.cell b{display:block;font-family:var(--display);font-size:22px;color:var(--ph);line-height:1}
+.cell span{display:block;margin-top:6px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.cell em{display:block;height:3px;margin-top:10px;border-radius:99px;background:var(--ph);transform-origin:left;animation:grow 2.4s ease-in-out infinite alternate}
+@keyframes grow{from{transform:scaleX(.35)}to{transform:scaleX(1)}}
+.shot-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:22px 0}
+.shot-card{margin:0}
+.shot-card img{width:100%;border-radius:18px;border:1px solid var(--line-2)}
+.shot-card figcaption{font-family:var(--mono);font-size:11px;color:var(--dim);margin-top:8px}
+.ticker{overflow:hidden;border:1px solid var(--line-2);border-radius:12px;padding:8px 0;margin:12px 0 24px}
+.ticker-track{display:flex;gap:28px;white-space:nowrap;animation:mq 22s linear infinite;font-family:var(--mono);font-size:12px;color:var(--ph)}
+@media (max-width:800px){.live-map,.shot-row{grid-template-columns:1fr 1fr}.shot-row{grid-template-columns:1fr}}
