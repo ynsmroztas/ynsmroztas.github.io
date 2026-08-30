@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="assets/css/site.css"/>
   <link rel="stylesheet" href="assets/css/theme.css"/>
+  <link rel="stylesheet" href="assets/css/live.css"/>
   <script>(function(){try{var t=localStorage.getItem('mitsec-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 </head>
 <body>
@@ -26,16 +27,38 @@
       <button class="burger" data-burger aria-label="Menu">☰</button>
     </div>
   </header>
-  <main class="wrap" style="padding:48px 22px 80px">
-    <p class="h-k">Public IDs</p>
-    <h2>Selected CVE notes</h2>
-    <p class="lead">A short public slice. Private-program work stays off this list.</p>
+  <main class="wrap">
+    <section class="page-hero slim">
+      <div>
+        <p class="h-k">Public IDs</p>
+        <h1>Selected CVE notes</h1>
+        <div class="livebar">
+          <span class="chip on">● live</span>
+          <span class="chip">clk <span data-clock>--:--:--</span></span>
+          <span class="chip">public slice</span>
+        </div>
+        <p class="lead">Private-program work stays off this list.</p>
+      </div>
+      <div>
+        <div class="scope mini-scope">
+          <canvas data-radar></canvas>
+          <div class="beam"></div>
+          <div class="ring"></div>
+          <div class="scanline"></div>
+          <div class="scope-hud"><div class="top"><span>cve // live</span><span>lab</span></div><div class="bot"><span>radar</span><span data-clock>--:--:--</span></div></div>
+        </div>
+      </div>
+    </section>
+    <div class="ticker"><div class="ticker-track">
+      <span>100+ HoF</span><span>2430+ vulns</span><span>1100+ P1</span><span>12+ years</span><span>APPLE</span><span>MICROSOFT</span><span>META</span><span>IBM</span>
+      <span>100+ HoF</span><span>2430+ vulns</span><span>1100+ P1</span><span>12+ years</span><span>APPLE</span><span>MICROSOFT</span><span>META</span><span>IBM</span>
+    </div></div>
     <table>
       <thead><tr><th>ID</th><th>Year</th><th>Sev</th><th>Target</th><th></th></tr></thead>
       <tbody>
-        <tr><td>CVE-2025-55182</td><td>2025</td><td>Critical</td><td>Next.js RSC</td><td>RSC deserialization → RCE class</td></tr>
-        <tr><td>CVE-2025-29927</td><td>2025</td><td>High</td><td>Next.js</td><td>Middleware auth bypass via internal header</td></tr>
-        <tr><td>CVE-2026-41940</td><td>2026</td><td>Critical</td><td>cPanel / WHM</td><td>Session-file issue — see cPanelSniper</td></tr>
+        <tr><td>CVE-2025-55182</td><td>2025</td><td>Critical</td><td>Next.js RSC</td><td>RSC deserialization class</td></tr>
+        <tr><td>CVE-2025-29927</td><td>2025</td><td>High</td><td>Next.js</td><td>Middleware auth bypass class</td></tr>
+        <tr><td>CVE-2026-41940</td><td>2026</td><td>Critical</td><td>cPanel / WHM</td><td>Session-file issue</td></tr>
         <tr><td>CVE-2026-39808</td><td>2026</td><td>Critical</td><td>FortiSandbox</td><td>Unauth command injection class</td></tr>
         <tr><td>CVE-2026-44578</td><td>2026</td><td>High</td><td>Next.js</td><td>WebSocket upgrade SSRF class</td></tr>
         <tr><td>CVE-2023-38646</td><td>2023</td><td>Critical</td><td>Metabase</td><td>Pre-auth RCE via setup token path</td></tr>
@@ -45,19 +68,14 @@
     <p class="h-k" style="margin-top:48px">Hall of fame</p>
     <h2>Programs</h2>
     <p class="lead">APPLE · MICROSOFT · META · IBM · INTIGRITI · YESWEHACK · BUGCROWD · HACKERONE · T-MOBILE · SBB · TÜV RHEINLAND · HARMAN</p>
-    <div class="stats" style="margin-top:20px">
+    <div class="stats" style="margin:20px 0 72px">
       <div class="stat"><b>100+</b><span>HoF entries</span></div>
       <div class="stat"><b>2430+</b><span>Vulns reported</span></div>
       <div class="stat"><b>1100+</b><span>P1 critical</span></div>
       <div class="stat"><b>12+</b><span>Years exp</span></div>
     </div>
   </main>
-  <footer>
-    <div class="wrap foot">
-      <div>© 2026 Yunus Emre Öztaş — mitsec</div>
-      <div>m.i.t@mit.tc</div>
-    </div>
-  </footer>
+  <footer><div class="wrap foot"><div>© 2026 Yunus Emre Öztaş — mitsec</div><div>m.i.t@mit.tc</div></div></footer>
   <script src="assets/js/theme.js"></script>
   <script src="assets/js/site.js"></script>
 </body>
