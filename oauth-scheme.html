@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>OAuth code on a custom scheme — mitsec</title>
+  <meta name="description" content="Redacted AndroScope case: custom-scheme OAuth redirect without PKCE on a public Android client."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/site.css"/>
+  <link rel="stylesheet" href="assets/css/theme.css"/>
+  <link rel="stylesheet" href="assets/css/live.css"/>
+  <style>
+    .poc{display:grid;grid-template-columns:1fr;max-width:420px;margin:8px auto 28px;border-radius:28px;overflow:hidden;border:1px solid var(--line-2);background:#16181d;box-shadow:0 24px 60px -28px rgba(0,0,0,.65)}
+    .poc-ui{padding:22px 22px 18px;background:#2a2d33;color:#f3f4f6}
+    .poc-ui .bar{display:flex;align-items:center;gap:10px;font-weight:650;margin-bottom:18px}
+    .poc-ui h3{margin:0 0 16px;font-size:26px}
+    .poc-card{background:#1c1f24;border-radius:16px;padding:22px 16px;text-align:center}
+    .poc-btn{display:block;background:#e11d48;color:#fff;border-radius:10px;padding:14px;font-weight:700;letter-spacing:.04em}
+    .poc-or{margin:14px 0;color:#9ca3af}
+    .poc-link{color:#fb7185;font-weight:650}
+    .poc-hint{margin:16px 8px 0;color:#9ca3af;font-size:13px}
+    .poc-term{margin:0;padding:14px 16px 16px;background:#0b0d10;color:#9fe7b8;font-family:var(--mono);font-size:11px;line-height:1.55;white-space:pre-wrap}
+    .poc-term .dim{color:#6b7280}.poc-term .hi{color:#fbbf24}.poc-term .ok{color:#34d399}
+  </style>
+  <script>(function(){try{var t=localStorage.getItem('mitsec-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body>
+  <div class="bg"></div>
+  <header class="nav">
+    <div class="wrap nav-in">
+      <a class="brand" href="index.html"><i></i><b>mit</b> <span>sec</span></a>
+      <nav class="links" data-links>
+        <a href="index.html">Home</a>
+        <a href="androscope.html">AndroScope</a>
+        <a href="tools.html">Tools</a>
+        <a class="on" href="writeups.html">Writeups</a>
+        <a href="research.html">Research</a>
+      </nav>
+      <button class="burger" data-burger aria-label="Menu">☰</button>
+    </div>
+  </header>
+  <main class="wrap">
+    <section class="page-hero slim">
+      <div>
+        <p class="meta">WRITEUP · MOBILE · OAUTH · 2026 · @YNSMROZTAS</p>
+        <h1>Custom scheme, no PKCE</h1>
+        <div class="livebar">
+          <span class="chip on">● live</span>
+          <span class="chip">clk <span data-clock>--:--:--</span></span>
+          <span class="chip">lab.vulnapp.portal</span>
+        </div>
+        <p class="lead">AndroScope session on an authorized lab build. Vendor identifiers stripped. No exploit kit on this page.</p>
+      </div>
+      <div>
+        <div class="scope mini-scope">
+          <canvas data-radar></canvas>
+          <div class="beam"></div>
+          <div class="ring"></div>
+          <div class="scanline"></div>
+          <div class="scope-hud"><div class="top"><span>oauth // live</span><span>unrooted</span></div><div class="bot"><span>radar</span><span data-clock>--:--:--</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <article class="prose">
+      <h2>Summary</h2>
+      <p>On a public Android client I call <code>com.vulnapp.portal</code> (lab build 5.4.4), the OAuth 2.0 authorization-code flow returned to a custom scheme: <code>vulnauth://oauth-callback/app</code>. Android does not prove who owns a custom scheme. A second package on the same device can register the same scheme and receive the returning intent.</p>
+      <p>The authorization request carried no <code>code_challenge</code>. Without PKCE, an authorization code is not bound to the client that started the login. That combination is the finding. Names, hosts, and tokens from the original program are not published here.</p>
+      <div class="call">Class: unverified custom-scheme redirect + public client without PKCE. Impact class: account takeover of the app’s identity provider session — if the token endpoint accepts the code alone.</div>
+
+      <h2>Lab frame</h2>
+      <p>Reconstructed from the live session. Original vendor chrome removed. Prompt is <code>mitsec@com.vulnapp.portal</code>.</p>
+      <div class="poc" aria-label="Redacted lab capture">
+        <div class="poc-ui">
+          <div class="bar">← Profile</div>
+          <h3>VulnApp account</h3>
+          <div class="poc-card">
+            <span class="poc-btn">SIGN IN</span>
+            <div class="poc-or">or</div>
+            <div class="poc-link">More information</div>
+          </div>
+          <p class="poc-hint">Sign in to use portal services on this device.</p>
+        </div>
+        <pre class="poc-term"><span class="dim">38</span>  Response tamper (client-trust)
+<span class="ok">39</span>  OAuth + PKCE observer          <span class="hi">★</span>
+<span class="dim">40</span>  WebSocket interceptor
+<span class="ok">D</span>  NATIVE & RUNTIME
+<span class="ok">48</span>  FULL AUTO (surface-aware)      <span class="hi">★</span>
+<span class="ok">E</span>  DEFENSE
+<span class="ok">50</span>  TLS pinning observer           <span class="hi">★</span>
+
+<span class="hi">★ start-here for this app</span>
+<span class="ok">48</span>  surface-aware loadout
+<span class="ok">39</span>  OAuth + PKCE observer
+<span class="ok">14</span>  intent / deeplink capture
+
+mitsec@com.vulnapp.portal:</pre>
+      </div>
+
+      <h2>What AndroScope saw</h2>
+      <p>Rootless session. Intent hook on the lab process while the operator tapped Sign in. Two <code>Intent.getData</code> rows mattered:</p>
+      <ol>
+        <li>An HTTPS authorize URL on the IdP, with <code>response_type=code</code>, a <code>state</code>, and <code>redirect_uri=vulnauth://oauth-callback/app</code>. No <code>code_challenge</code> / <code>code_challenge_method</code>.</li>
+        <li>The custom-scheme return: <code>vulnauth://oauth-callback/app?code=[REDACTED]&state=[REDACTED]</code>.</li>
+      </ol>
+      <p>No Digital Asset Links check for that scheme. Tokens did not appear in the app sandbox before the code came back — the code is the portable secret in this flow.</p>
+
+      <h2>Why the two bugs stack</h2>
+      <p><strong>Custom schemes</strong> are an intent filter. They are not App Links. Any package can claim <code>vulnauth</code>. When the browser hands the redirect to Android, the resolver may show a chooser — or deliver to a default handler.</p>
+      <p><strong>PKCE</strong> (RFC 7636) is the control that still saves a public client if that intent is stolen. The client keeps a <code>code_verifier</code>. The server stored a challenge. The token request must prove the verifier. No challenge in the authorize URL means the code is not bound to the app that started login.</p>
+      <p>This page does not include a second APK, a receiver activity, or a token-endpoint request. Those belong in a private report, not a public writeup.</p>
+
+      <h2>Impact (class)</h2>
+      <p>If the token endpoint issues an access token (and a refresh token) for that code without a verifier, the holder of the code holds the user’s portal session. Scope depends on what the IdP actually grants — profile, documents, payments. Treat it as full account takeover of that identity, not a cosmetic deeplink bug.</p>
+
+      <h2>Fix</h2>
+      <ul>
+        <li>Require PKCE S256 on the authorization server for every public client. Reject token requests with no matching verifier.</li>
+        <li>Move the redirect to a verified Android App Link (HTTPS + Digital Asset Links). Do not keep an unverified custom scheme as the primary callback.</li>
+        <li>Allowlist <code>redirect_uri</code> exactly. Do not accept a cousin scheme.</li>
+        <li>Re-test the mobile authorize URL until <code>code_challenge</code> is visible in the session transcript.</li>
+      </ul>
+
+      <h2>References</h2>
+      <p>RFC 8252 (OAuth 2.0 for Native Apps), RFC 7636 (PKCE), RFC 6749, Android App Links. Testing notes: Android 13, unrooted, AndroScope gadget-in-target. Original program identifiers removed under disclosure rules.</p>
+      <p class="meta" style="margin-top:40px">YUNUS EMRE ÖZTAŞ · MITSEC · LAB BUILD ONLY</p>
+    </article>
+  </main>
+  <footer>
+    <div class="wrap foot">
+      <div>© 2026 Yunus Emre Öztaş — mitsec</div>
+      <div><a href="writeups.html">Writeups</a> · <a href="androscope.html">AndroScope</a></div>
+    </div>
+  </footer>
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/site.js"></script>
+</body>
+</html>
