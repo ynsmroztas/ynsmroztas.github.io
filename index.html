@@ -9,6 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="assets/css/site.css"/>
+  <link rel="stylesheet" href="assets/css/theme.css"/>
+  <script>(function(){try{var t=localStorage.getItem('mitsec-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 </head>
 <body>
   <div class="bg"></div>
@@ -26,7 +28,6 @@
       <button class="burger" data-burger aria-label="Menu">☰</button>
     </div>
   </header>
-
   <main class="wrap">
     <section class="hero">
       <div class="hero-copy reveal">
@@ -61,7 +62,6 @@
         <div class="console" data-console></div>
       </div>
     </section>
-
     <div class="stats">
       <div class="stat"><b>100+</b><span>HoF entries</span></div>
       <div class="stat"><b>2430+</b><span>Vulns reported</span></div>
@@ -69,14 +69,12 @@
       <div class="stat"><b>12+</b><span>Years exp</span></div>
     </div>
   </main>
-
   <div class="marquee">
     <div class="marquee-track">
       <span>APPLE</span><span>MICROSOFT</span><span>META</span><span>IBM</span><span>INTIGRITI</span><span>YESWEHACK</span><span>BUGCROWD</span><span>HACKERONE</span><span>T-MOBILE</span><span>SBB</span><span>TÜV RHEINLAND</span><span>HARMAN</span>
       <span>APPLE</span><span>MICROSOFT</span><span>META</span><span>IBM</span><span>INTIGRITI</span><span>YESWEHACK</span><span>BUGCROWD</span><span>HACKERONE</span><span>T-MOBILE</span><span>SBB</span><span>TÜV RHEINLAND</span><span>HARMAN</span>
     </div>
   </div>
-
   <main class="wrap">
     <section>
       <p class="h-k">The instrument</p>
@@ -103,19 +101,17 @@
         </div>
       </div>
     </section>
-
     <section>
       <p class="h-k">Modules</p>
       <h2>38+ purpose-built surfaces.</h2>
       <div class="mods">
         <div class="mod"><h4>Defense</h4><p>Pinning, RASP, Play Integrity, biometric and Cronet paths — observed, not promised as a universal kill-switch.</p></div>
-        <div class="mod"><h4>Traffic &amp; secrets</h4><p>Request and WebSocket intercept, token and crypto dump, gRPC/protobuf, keystore and prefs.</p></div>
-        <div class="mod"><h4>IPC &amp; deeplinks</h4><p>Intent hunter (capture · replay · inject), schema fuzzer, provider probe, confused-deputy checks.</p></div>
-        <div class="mod"><h4>Native &amp; niche</h4><p>.so tracer, memory sweep, Lottie / PDF.js / Cordova / RN bridge surfaces when the binary actually has them.</p></div>
+        <div class="mod"><h4>Traffic & secrets</h4><p>Request and WebSocket intercept, token and crypto dump, gRPC/protobuf, keystore and prefs.</p></div>
+        <div class="mod"><h4>IPC & deeplinks</h4><p>Intent hunter (capture · replay · inject), schema fuzzer, provider probe, confused-deputy checks.</p></div>
+        <div class="mod"><h4>Native & niche</h4><p>.so tracer, memory sweep, Lottie / PDF.js / Cordova / RN bridge surfaces when the binary actually has them.</p></div>
       </div>
       <p style="margin-top:22px"><a class="btn" href="androscope.html">Full technical writeup</a></p>
     </section>
-
     <section>
       <p class="h-k">Also shipping</p>
       <h2>The rest of the arsenal.</h2>
@@ -140,13 +136,13 @@
       <p style="margin-top:16px"><a class="btn ghost" href="tools.html">All tools</a></p>
     </section>
   </main>
-
   <footer>
     <div class="wrap foot">
       <div>© 2026 Yunus Emre Öztaş — mitsec</div>
       <div>m.i.t@mit.tc · <a href="https://github.com/ynsmroztas">GitHub</a> · <a href="https://x.com/ynsmroztas">X</a></div>
     </div>
   </footer>
+  <script src="assets/js/theme.js"></script>
   <script src="assets/js/site.js"></script>
 </body>
 </html>
