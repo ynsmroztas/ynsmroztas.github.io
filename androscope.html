@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="assets/css/site.css"/>
+  <link rel="stylesheet" href="assets/css/op.css"/>
 </head>
 <body>
   <div class="bg"></div>
@@ -39,14 +40,10 @@
         </div>
         <div class="toc">
           <a href="#what">What it is</a>
-          <a href="#why">Why gadget</a>
+          <a href="#deck">Operator deck</a>
           <a href="#pipeline">Pipeline</a>
-          <a href="#static">Static engine</a>
-          <a href="#radar">Radar</a>
           <a href="#runtime">Runtime</a>
-          <a href="#arsenal">Arsenal</a>
           <a href="#not">What it is not</a>
-          <a href="#hunter">vs AndroHunter</a>
         </div>
       </div>
       <div class="reveal d2">
@@ -66,65 +63,41 @@
       <div class="card"><div class="tag">02</div><h3>ASSESS</h3><p>FH-IDs, calibrated risk, a plan that matches the binary.</p></div>
       <div class="card"><div class="tag">03</div><h3>RUNTIME</h3><p>You walk the app. The transcript follows your hands.</p></div>
     </div>
+    <section id="deck" class="op">
+      <div class="op-head">
+        <div><b>AndroSCOPE Final Edition</b> · @ynsmroztas</div>
+        <div>target: <span class="tgt">lab.sample.app</span> · mode: rootless mobile pentest · evidence: full</div>
+        <div style="margin-top:8px">radar complete · Native Android · 6 activities · 4 deeplinks · 14 native libs</div>
+      </div>
+      <div class="deck-toolbar" data-deck-filters style="padding:10px 12px 0"></div>
+      <div class="op-grid">
+        <div class="op-menu" data-op-menu></div>
+        <div class="op-detail" data-op-detail></div>
+      </div>
+      <div class="op-prompt">mitsec@lab.sample.app:<span data-op-prompt></span></div>
+    </section>
     <article class="prose">
     <h2 id="what">What it is</h2>
-    <p>AndroScope is the mobile research bench I built after years of hunting on Android without wanting a rooted daily driver. The public pitch is simple: patch an authorized lab APK once, load a Frida Gadget into that package, then run a full <strong>PREPARE → ASSESS → RUNTIME</strong> loop on a real, unrooted phone.</p>
-    <p>The important sentence is the second one. AndroScope does not attach to a random Play Store process from the outside. Android will not let a normal third-party app walk into another app’s address space. The runtime lives <em>inside the target you were allowed to instrument</em>. You open that target. You tap through login, WebView, pay, share, deeplink. The session log is a transcript of <em>your</em> gestures, not a ghost service.</p>
-    <div class="call">Design rule: instrument the target. Do not pretend a second APK can police every other APK in the background. That story is not how the platform works, and I will not sell it.</div>
-    <h2 id="why">Why Gadget, not “Frida server on a rooted lab”</h2>
-    <p>Most public Android labs assume Magisk + <code>frida-server</code> + USB. That is fine for an emulator farm. It is a poor model for bug bounty phones that stay on a carrier network, stay unrooted, and still need to exercise Play Integrity adjacent flows.</p>
-    <p>Gadget is Frida’s in-process library. The dynamic linker runs its constructor when the lab build starts. From that moment the operator console can load modules, pause at first frame (<code>wait</code>) or let the app run and race (<code>resume</code>), and regenerate JS without packing the APK again.</p>
-    <p>I am not publishing a packing cookbook here. The point of this page is the operator model and the analysis surface — not a recipe for shipping someone else’s package with a foreign <code>.so</code>.</p>
-    <figure>
-      <img src="assets/img/pipeline.jpg" alt="PREPARE ASSESS RUNTIME" class="shot"/>
-      <figcaption>Three stages, one session id</figcaption>
-    </figure>
+    <p>AndroScope is a rootless Android pentest framework. Patch an authorized lab APK once, load a Frida Gadget into that package, then run PREPARE → ASSESS → RUNTIME on a real unrooted phone.</p>
+    <p>It does not attach to a random Play Store process. The runtime lives inside the target you were allowed to instrument. Example package on this page is the fictional <code>lab.sample.app</code>.</p>
+    <div class="call">Design rule: instrument the target. Do not pretend a second APK can police every other APK in the background.</div>
     <h2 id="pipeline">The pipeline</h2>
     <table>
       <thead><tr><th>Stage</th><th>Input</th><th>Output</th></tr></thead>
       <tbody>
-        <tr><td>PREPARE</td><td>APK bytes</td><td>Package identity, SDK floor, components, schemas, DEX strings, signing block</td></tr>
-        <tr><td>ASSESS</td><td>Surface + rules</td><td>FH-ID findings, confidence, MASVS-shaped notes, a plan</td></tr>
-        <tr><td>RUNTIME</td><td>Lab build + operator</td><td>Verified events while the target is actually used</td></tr>
+        <tr><td>PREPARE</td><td>APK bytes</td><td>Lab variant + gadget + scripts</td></tr>
+        <tr><td>ASSESS</td><td>Surface + rules</td><td>FH-ID findings, calibrated plan</td></tr>
+        <tr><td>RUNTIME</td><td>Lab build + operator</td><td>Verified events while the app is used</td></tr>
       </tbody>
     </table>
-    <p>Each finding is hashed into a stable FH-ID so a report can cite it. Plans are generated from the surface that exists.</p>
-    <h2 id="static">Static engine</h2>
-    <p>PREPARE walks binary XML, the DEX string table, and the APK signing block. If a string is not in the table, AndroScope does not invent it.</p>
-    <figure>
-      <img src="assets/img/surface.jpg" alt="Attack surface map" class="shot"/>
-      <figcaption>Surface map — activities, services, receivers, providers, deeplinks, WebView, native</figcaption>
-    </figure>
-    <h2 id="radar">Radar and honesty</h2>
-    <p>Scoring is conservative. One exported activity is MEDIUM, not a fake critical. Radar chains what exists instead of painting a dump.</p>
-    <h2 id="runtime">How a live test actually feels</h2>
-    <p>You do not install AndroScope and watch WhatsApp in the background. You instrument an authorized lab build of the target. You walk the app. The transcript follows your hands.</p>
-    <figure>
-      <img src="assets/img/hud.jpg" alt="Operator HUD" class="shot"/>
-      <figcaption>Operator HUD — surface, plan, labs</figcaption>
-    </figure>
-    <h2 id="arsenal">Arsenal</h2>
-    <div class="mods">
-      <div class="mod"><h4>Defense</h4><p>TLS pinning, RASP, Play Integrity, biometric, Cronet.</p></div>
-      <div class="mod"><h4>Traffic & secrets</h4><p>HTTP / WS, token dumpers, gRPC, keystore, prefs.</p></div>
-      <div class="mod"><h4>IPC</h4><p>Intent capture and replay, deeplink fuzz, provider probes.</p></div>
-      <div class="mod"><h4>Native</h4><p>.so tracer, memory sweep, UI-driven native calls.</p></div>
-    </div>
-    <h2 id="not">What AndroScope is not</h2>
+    <h2 id="runtime">How a live test feels</h2>
+    <p>You walk the lab build. The transcript follows your hands. Empty log means you did not hit the surface.</p>
+    <h2 id="not">What it is not</h2>
     <ul>
       <li>Not a Play Store product that silently hooks whatever you open.</li>
       <li>Not a replacement for AndroHunter.</li>
-      <li>Not a guarantee that Integrity / RASP / pinning will fall on every target.</li>
+      <li>Not a universal Integrity / RASP / pinning kill-switch.</li>
     </ul>
-    <h2 id="hunter">AndroScope vs AndroHunter</h2>
-    <table>
-      <thead><tr><th></th><th>AndroHunter</th><th>AndroScope</th></tr></thead>
-      <tbody>
-        <tr><td>Shape</td><td>Installed APK</td><td>Framework + operator + lab target</td></tr>
-        <tr><td>Root</td><td>Most modules no</td><td>Rootless via gadget-in-target</td></tr>
-        <tr><td>Runtime</td><td>OS-exposed IPC</td><td>Only the instrumented lab package</td></tr>
-      </tbody>
-    </table>
     <p class="meta" style="margin-top:40px">YUNUS EMRE ÖZTAŞ · MITSEC · M.I.T@MIT.TC</p>
     </article>
   </main>
@@ -135,5 +108,6 @@
     </div>
   </footer>
   <script src="assets/js/site.js"></script>
+  <script src="assets/js/deck.js"></script>
 </body>
 </html>
