@@ -4,13 +4,14 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>AndroScope — technical writeup · mitsec</title>
-  <meta name="description" content="What AndroScope is, how the PREPARE → ASSESS → RUNTIME model works, and why it is not a background spy APK."/>
+  <meta name="description" content="AndroScope writeup: PREPARE → ASSESS → RUNTIME, gadget-in-target, live radar, operator deck."/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="assets/css/site.css"/>
   <link rel="stylesheet" href="assets/css/op.css"/>
   <link rel="stylesheet" href="assets/css/theme.css"/>
+  <link rel="stylesheet" href="assets/css/live.css"/>
   <script>(function(){try{var t=localStorage.getItem('mitsec-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 </head>
 <body>
@@ -32,25 +33,29 @@
   <main class="wrap">
     <section class="page-hero">
       <div class="reveal">
-        <p class="meta">WRITEUP · MOBILE · JUL 2026 · 16 MIN · @YNSMROZTAS</p>
+        <p class="meta">WRITEUP · MOBILE · JUL 2026 · @YNSMROZTAS</p>
         <h1>AndroScope</h1>
-        <p class="deck">A rootless Android pentest framework. Not a spy in the status bar.</p>
+        <p class="deck">Rootless Android pentest framework. Instrument the target. Walk it. Keep the transcript.</p>
         <div class="livebar">
           <span class="chip on">● live radar</span>
           <span class="chip">clk <span data-clock>--:--:--</span></span>
           <span class="chip">PREPARE · ASSESS · RUNTIME</span>
         </div>
         <div class="toc">
-          <a href="#what">What it is</a>
-          <a href="#deck">Operator deck</a>
+          <a href="#what">Model</a>
+          <a href="#deck">Deck</a>
+          <a href="#surface">Surface</a>
           <a href="#pipeline">Pipeline</a>
           <a href="#runtime">Runtime</a>
-          <a href="#not">What it is not</a>
+          <a href="#hunter">vs Hunter</a>
         </div>
       </div>
       <div class="reveal d2">
         <div class="scope">
           <canvas data-radar></canvas>
+          <div class="beam"></div>
+          <div class="ring"></div>
+          <div class="ring d2"></div>
           <div class="scanline"></div>
           <div class="scope-hud">
             <div class="top"><span>scope // live</span><span>unrooted</span></div>
@@ -60,16 +65,24 @@
         <div class="console" data-console></div>
       </div>
     </section>
-    <div class="pipe">
-      <div class="card"><div class="tag">01</div><h3>PREPARE</h3><p>Bytes in. Surface out. No story yet.</p></div>
-      <div class="card"><div class="tag">02</div><h3>ASSESS</h3><p>FH-IDs, calibrated risk, a plan that matches the binary.</p></div>
-      <div class="card"><div class="tag">03</div><h3>RUNTIME</h3><p>You walk the app. The transcript follows your hands.</p></div>
+
+    <div class="ticker">
+      <div class="ticker-track">
+        <span>lab.sample.app</span><span>surface complete</span><span>6 activities</span><span>4 deeplinks</span><span>14 native libs</span><span>FH-ID ready</span><span>wait · first frame</span>
+        <span>lab.sample.app</span><span>surface complete</span><span>6 activities</span><span>4 deeplinks</span><span>14 native libs</span><span>FH-ID ready</span><span>wait · first frame</span>
+      </div>
     </div>
+
+    <div class="pipe">
+      <div class="card"><div class="tag">01</div><h3>PREPARE</h3><p>Bytes in. Inventory out. No story yet.</p></div>
+      <div class="card"><div class="tag">02</div><h3>ASSESS</h3><p>FH-IDs and a plan that matches this binary.</p></div>
+      <div class="card"><div class="tag">03</div><h3>RUNTIME</h3><p>You walk the app. The log follows your hands.</p></div>
+    </div>
+
     <section id="deck" class="op">
       <div class="op-head">
         <div><b>AndroSCOPE Final Edition</b> · @ynsmroztas</div>
-        <div>target: <span class="tgt">lab.sample.app</span> · mode: rootless mobile pentest · evidence: full</div>
-        <div style="margin-top:8px">radar complete · Native Android · 6 activities · 4 deeplinks · 14 native libs</div>
+        <div>target: <span class="tgt">lab.sample.app</span> · mode: rootless · evidence: full</div>
       </div>
       <div class="deck-toolbar" data-deck-filters style="padding:10px 12px 0"></div>
       <div class="op-grid">
@@ -78,29 +91,81 @@
       </div>
       <div class="op-prompt">mitsec@lab.sample.app:<span data-op-prompt></span></div>
     </section>
+
     <article class="prose">
-    <h2 id="what">What it is</h2>
-    <p>AndroScope is a rootless Android pentest framework. Patch an authorized lab APK once, load a Frida Gadget into that package, then run PREPARE → ASSESS → RUNTIME on a real unrooted phone.</p>
-    <p>It does not attach to a random Play Store process. The runtime lives inside the target you were allowed to instrument. Example package on this page is the fictional <code>lab.sample.app</code>.</p>
-    <div class="call">Design rule: instrument the target. Do not pretend a second APK can police every other APK in the background.</div>
-    <h2 id="pipeline">The pipeline</h2>
-    <table>
-      <thead><tr><th>Stage</th><th>Input</th><th>Output</th></tr></thead>
-      <tbody>
-        <tr><td>PREPARE</td><td>APK bytes</td><td>Lab variant + gadget + scripts</td></tr>
-        <tr><td>ASSESS</td><td>Surface + rules</td><td>FH-ID findings, calibrated plan</td></tr>
-        <tr><td>RUNTIME</td><td>Lab build + operator</td><td>Verified events while the app is used</td></tr>
-      </tbody>
-    </table>
-    <h2 id="runtime">How a live test feels</h2>
-    <p>You walk the lab build. The transcript follows your hands. Empty log means you did not hit the surface.</p>
-    <h2 id="not">What it is not</h2>
-    <ul>
-      <li>Not a Play Store product that silently hooks whatever you open.</li>
-      <li>Not a replacement for AndroHunter.</li>
-      <li>Not a universal Integrity / RASP / pinning kill-switch.</li>
-    </ul>
-    <p class="meta" style="margin-top:40px">YUNUS EMRE ÖZTAŞ · MITSEC · M.I.T@MIT.TC</p>
+      <h2 id="what">The model</h2>
+      <p>AndroScope is an operator console plus a runtime that lives <em>inside an authorized lab build</em> of the target. You do not install a second Play app and watch WhatsApp. Android will not allow that. You patch a lab variant once, the gadget constructor runs with the process, then PREPARE → ASSESS → RUNTIME on an unrooted phone.</p>
+      <div class="call">Instrument the target. Do not sell a ghost service in the status bar.</div>
+
+      <h2 id="surface">What this sample exposes</h2>
+      <p>Demo package on this page is fictional <code>lab.sample.app</code>. Numbers are a typical native surface, not a live customer.</p>
+      <div class="live-map">
+        <div class="cell"><b>6</b><span>activities</span><em></em></div>
+        <div class="cell"><b>1</b><span>services</span><em></em></div>
+        <div class="cell"><b>2</b><span>receivers</span><em></em></div>
+        <div class="cell"><b>0</b><span>providers</span><em></em></div>
+        <div class="cell"><b>4</b><span>deeplinks</span><em></em></div>
+        <div class="cell"><b>14</b><span>native libs</span><em></em></div>
+        <div class="cell"><b>Native</b><span>Kotlin / Java</span><em></em></div>
+        <div class="cell"><b>Tamper</b><span>defense flag</span><em></em></div>
+      </div>
+
+      <div class="shot-row">
+        <figure class="shot-card">
+          <img src="assets/img/surface.jpg" alt="Surface map"/>
+          <figcaption>Surface map — components, schemas, native</figcaption>
+        </figure>
+        <figure class="shot-card">
+          <img src="assets/img/pipeline.jpg" alt="Pipeline"/>
+          <figcaption>PREPARE · ASSESS · RUNTIME</figcaption>
+        </figure>
+      </div>
+
+      <h2 id="pipeline">Why gadget, not a rooted farm</h2>
+      <p>Public labs often assume Magisk + frida-server + USB. Fine for emulators. Weak for bounty phones that stay on a carrier, stay unrooted, and still need Integrity-adjacent flows. Gadget is in-process. Scripts regenerate without packing the APK again. This page is the operator model — not a packing cookbook.</p>
+
+      <h2>Static engine</h2>
+      <p>PREPARE walks binary XML, the DEX string table, and the signing block. If a string is not in the table, AndroScope does not invent it. Findings hash to stable FH-IDs. Radar is conservative: one exported editor is MEDIUM, not a fake critical.</p>
+
+      <div class="shot-row">
+        <figure class="shot-card">
+          <img src="assets/img/hud.jpg" alt="Operator HUD"/>
+          <figcaption>Operator HUD — surface, plan, labs</figcaption>
+        </figure>
+        <figure class="shot-card">
+          <img src="assets/img/reticle.jpg" alt="Radar reticle"/>
+          <figcaption>Radar — only surfaces that exist</figcaption>
+        </figure>
+      </div>
+
+      <h2 id="runtime">How a live test feels</h2>
+      <p>Install the lab variant. Open it. Tap login, WebView, pay, share, deeplink. The transcript is your gestures. Empty log means you did not hit that surface. Modules in the deck stay dark unless the map lights them.</p>
+
+      <h2>Arsenal groups</h2>
+      <div class="mods">
+        <div class="mod"><h4>A · Recon</h4><p>BuildConfig, live tracer, file view, session desk.</p></div>
+        <div class="mod"><h4>B · Surface</h4><p>Intents, deeplinks, providers, bridges — only if declared.</p></div>
+        <div class="mod"><h4>C · Traffic</h4><p>Requests, tokens, keystore, gRPC the process already makes.</p></div>
+        <div class="mod"><h4>E · Defense</h4><p>Pinning, RASP, Integrity observed. Not a universal kill-switch.</p></div>
+      </div>
+
+      <h2 id="hunter">AndroScope vs AndroHunter</h2>
+      <table>
+        <thead><tr><th></th><th>AndroHunter</th><th>AndroScope</th></tr></thead>
+        <tbody>
+          <tr><td>Shape</td><td>Installed APK</td><td>Framework + lab target</td></tr>
+          <tr><td>Root</td><td>Most modules no</td><td>Rootless via gadget-in-target</td></tr>
+          <tr><td>Runtime</td><td>OS-exposed IPC</td><td>Only the instrumented package</td></tr>
+        </tbody>
+      </table>
+
+      <h2>What it is not</h2>
+      <ul>
+        <li>Not a Play Store product that silently hooks whatever you open.</li>
+        <li>Not a replacement for AndroHunter.</li>
+        <li>Not a guarantee that Integrity / RASP / pinning fall on every target.</li>
+      </ul>
+      <p class="meta" style="margin-top:40px">YUNUS EMRE ÖZTAŞ · MITSEC · M.I.T@MIT.TC</p>
     </article>
   </main>
   <footer>
