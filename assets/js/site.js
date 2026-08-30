@@ -15,11 +15,15 @@
   document.querySelectorAll("[data-radar]").forEach((canvas) => {
     const wrap = canvas.parentElement;
     const ctx = canvas.getContext("2d");
+    let css = 320;
     const fit = () => {
-      const s = Math.min(wrap.clientWidth || 360, wrap.clientHeight || 360);
+      const r = wrap.getBoundingClientRect();
+      css = Math.max(180, Math.floor(Math.min(r.width || 320, r.height || r.width || 320)));
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = s * dpr;
-      canvas.height = s * dpr;
+      canvas.width = css * dpr;
+      canvas.height = css * dpr;
+      canvas.style.width = "100%";
+      canvas.style.height = "100%";
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
     fit();
@@ -31,11 +35,7 @@
     }));
     let ang = 0;
     const draw = () => {
-      const w = canvas.clientWidth || wrap.clientWidth;
-      const h = canvas.clientHeight || wrap.clientHeight;
-      const cx = w / 2;
-      const cy = h / 2;
-      const R = Math.min(w, h) * 0.42;
+      const w = css, h = css, cx = w / 2, cy = h / 2, R = Math.min(w, h) * 0.42;
       ctx.clearRect(0, 0, w, h);
       ctx.strokeStyle = "rgba(124,255,178,0.18)";
       ctx.lineWidth = 1;
@@ -87,7 +87,7 @@
       if (!reduce) ang += 0.018;
       requestAnimationFrame(draw);
     };
-    draw();
+    requestAnimationFrame(() => { fit(); draw(); });
   });
 
   const lines = [

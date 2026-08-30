@@ -29,15 +29,13 @@
 
   <main class="wrap">
     <section class="hero">
-      <div class="reveal">
+      <div class="hero-copy reveal">
         <div class="kicker">available for private programs</div>
-        <div class="stage3d">
-          <h1 class="title3d">ANDRO<em>SCOPE</em></h1>
-        </div>
-        <div class="live-row">
+        <h1 class="title3d">ANDRO<em>SCOPE</em></h1>
+        <div class="livebar">
           <span class="chip on">● live radar</span>
           <span class="chip">clk <span data-clock>--:--:--</span></span>
-          <span class="chip">prepare · assess · runtime</span>
+          <span class="chip">PREPARE · ASSESS · RUNTIME</span>
         </div>
         <p class="sub">Rootless Android pentest framework by <strong>Yunus Emre Öztaş</strong> (@ynsmroztas / mitsec). Map a target once. Audit the surface. Drive a live session while you actually use the app.</p>
         <div class="row">
@@ -45,7 +43,7 @@
           <a class="btn ghost" href="https://x.com/ynsmroztas" target="_blank" rel="noopener">Follow the research</a>
         </div>
       </div>
-      <div class="reveal d2">
+      <div class="hero-scope reveal d2">
         <div class="scope">
           <canvas data-radar></canvas>
           <div class="scanline"></div>
@@ -85,20 +83,20 @@
       <h2>One app, mapped end to end.</h2>
       <p class="lead">AndroScope is not a background spy APK. It is an operator console plus a target-side runtime. You open the target, you walk the flows, the session writes evidence.</p>
       <div class="grid2">
-        <img src="assets/img/hud.jpg" alt="AndroScope operator HUD mock" style="border-radius:22px;border:1px solid var(--line-2)"/>
+        <img class="shot" src="assets/img/hud.jpg" alt="AndroScope operator HUD mock"/>
         <div>
           <div class="card" style="margin-bottom:12px">
-            <div class="tag">01 · prepare</div>
+            <div class="tag">01 · PREPARE</div>
             <h3>Surface before you touch the UI</h3>
             <p>Manifest, exported components, deeplink schemas, DEX strings, signing block, framework fingerprints. Findings get FH-IDs so a report can cite them.</p>
           </div>
           <div class="card" style="margin-bottom:12px">
-            <div class="tag">02 · assess</div>
+            <div class="tag">02 · ASSESS</div>
             <h3>Radar, not a dump</h3>
             <p>Exported activities, backup flags, WebView bridges, weak SDK floors. Risk is calibrated — one exported editor is not a critical RCE.</p>
           </div>
           <div class="card">
-            <div class="tag">03 · runtime</div>
+            <div class="tag">03 · RUNTIME</div>
             <h3>You drive. The target is instrumented.</h3>
             <p>Gadget lives inside the authorized lab build. AndroScope does not sit behind another Play-signed app and watch it. Android process isolation forbids that.</p>
           </div>
@@ -111,9 +109,9 @@
       <h2>38+ purpose-built surfaces.</h2>
       <div class="mods">
         <div class="mod"><h4>Defense</h4><p>Pinning, RASP, Play Integrity, biometric and Cronet paths — observed, not promised as a universal kill-switch.</p></div>
-        <div class="mod"><h4>Traffic & secrets</h4><p>Request and WebSocket intercept, token and crypto dump, gRPC/protobuf, keystore and prefs.</p></div>
-        <div class="mod"><h4>IPC & deeplinks</h4><p>Intent hunter (capture · replay · inject), schema fuzzer, provider probe, confused-deputy checks.</p></div>
-        <div class="mod"><h4>Native & niche</h4><p>.so tracer, memory sweep, Lottie / PDF.js / Cordova / RN bridge surfaces when the binary actually has them.</p></div>
+        <div class="mod"><h4>Traffic &amp; secrets</h4><p>Request and WebSocket intercept, token and crypto dump, gRPC/protobuf, keystore and prefs.</p></div>
+        <div class="mod"><h4>IPC &amp; deeplinks</h4><p>Intent hunter (capture · replay · inject), schema fuzzer, provider probe, confused-deputy checks.</p></div>
+        <div class="mod"><h4>Native &amp; niche</h4><p>.so tracer, memory sweep, Lottie / PDF.js / Cordova / RN bridge surfaces when the binary actually has them.</p></div>
       </div>
       <p style="margin-top:22px"><a class="btn" href="androscope.html">Full technical writeup</a></p>
     </section>
