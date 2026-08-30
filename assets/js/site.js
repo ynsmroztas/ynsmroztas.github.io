@@ -122,4 +122,10 @@
     push();
     setInterval(push, 1400);
   });
+
+  if (!document.querySelector("script[src*='stats.js']")) {
+    var st = document.createElement("script");
+    st.src = "assets/js/stats.js";
+    document.body.appendChild(st);
+  }
 })();
