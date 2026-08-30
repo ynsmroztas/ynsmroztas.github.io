@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 1280" width="720" height="1280">
+  <rect width="720" height="1280" fill="#050608"/>
+  <rect x="0" y="0" width="720" height="52" fill="#0a0c10"/>
+  <text x="28" y="34" fill="#e5e7eb" font-family="ui-monospace,monospace" font-size="18">00:42</text>
+  <text x="620" y="34" fill="#e5e7eb" font-family="ui-monospace,monospace" font-size="14">64</text>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13">
+    <text x="28" y="92" fill="#f5e56b">[RN-native] NetworkingModule</text>
+    <text x="28" y="112" fill="#7dd3fc">[RN fetch] POST https://login.labnet.example/session/login</text>
+    <text x="28" y="132" fill="#fb7185">  ?email=lab.user%40example.com</text>
+    <text x="28" y="152" fill="#fb7185">  &amp;password=[REDACTED]</text>
+    <text x="28" y="172" fill="#e5e7eb">  &amp;remember_user=1</text>
+    <text x="28" y="192" fill="#7dd3fc">io.sentry.react.RNSentryModule</text>
+    <text x="28" y="212" fill="#e5e7eb">  method=POST  type=http</text>
+    <text x="28" y="232" fill="#fb7185">  url=.../session/login?email=…&amp;password=[REDACTED]</text>
+    <text x="28" y="252" fill="#f5e56b">[RN-native] CookieManagerModule</text>
+    <text x="28" y="272" fill="#d4a4ff">[keychain] setGenericPassword</text>
+    <text x="28" y="292" fill="#e5e7eb">  arg0=lab.user@example.com</text>
+    <text x="28" y="312" fill="#fb7185">  arg2=[REDACTED]</text>
+    <text x="28" y="332" fill="#f5e56b">[RN-native] TimingModule</text>
+    <text x="28" y="352" fill="#34d399">mitsec@com.labnet.console:</text>
+  </g>
+  <rect x="0" y="1120" width="720" height="160" fill="#12151a"/>
+  <text x="36" y="1154" fill="#9ca3af" font-family="ui-monospace,monospace" font-size="16">ESC   /   —   HOME</text>
+  <text x="36" y="1192" fill="#d1d5db" font-family="ui-monospace,monospace" font-size="18">CTRL  ALT</text>
+  <text x="300" y="1248" fill="#6b7280" font-family="ui-monospace,monospace" font-size="12">lab capture · redacted</text>
+</svg>
