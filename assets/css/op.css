@@ -1,0 +1,21 @@
+.op{margin:8px 0 48px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(180deg,#0c1118,#07090d);overflow:hidden}
+.op-head{padding:16px 18px 12px;border-bottom:1px solid var(--line-2);font-family:var(--mono);font-size:12px;color:var(--mute)}
+.op-head b{color:var(--ph);font-weight:500}
+.op-head .tgt{color:#fff}
+.op-grid{display:grid;grid-template-columns:minmax(240px,.9fr) minmax(0,1.2fr);min-height:420px}
+.op-menu{border-right:1px solid var(--line-2);padding:10px;overflow:auto;max-height:640px}
+.op-menu h5{margin:12px 8px 6px;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ph)}
+.op-item{width:100%;text-align:left;background:transparent;border:0;color:var(--sage);padding:8px 10px;border-radius:10px;cursor:pointer;font-family:var(--mono);font-size:12px;display:flex;gap:8px;align-items:flex-start}
+.op-item:hover,.op-item.on{background:rgba(124,255,178,.08);color:#fff}
+.op-item .n{color:var(--ph);min-width:1.6em}
+.op-item .star{color:var(--high);margin-left:auto}
+.op-detail{padding:18px 20px;display:flex;flex-direction:column;gap:10px}
+.op-detail h3{margin:0;color:#fff;font-size:22px}
+.op-detail p{margin:0;color:var(--mute);font-size:15px}
+.op-detail .why{border:1px solid var(--line-2);border-radius:12px;padding:12px;background:#0b0f14;color:#c5d4cc;font-size:14px}
+.op-prompt{border-top:1px solid var(--line-2);padding:10px 16px;font-family:var(--mono);font-size:12px;color:var(--ph)}
+.op-prompt span{color:var(--dim)}
+.deck-toolbar{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 14px}
+.deck-toolbar button{background:transparent;border:1px solid var(--line-2);color:var(--mute);border-radius:999px;padding:6px 10px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+.deck-toolbar button.on{border-color:var(--line);color:var(--ph)}
+@media (max-width:900px){.op-grid{grid-template-columns:1fr}.op-menu{max-height:280px;border-right:0;border-bottom:1px solid var(--line-2)}}
