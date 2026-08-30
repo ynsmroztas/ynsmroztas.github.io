@@ -23,6 +23,7 @@
     document.querySelectorAll(".theme-opt").forEach(function(b){
       b.classList.toggle("on", b.getAttribute("data-t") === t);
     });
+    window.dispatchEvent(new Event("mitsec-theme"));
   };
 
   var start = "scope";
