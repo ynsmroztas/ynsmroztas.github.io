@@ -4,12 +4,24 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>mitsec — AndroScope / Yunus Emre Öztaş</title>
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="assets/css/site.css"/>
   <link rel="stylesheet" href="assets/css/theme.css"/>
   <link rel="stylesheet" href="assets/css/live.css"/>
+  <style>
+    .wolf-title{display:flex;align-items:center;gap:clamp(10px,2vw,18px);margin:14px 0 0;min-width:0}
+    .wolf-title img{height:clamp(72px,11vw,118px);width:auto;flex:none;filter:drop-shadow(0 0 18px var(--glow,rgba(124,255,178,.35)))}
+    .wolf-title .type{font-family:var(--display);font-weight:800;line-height:.9;font-size:clamp(28px,5vw,56px);letter-spacing:-.05em;color:var(--title,#f4fff8);display:flex;align-items:center;white-space:nowrap}
+    .wolf-title .scope-o{position:relative;display:inline-flex;align-items:center;justify-content:center;width:.72em;height:.72em;margin:0 .02em;border:3px solid var(--ph,#7cffb2);border-radius:50%;box-shadow:0 0 16px var(--glow,rgba(124,255,178,.35));color:var(--ph,#7cffb2)}
+    .wolf-title .scope-o:before,.wolf-title .scope-o:after{content:"";position:absolute;background:currentColor}
+    .wolf-title .scope-o:before{width:2px;height:118%;left:50%;top:-9%;transform:translateX(-50%)}
+    .wolf-title .scope-o:after{height:2px;width:118%;top:50%;left:-9%;transform:translateY(-50%)}
+    .wolf-title em{font-style:normal;color:var(--ph,#7cffb2);text-shadow:0 0 22px var(--glow,rgba(124,255,178,.45))}
+    @media (max-width:560px){.wolf-title{flex-wrap:wrap}.wolf-title .type{font-size:clamp(26px,11vw,40px);white-space:normal}}
+  </style>
   <script>(function(){try{var t=localStorage.getItem('mitsec-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 </head>
 <body>
@@ -32,7 +44,10 @@
     <section class="hero">
       <div class="hero-copy reveal">
         <div class="kicker">available for private programs</div>
-        <h1 class="title3d">ANDRO<em>SCOPE</em></h1>
+        <h1 class="wolf-title" aria-label="AndroScope">
+          <img src="assets/img/wolf.svg" alt=""/>
+          <span class="type">ANDR<span class="scope-o" aria-hidden="true"></span><em>SCOPE</em></span>
+        </h1>
         <div class="livebar">
           <span class="chip on">● live radar</span>
           <span class="chip">clk <span data-clock>--:--:--</span></span>
