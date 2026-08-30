@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="assets/css/site.css"/>
   <link rel="stylesheet" href="assets/css/theme.css"/>
+  <link rel="stylesheet" href="assets/css/live.css"/>
   <script>(function(){try{var t=localStorage.getItem('mitsec-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 </head>
 <body>
@@ -26,66 +27,47 @@
       <button class="burger" data-burger aria-label="Menu">☰</button>
     </div>
   </header>
-  <main class="wrap" style="padding:48px 22px 80px">
-    <p class="h-k">Arsenal</p>
-    <h2>Offensive tooling</h2>
-    <p class="lead">AndroScope is the mobile flagship. Everything else is stdlib-first Python for recon and known-class scanners.</p>
-    <div class="tools" style="margin-top:28px">
-      <a class="tool" href="androscope.html">
-        <div class="top"><h3>AndroScope</h3><span class="pill">mobile</span></div>
-        <p>Rootless pentest framework. PREPARE → ASSESS → RUNTIME on an authorized lab build. Surface, radar, evidence IDs.</p>
-        <div class="meta">Framework · writeup</div>
-      </a>
-      <a class="tool" href="https://github.com/ynsmroztas/AndroHunter" target="_blank" rel="noopener">
-        <div class="top"><h3>AndroHunter</h3><span class="pill">mobile</span></div>
-        <p>On-device APK. Package inventory, exported IPC, provider probes, proxy desk. Complements Scope, does not replace it.</p>
-        <div class="meta">Java / Kotlin · GitHub</div>
-      </a>
-      <a class="tool" href="https://github.com/ynsmroztas/nextssrf" target="_blank" rel="noopener">
-        <div class="top"><h3>NextSniper</h3><span class="pill">exploit</span></div>
-        <p>Next.js middleware and RSC scanners. Confirmed production use on AWS-facing surfaces.</p>
-        <div class="meta">Python · stdlib</div>
-      </a>
-      <a class="tool" href="https://github.com/ynsmroztas" target="_blank" rel="noopener">
-        <div class="top"><h3>NextScope</h3><span class="pill">recon</span></div>
-        <p>Next.js / Vercel bundle intelligence — chunks, source maps, endpoints, secrets, HTML report per host.</p>
-        <div class="meta">Python · stdlib</div>
-      </a>
-      <a class="tool" href="https://github.com/ynsmroztas" target="_blank" rel="noopener">
-        <div class="top"><h3>HeaderHunter</h3><span class="pill">scanner</span></div>
-        <p>POST discovery and form parsing across a fixed injection grammar.</p>
-        <div class="meta">Python · stdlib</div>
-      </a>
-      <a class="tool" href="https://github.com/ynsmroztas/FortiSandbox-RCE-Exploit-CVE-2026-39808" target="_blank" rel="noopener">
-        <div class="top"><h3>SandboxSniper</h3><span class="pill">exploit</span></div>
-        <p>FortiSandbox unauthenticated command injection scanner with canary checks.</p>
-        <div class="meta">Python · CVE-2026-39808</div>
-      </a>
-      <a class="tool" href="https://github.com/ynsmroztas" target="_blank" rel="noopener">
-        <div class="top"><h3>FortiSniper</h3><span class="pill">exploit</span></div>
-        <p>FortiClientEMS research scanner — Site header SQLi class with error and time fallbacks.</p>
-        <div class="meta">Python · stdlib</div>
-      </a>
-      <a class="tool" href="https://github.com/ynsmroztas/cPanelSniper" target="_blank" rel="noopener">
-        <div class="top"><h3>cPanelSniper</h3><span class="pill">exploit</span></div>
-        <p>CVE-2026-41940 WHM session-file research tool.</p>
-        <div class="meta">Python · stdlib</div>
-      </a>
-      <a class="tool" href="https://github.com/ynsmroztas" target="_blank" rel="noopener">
-        <div class="top"><h3>ShodanMap</h3><span class="pill">recon</span></div>
-        <p>Multi-query harvest and IP ↔ port ↔ domain ↔ cert correlation for httpx queues.</p>
-        <div class="meta">Python · stdlib</div>
-      </a>
-      <a class="tool" href="https://github.com/ynsmroztas/InspectJS" target="_blank" rel="noopener">
-        <div class="top"><h3>JSHunter / InspectJS</h3><span class="pill">recon</span></div>
-        <p>JavaScript file discovery and sink / secret pass over bundled front ends.</p>
-        <div class="meta">Python</div>
-      </a>
-      <a class="tool" href="https://github.com/ynsmroztas" target="_blank" rel="noopener">
-        <div class="top"><h3>WebProbe v2</h3><span class="pill">scanner</span></div>
-        <p>HTTP probe, fingerprint, JSONL. Pipeline glue.</p>
-        <div class="meta">Python · stdlib</div>
-      </a>
+  <main class="wrap">
+    <section class="page-hero slim">
+      <div>
+        <p class="h-k">Arsenal</p>
+        <h1>Offensive tooling</h1>
+        <div class="livebar">
+          <span class="chip on">● live</span>
+          <span class="chip">clk <span data-clock>--:--:--</span></span>
+          <span class="chip">PREPARE · ASSESS · RUNTIME</span>
+        </div>
+        <p class="lead">AndroScope is the mobile flagship. Everything else is stdlib-first Python.</p>
+      </div>
+      <div>
+        <div class="scope mini-scope">
+          <canvas data-radar></canvas>
+          <div class="beam"></div>
+          <div class="ring"></div>
+          <div class="scanline"></div>
+          <div class="scope-hud">
+            <div class="top"><span>lab // tools</span><span>live</span></div>
+            <div class="bot"><span>radar</span><span data-clock>--:--:--</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="ticker"><div class="ticker-track">
+      <span>AndroScope</span><span>AndroHunter</span><span>NextSniper</span><span>cPanelSniper</span><span>InspectJS</span><span>WebProbe</span>
+      <span>AndroScope</span><span>AndroHunter</span><span>NextSniper</span><span>cPanelSniper</span><span>InspectJS</span><span>WebProbe</span>
+    </div></div>
+    <div class="tools" style="margin:8px 0 72px">
+      <a class="tool" href="androscope.html"><div class="top"><h3>AndroScope</h3><span class="pill">mobile</span></div><p>Rootless pentest framework. PREPARE → ASSESS → RUNTIME on an authorized lab build.</p><div class="meta">Framework · writeup</div></a>
+      <a class="tool" href="https://github.com/ynsmroztas/AndroHunter" target="_blank" rel="noopener"><div class="top"><h3>AndroHunter</h3><span class="pill">mobile</span></div><p>On-device APK. Package inventory, exported IPC, provider probes.</p><div class="meta">Java / Kotlin · GitHub</div></a>
+      <a class="tool" href="https://github.com/ynsmroztas/nextssrf" target="_blank" rel="noopener"><div class="top"><h3>NextSniper</h3><span class="pill">exploit</span></div><p>Next.js middleware and RSC scanners.</p><div class="meta">Python · stdlib</div></a>
+      <a class="tool" href="https://github.com/ynsmroztas" target="_blank" rel="noopener"><div class="top"><h3>NextScope</h3><span class="pill">recon</span></div><p>Next.js / Vercel bundle intelligence.</p><div class="meta">Python · stdlib</div></a>
+      <a class="tool" href="https://github.com/ynsmroztas" target="_blank" rel="noopener"><div class="top"><h3>HeaderHunter</h3><span class="pill">scanner</span></div><p>POST discovery and form parsing.</p><div class="meta">Python · stdlib</div></a>
+      <a class="tool" href="https://github.com/ynsmroztas/FortiSandbox-RCE-Exploit-CVE-2026-39808" target="_blank" rel="noopener"><div class="top"><h3>SandboxSniper</h3><span class="pill">exploit</span></div><p>FortiSandbox command-injection class scanner.</p><div class="meta">Python · CVE-2026-39808</div></a>
+      <a class="tool" href="https://github.com/ynsmroztas" target="_blank" rel="noopener"><div class="top"><h3>FortiSniper</h3><span class="pill">exploit</span></div><p>FortiClientEMS research scanner.</p><div class="meta">Python · stdlib</div></a>
+      <a class="tool" href="https://github.com/ynsmroztas/cPanelSniper" target="_blank" rel="noopener"><div class="top"><h3>cPanelSniper</h3><span class="pill">exploit</span></div><p>CVE-2026-41940 WHM session-file research tool.</p><div class="meta">Python · stdlib</div></a>
+      <a class="tool" href="https://github.com/ynsmroztas" target="_blank" rel="noopener"><div class="top"><h3>ShodanMap</h3><span class="pill">recon</span></div><p>IP ↔ port ↔ domain ↔ cert correlation.</p><div class="meta">Python · stdlib</div></a>
+      <a class="tool" href="https://github.com/ynsmroztas/InspectJS" target="_blank" rel="noopener"><div class="top"><h3>JSHunter / InspectJS</h3><span class="pill">recon</span></div><p>JavaScript discovery and sink / secret pass.</p><div class="meta">Python</div></a>
+      <a class="tool" href="https://github.com/ynsmroztas" target="_blank" rel="noopener"><div class="top"><h3>WebProbe v2</h3><span class="pill">scanner</span></div><p>HTTP probe, fingerprint, JSONL.</p><div class="meta">Python · stdlib</div></a>
     </div>
   </main>
   <footer>
