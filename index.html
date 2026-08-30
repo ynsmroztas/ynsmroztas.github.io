@@ -4,7 +4,6 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>mitsec — AndroScope / Yunus Emre Öztaş</title>
-  <meta name="description" content="AndroScope is a rootless Android pentest framework by ynsmroztas / mitsec."/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
@@ -24,7 +23,7 @@
         <a href="tools.html">Tools</a>
         <a href="writeups.html">Writeups</a>
         <a href="research.html">Research</a>
-        <a class="cta" href="oauth-scheme.html">Field case</a>
+        <a class="cta" href="writeups.html">Field cases</a>
       </nav>
       <button class="burger" data-burger aria-label="Menu">☰</button>
     </div>
@@ -42,7 +41,7 @@
         <p class="sub">Rootless Android pentest framework by <strong>Yunus Emre Öztaş</strong> (@ynsmroztas / mitsec). Map a target once. Audit the surface. Drive a live session while you actually use the app.</p>
         <div class="row">
           <a class="btn" href="androscope.html">Open the instrument →</a>
-          <a class="btn ghost" href="oauth-scheme.html">Latest field case</a>
+          <a class="btn ghost" href="writeups.html">Field cases</a>
         </div>
       </div>
       <div class="hero-scope reveal d2">
@@ -72,20 +71,27 @@
       <div class="stat"><b>12+</b><span>Years exp</span></div>
     </div>
     <section>
-      <p class="h-k">Field case</p>
-      <h2>Custom scheme, no PKCE.</h2>
-      <p class="lead">AndroScope on an authorized lab build of <code>com.vulnapp.portal</code>. OAuth came back on an unverified custom scheme. The authorize URL had no code_challenge. Vendor names stripped.</p>
-      <a class="tool" href="oauth-scheme.html" style="margin-top:16px;max-width:560px">
-        <div class="top"><h3>Read the redacted case</h3><span class="pill">mobile</span></div>
-        <p>What the session transcript showed, why the two issues stack, and the fix — without a public exploit kit.</p>
-        <div class="meta">2026 · writeup</div>
-      </a>
+      <p class="h-k">Field cases</p>
+      <h2>AndroScope, in the field.</h2>
+      <p class="lead">Authorized lab builds. Vendor names stripped. No public exploit kit.</p>
+      <div class="tools" style="margin-top:16px">
+        <a class="tool" href="creds-query.html">
+          <div class="top"><h3>Password in the query string</h3><span class="pill">mobile</span></div>
+          <p>RN login put the password in the URL. The error SDK copied it. <code>com.labnet.console</code>.</p>
+          <div class="meta">2026 · redacted</div>
+        </a>
+        <a class="tool" href="oauth-scheme.html">
+          <div class="top"><h3>Custom scheme, no PKCE</h3><span class="pill">mobile</span></div>
+          <p>OAuth returned on an unverified scheme with no code_challenge. <code>com.vulnapp.portal</code>.</p>
+          <div class="meta">2026 · redacted</div>
+        </a>
+      </div>
     </section>
   </main>
   <div class="marquee">
     <div class="marquee-track">
-      <span>APPLE</span><span>MICROSOFT</span><span>META</span><span>IBM</span><span>INTIGRITI</span><span>YESWEHACK</span><span>BUGCROWD</span><span>HACKERONE</span><span>T-MOBILE</span><span>SBB</span><span>TÜV RHEINLAND</span><span>HARMAN</span>
-      <span>APPLE</span><span>MICROSOFT</span><span>META</span><span>IBM</span><span>INTIGRITI</span><span>YESWEHACK</span><span>BUGCROWD</span><span>HACKERONE</span><span>T-MOBILE</span><span>SBB</span><span>TÜV RHEINLAND</span><span>HARMAN</span>
+      <span>APPLE</span><span>MICROSOFT</span><span>META</span><span>IBM</span><span>INTIGRITI</span><span>YESWEHACK</span><span>BUGCROWD</span><span>HACKERONE</span>
+      <span>APPLE</span><span>MICROSOFT</span><span>META</span><span>IBM</span><span>INTIGRITI</span><span>YESWEHACK</span><span>BUGCROWD</span><span>HACKERONE</span>
     </div>
   </div>
   <main class="wrap">
@@ -93,24 +99,6 @@
       <p class="h-k">The instrument</p>
       <h2>One app, mapped end to end.</h2>
       <p class="lead">AndroScope is not a background spy APK. It is an operator console plus a target-side runtime.</p>
-      <div class="grid2">
-        <img class="shot" src="assets/img/hud.jpg" alt="AndroScope operator HUD mock"/>
-        <div>
-          <div class="card" style="margin-bottom:12px"><div class="tag">01 · PREPARE</div><h3>Surface before you touch the UI</h3><p>Manifest, components, schemas, DEX strings. Findings get FH-IDs.</p></div>
-          <div class="card" style="margin-bottom:12px"><div class="tag">02 · ASSESS</div><h3>Radar, not a dump</h3><p>Risk is calibrated — one exported editor is not a critical RCE.</p></div>
-          <div class="card"><div class="tag">03 · RUNTIME</div><h3>You drive. The target is instrumented.</h3><p>Gadget lives inside the authorized lab build.</p></div>
-        </div>
-      </div>
-    </section>
-    <section>
-      <p class="h-k">Modules</p>
-      <h2>38+ purpose-built surfaces.</h2>
-      <div class="mods">
-        <div class="mod"><h4>Defense</h4><p>Pinning, RASP, Play Integrity — observed, not a universal kill-switch.</p></div>
-        <div class="mod"><h4>Traffic & secrets</h4><p>Request intercept, tokens, gRPC, keystore and prefs.</p></div>
-        <div class="mod"><h4>IPC & deeplinks</h4><p>Intent hunter, schema fuzzer, provider probe.</p></div>
-        <div class="mod"><h4>Native & niche</h4><p>.so tracer and bridges when the binary actually has them.</p></div>
-      </div>
       <p style="margin-top:22px"><a class="btn" href="androscope.html">Full technical writeup</a></p>
     </section>
   </main>
