@@ -4,7 +4,6 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Password in the query string — mitsec</title>
-  <meta name="description" content="Redacted AndroScope case: plaintext password in a login URL, then copied into a third-party error SDK breadcrumb."/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
@@ -15,6 +14,11 @@
     .term{background:#07090c;border:1px solid var(--line-2);border-radius:16px;padding:14px 16px;font-family:var(--mono);font-size:12px;line-height:1.55;color:#9fe7b8;overflow:auto;margin:16px 0 24px;white-space:pre-wrap}
     .term .dim{color:#6b7280}.term .hi{color:#fbbf24}.term .bad{color:#fb7185}.term .ok{color:#34d399}
     .tag-row{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 20px}
+    .phone-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:18px 0 32px;width:100%}
+    .phone-row figure{margin:0}
+    .phone-row img{display:block;width:100%;aspect-ratio:9/16;object-fit:cover;object-position:top;border-radius:22px;border:1px solid var(--line-2);background:#050608}
+    .phone-row figcaption{font-family:var(--mono);font-size:11px;color:var(--dim);margin-top:8px}
+    @media (max-width:700px){.phone-row{grid-template-columns:1fr}}
   </style>
   <script>(function(){try{var t=localStorage.getItem('mitsec-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 </head>
@@ -43,7 +47,7 @@
           <span class="chip">clk <span data-clock>--:--:--</span></span>
           <span class="chip">com.labnet.console</span>
         </div>
-        <p class="lead">AndroScope runtime on an authorized lab build. Vendor host, account, and SDK project IDs stripped. Original captures are not published.</p>
+        <p class="lead">AndroScope runtime on an authorized lab build. Original device frames rebuilt. Vendor host and secrets stripped.</p>
       </div>
       <div>
         <div class="scope mini-scope">
@@ -63,22 +67,28 @@
         <span class="chip">no root</span>
       </div>
       <h2>Summary</h2>
-      <p>Lab package <code>com.labnet.console</code> (build 4.x, React Native) sent the login as <code>POST</code> — but put <code>email</code> and the <strong>plaintext password</strong> in the <em>query string</em>, not the body. TLS was on. That is not the bug. The bug is that a high-value secret was placed in the one field every proxy, WAF, access log, and error SDK treats as safe metadata.</p>
-      <p>AndroScope watched the in-process React Native bridge while the operator tapped Sign in. The same full URL showed up in two other modules in that session: the error-monitoring SDK breadcrumb, and the cookie helper. Vendor names from the original program are not on this page.</p>
-      <div class="call">Class: secret in URL query. Transport: TLS. Consumers: first-party request logs + third-party error SDK. Fix: move fields into the POST body.</div>
+      <p>Lab package <code>com.labnet.console</code> sent login as <code>POST</code> but put <code>email</code> and the plaintext password in the query string. TLS was on. The secret still landed in logs and in a third-party error SDK breadcrumb.</p>
+      <div class="call">Class: secret in URL query. AndroScope saw it on the RN bridge before TLS. Fix: move fields into the POST body.</div>
+
+      <h2>Lab frames</h2>
+      <p>Rebuilt from the device captures. Same layout — status bar, yellow RN lines, keychain block, soft keyboard. Account and vendor host replaced.</p>
+      <div class="phone-row">
+        <figure>
+          <img src="assets/img/creds-bridge.svg" alt="Redacted AndroScope bridge capture"/>
+          <figcaption>Frame 1 — Sentry breadcrumb + keychain, password redacted</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/img/creds-url.svg" alt="Redacted login URL capture"/>
+          <figcaption>Frame 2 — POST login URL with password=[REDACTED]</figcaption>
+        </figure>
+      </div>
 
       <h2>What AndroScope printed</h2>
-      <p>Reconstructed frame. Real account, host, captcha token, and SDK ingest URL removed.</p>
       <pre class="term"><span class="dim">[RN-native]</span> NetworkingModule
-  POST  https://login.labnet.example/session/login<span class="bad">?email=lab.user%40example.com&password=[REDACTED]&remember_user=1</span>
+  POST  https://login.labnet.example/session/login<span class="bad">?email=lab.user%40example.com&password=[REDACTED]</span>
 
 <span class="dim">[RN-native]</span> error-sdk.Breadcrumb
-  method=POST
-  url=https://login.labnet.example/session/login<span class="bad">?email=…&password=[REDACTED]</span>
-  type=http
-
-<span class="dim">[RN-native]</span> CookieManagerModule
-  <span class="hi">same URL handed to the cookie helper</span>
+  url=…/session/login<span class="bad">?email=…&password=[REDACTED]</span>
 
 <span class="ok">[keychain]</span> setGenericPassword
   arg0=lab.user@example.com
@@ -87,35 +97,18 @@
 mitsec@com.labnet.console:</pre>
 
       <h2>Why the URL is the wrong place</h2>
-      <p>The request already declared <code>Content-Type: application/json</code>. The body was available and unused for these fields. Query strings are copied into access logs, load-balancer traces, WAF events, and — here — an HTTP breadcrumb the error SDK later ships with any event.</p>
-      <p>AndroScope did not need a proxy or a broken TLS stack. The values existed on the RN bridge <em>before</em> the socket. Empty log would have meant the operator never hit login. This log is the opposite.</p>
-
-      <h2>Two consumers in one session</h2>
+      <p>The request already declared JSON content-type. The body was unused. Query strings are copied into access logs, WAF events, and HTTP breadcrumbs.</p>
+      <h2>Two consumers</h2>
       <ol>
-        <li><strong>Error-monitoring SDK.</strong> Breadcrumb <code>url</code> was the raw login URL, password included. Whether a server-side scrubber later deletes it is a control on one consumer. It does not fix first-party request logs.</li>
-        <li><strong>Cookie helper.</strong> The same URL was passed into a module that has no reason to see a password.</li>
+        <li>Error-monitoring SDK breadcrumb <code>url</code> held the raw login URL.</li>
+        <li>Cookie helper received the same URL.</li>
       </ol>
-      <p>This page does not name the SDK project, ingest host, or hook the vendor’s production org. That stays in the private report.</p>
-
-      <h2>Impact (class)</h2>
-      <p>Anyone who can read URL logs — on the vendor side or inside the error project — can read the password of any user whose session produced a recorded request. Dashboard-class accounts often administer network gear. Treat the secret as high, even though the path is “just logging.”</p>
-
       <h2>Fix</h2>
       <ul>
-        <li>Move <code>email</code>, <code>password</code>, and <code>remember_user</code> into the POST body.</li>
-        <li>After that, the breadcrumb and cookie helper stop inheriting the secret for free.</li>
-        <li>Defence in depth: scrub the login path in the error SDK, and purge historical URL logs that already stored the parameter.</li>
+        <li>Move email, password, remember_user into the POST body.</li>
+        <li>Scrub the login path in the error SDK.</li>
+        <li>Purge historical URL logs that stored the parameter.</li>
       </ul>
-
-      <h2>Environment</h2>
-      <table>
-        <tbody>
-          <tr><td>Package</td><td><code>com.labnet.console</code> (redacted)</td></tr>
-          <tr><td>Framework</td><td>React Native</td></tr>
-          <tr><td>Runtime</td><td>AndroScope, gadget-in-target, unrooted</td></tr>
-          <tr><td>Account</td><td>Researcher lab account — rotated, not published</td></tr>
-        </tbody>
-      </table>
       <p class="meta" style="margin-top:40px">YUNUS EMRE ÖZTAŞ · MITSEC · LAB BUILD ONLY</p>
     </article>
   </main>
