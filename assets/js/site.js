@@ -1,4 +1,31 @@
 (function () {
+  if (!document.querySelector('link[rel="icon"]')) {
+    var ico = document.createElement("link");
+    ico.rel = "icon";
+    ico.type = "image/svg+xml";
+    ico.href = "assets/img/favicon.svg";
+    document.head.appendChild(ico);
+    var apple = document.createElement("link");
+    apple.rel = "apple-touch-icon";
+    apple.href = "assets/img/favicon.svg";
+    document.head.appendChild(apple);
+  }
+  var brand = document.querySelector(".brand");
+  if (brand && !brand.querySelector(".mark")) {
+    var img = document.createElement("img");
+    img.className = "mark";
+    img.src = "assets/img/favicon.svg";
+    img.alt = "AndroScope";
+    img.width = 28;
+    img.height = 28;
+    img.style.width = "28px";
+    img.style.height = "28px";
+    img.style.borderRadius = "7px";
+    brand.insertBefore(img, brand.firstChild);
+    var dot = brand.querySelector("i");
+    if (dot) dot.style.display = "none";
+  }
+
   const btn = document.querySelector("[data-burger]");
   const links = document.querySelector("[data-links]");
   if (btn && links) btn.addEventListener("click", function () { links.classList.toggle("open"); });
