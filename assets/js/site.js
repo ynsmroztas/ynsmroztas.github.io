@@ -1,30 +1,52 @@
 (function () {
-  if (!document.querySelector('link[rel="icon"]')) {
-    var ico = document.createElement("link");
-    ico.rel = "icon";
-    ico.type = "image/svg+xml";
-    ico.href = "assets/img/favicon.svg";
-    document.head.appendChild(ico);
-    var apple = document.createElement("link");
-    apple.rel = "apple-touch-icon";
-    apple.href = "assets/img/favicon.svg";
-    document.head.appendChild(apple);
+  function cssVar(name, fallback) {
+    var v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    return v || fallback;
   }
-  var brand = document.querySelector(".brand");
-  if (brand && !brand.querySelector(".mark")) {
-    var img = document.createElement("img");
-    img.className = "mark";
-    img.src = "assets/img/favicon.svg";
-    img.alt = "AndroScope";
-    img.width = 28;
-    img.height = 28;
-    img.style.width = "28px";
-    img.style.height = "28px";
-    img.style.borderRadius = "7px";
-    brand.insertBefore(img, brand.firstChild);
-    var dot = brand.querySelector("i");
-    if (dot) dot.style.display = "none";
+
+  function markSvg(ph) {
+    return '<svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="16" y="24" text-anchor="middle" font-family="Syne,Arial Black,sans-serif" font-weight="800" font-size="16" fill="' + ph + '">A</text><circle cx="16" cy="12.5" r="5.2" stroke="' + ph + '" stroke-width="1.3"/><path d="M16 8.4v8.2M11.8 12.5h8.4" stroke="' + ph + '" stroke-width=".9"/><circle cx="16" cy="12.5" r="1.1" fill="' + ph + '"/></svg>';
   }
+
+  function favSvg(ph, ink) {
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="' + ink + '"/><text x="32" y="46" text-anchor="middle" font-family="Syne,Arial Black,sans-serif" font-weight="800" font-size="34" fill="' + ph + '">A</text><circle cx="32" cy="28" r="11" fill="none" stroke="' + ph + '" stroke-width="1.8"/><path d="M32 19.5v17 M23.5 28h17" stroke="' + ph + '" stroke-width="1.3"/><circle cx="32" cy="28" r="2" fill="' + ph + '"/></svg>';
+  }
+
+  function paintBrand() {
+    var ph = cssVar("--ph", "#7cffb2");
+    var ink = cssVar("--ink", "#06070a");
+    var brand = document.querySelector(".brand");
+    if (brand) {
+      var mark = brand.querySelector(".mark");
+      if (!mark) {
+        mark = document.createElement("span");
+        mark.className = "mark";
+        brand.insertBefore(mark, brand.firstChild);
+      }
+      mark.innerHTML = markSvg(ph);
+      var dot = brand.querySelector("i");
+      if (dot) dot.style.display = "none";
+    }
+    var href = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(favSvg(ph, ink));
+    var ico = document.querySelector('link[rel="icon"]');
+    if (!ico) {
+      ico = document.createElement("link");
+      ico.rel = "icon";
+      ico.type = "image/svg+xml";
+      document.head.appendChild(ico);
+    }
+    ico.href = href;
+    var apple = document.querySelector('link[rel="apple-touch-icon"]');
+    if (!apple) {
+      apple = document.createElement("link");
+      apple.rel = "apple-touch-icon";
+      document.head.appendChild(apple);
+    }
+    apple.href = href;
+  }
+
+  paintBrand();
+  window.addEventListener("mitsec-theme", paintBrand);
 
   const btn = document.querySelector("[data-burger]");
   const links = document.querySelector("[data-links]");
