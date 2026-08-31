@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>SDK proxy activity — mitsec</title>
+  <meta name="description" content="Field note: a third-party AAR exported a proxy activity that starts a nested Intent as the host app."/>
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml"/>
+  <link rel="stylesheet" href="assets/css/site.css?v=8"/>
+  <link rel="stylesheet" href="assets/css/theme.css?v=8"/>
+  <link rel="stylesheet" href="assets/css/live.css?v=8"/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+  <style>.term{background:#07090c;border:1px solid var(--line-2);border-radius:16px;padding:14px 16px;font-family:var(--mono);font-size:12px;line-height:1.55;color:#9fe7b8;white-space:pre-wrap}.term .dim{color:#6b7280}.term .hi{color:#fbbf24}.term .bad{color:#fb7185}.term .ok{color:#34d399}.tag-row{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 20px}</style>
+  <script>(function(){try{var t=localStorage.getItem('mitsec-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body>
+  <div class="bg"></div>
+  <header class="nav"><div class="wrap nav-in"><a class="brand" href="index.html"><i></i><b>mit</b> <span>sec</span></a><nav class="links" data-links><a href="index.html">Home</a><a href="androscope.html">AndroScope</a><a href="tools.html">Tools</a><a class="on" href="writeups.html">Writeups</a><a href="research.html">Research</a></nav><button class="burger" data-burger aria-label="Menu">☰</button></div></header>
+  <main class="wrap">
+    <section class="page-hero slim">
+      <div>
+        <p class="meta">WRITEUP · MOBILE · SDK · 2026 · @YNSMROZTAS</p>
+        <h1>The SDK exported the proxy</h1>
+        <div class="livebar"><span class="chip on">● live</span><span class="chip">clk <span data-clock>--:--:--</span></span><span class="chip">lab.engage:core:4.x</span></div>
+        <p class="lead">Host app looks clean. The AAR merged an exported ProxyActivity that starts a nested Intent as the host.</p>
+      </div>
+      <div><div class="scope mini-scope"><canvas data-radar></canvas><div class="beam"></div><div class="ring"></div><div class="scanline"></div><div class="scope-hud"><div class="top"><span>aar // live</span><span>merged</span></div><div class="bot"><span>radar</span><span data-clock>--:--:--</span></div></div></div></div>
+    </section>
+    <article class="prose">
+      <div class="tag-row"><span class="chip on">AndroScope</span><span class="chip">SDK</span><span class="chip">merged manifest</span><span class="chip">lab</span></div>
+      <div class="skel">
+        <article><b>01 Problem</b><p>The host did not export a router. The dependency did.</p></article>
+        <article><b>02 Move</b><p>Merged manifest + DEX on the authorized lab APK.</p></article>
+        <article><b>03 Evidence</b><p>lab.engage.ProxyActivity exported. Extra Intent → startActivity.</p></article>
+        <article><b>04 Outcome</b><p>Bump the AAR. tools:node="remove" the activity. Do not wait for targetSdk.</p></article>
+      </div>
+      <h2>Summary</h2>
+      <p>Lab package <code>com.vulnapp.portal</code> ships <code>lab.engage:core:4.x</code> for in-app messaging. The host’s own activities are not exported. The merged manifest still contains <code>lab.engage.ProxyActivity</code> with <code>exported=true</code>. That activity reads a nested Intent extra and calls <code>startActivity</code>. The launch identity is the portal — not the SDK vendor.</p>
+      <p>This is the same sink as the Intent-redirection note. The difference is ownership. The developer never wrote the router. Play / program reports that only scan first-party package names miss it.</p>
+      <div class="call">Class: third-party exported proxy. Vendor names from the 2026 public SDK cases are not used here. No AAR dump.</div>
+      <figure class="media-full" style="aspect-ratio:auto"><img src="assets/img/sdk-proxy-term.svg" alt="Redacted SDK proxy observer" style="aspect-ratio:16/7;object-fit:cover"/><figcaption>Merged component printed. Nested extra not.</figcaption></figure>
+      <h2>What AndroScope printed</h2>
+      <pre class="term"><span class="ok">[sdk]</span> artifact lab.engage:core:4.x
+<span class="bad">[sdk]</span> exported: lab.engage.ProxyActivity
+<span class="bad">[sdk]</span> extra payload Intent → startActivity as host
+<span class="hi">[sdk]</span> host app targetSdk 35 — still inherits the export
+
+<span class="dim">no AAR dump on this page</span>
+<span class="ok">mitsec@com.vulnapp.portal:</span></pre>
+      <h2>Why targetSdk 35 does not save you</h2>
+      <p>Safer Intents is a platform default on 16 when the <em>host</em> targets 36. A 35 host on a 16 device still launches the nested object. Even on 36, an SDK that calls the opt-out puts the hole back. The merge is the finding; the API level is a modifier.</p>
+      <h2>Fix</h2>
+      <ul>
+        <li>Upgrade the artifact until the activity is not exported. Confirm in the merged manifest, not in the vendor changelog.</li>
+        <li>Until then, <code>tools:node="remove"</code> that activity in the host manifest if the product still works.</li>
+        <li>Inventory every <code>exported=true</code> that is not in your source tree.</li>
+        <li>Report it as a host issue. The UID that will be abused is yours.</li>
+      </ul>
+      <p class="meta" style="margin-top:40px">YUNUS EMRE ÖZTAŞ · MITSEC · LAB BUILD ONLY</p>
+    </article>
+  </main>
+  <footer><div class="wrap foot"><div>© 2026 Yunus Emre Öztaş — mitsec</div><div><a href="writeups.html">Writeups</a></div></div></footer>
+  <script src="assets/js/theme.js?v=8"></script><script src="assets/js/site.js?v=8"></script>
+</body></html>

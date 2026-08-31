@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>WebView intent:// — mitsec</title>
+  <meta name="description" content="Field note: WebView shouldOverrideUrlLoading parsed intent:// and called startActivity."/>
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml"/>
+  <link rel="stylesheet" href="assets/css/site.css?v=8"/>
+  <link rel="stylesheet" href="assets/css/theme.css?v=8"/>
+  <link rel="stylesheet" href="assets/css/live.css?v=8"/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+  <style>.term{background:#07090c;border:1px solid var(--line-2);border-radius:16px;padding:14px 16px;font-family:var(--mono);font-size:12px;line-height:1.55;color:#9fe7b8;white-space:pre-wrap}.term .dim{color:#6b7280}.term .hi{color:#fbbf24}.term .bad{color:#fb7185}.term .ok{color:#34d399}.tag-row{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 20px}</style>
+  <script>(function(){try{var t=localStorage.getItem('mitsec-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body>
+  <div class="bg"></div>
+  <header class="nav"><div class="wrap nav-in"><a class="brand" href="index.html"><i></i><b>mit</b> <span>sec</span></a><nav class="links" data-links><a href="index.html">Home</a><a href="androscope.html">AndroScope</a><a href="tools.html">Tools</a><a class="on" href="writeups.html">Writeups</a><a href="research.html">Research</a></nav><button class="burger" data-burger aria-label="Menu">☰</button></div></header>
+  <main class="wrap">
+    <section class="page-hero slim">
+      <div>
+        <p class="meta">WRITEUP · MOBILE · WEBVIEW · 2026 · @YNSMROZTAS</p>
+        <h1>WebView, intent://</h1>
+        <div class="livebar"><span class="chip on">● live</span><span class="chip">clk <span data-clock>--:--:--</span></span><span class="chip">com.vulnapp.portal</span></div>
+        <p class="lead">shouldOverrideUrlLoading parsed the URL as an Intent and started it. https was not required.</p>
+      </div>
+      <div><div class="scope mini-scope"><canvas data-radar></canvas><div class="beam"></div><div class="ring"></div><div class="scanline"></div><div class="scope-hud"><div class="top"><span>wv // live</span><span>parseUri</span></div><div class="bot"><span>radar</span><span data-clock>--:--:--</span></div></div></div></div>
+    </section>
+    <article class="prose">
+      <div class="tag-row"><span class="chip on">AndroScope</span><span class="chip">WebView</span><span class="chip">intent://</span><span class="chip">lab</span></div>
+      <div class="skel">
+        <article><b>01 Problem</b><p>A page inside the WebView could ask the app to start an Intent.</p></article>
+        <article><b>02 Move</b><p>Hook the client override on an authorized lab build.</p></article>
+        <article><b>03 Evidence</b><p>Intent.parseUri(url) → startActivity. intent:// accepted.</p></article>
+        <article><b>04 Outcome</b><p>Allow https only. Never parseUri a document URL into startActivity.</p></article>
+      </div>
+      <h2>Summary</h2>
+      <p>Lab package <code>com.vulnapp.portal</code> used a WebView as the help / checkout surface. <code>shouldOverrideUrlLoading</code> took the incoming URL, called <code>Intent.parseUri</code>, and <code>startActivity</code> on the result. <code>intent://</code> was not rejected. File-from-file access was off — that is a different class. This class is the bridge from document URL to IPC.</p>
+      <p>A page the WebView will render — open redirect, compromised CDN, or an in-app tab the user did not expect — can now name a component inside the portal. Non-exported activities become reachable because the WebView process is the portal.</p>
+      <div class="call">Class: WebView URL → parseUri → startActivity. Distinct from the exported deeplink gate. No intent:// body on this page.</div>
+      <figure class="media-full" style="aspect-ratio:auto"><img src="assets/img/webview-intent-term.svg" alt="Redacted WebView observer" style="aspect-ratio:16/7;object-fit:cover"/><figcaption>Sink printed. URL body not.</figcaption></figure>
+      <h2>What AndroScope printed</h2>
+      <pre class="term"><span class="ok">[webview]</span> shouldOverrideUrlLoading
+<span class="bad">[webview]</span> Intent.parseUri(url) → startActivity
+<span class="bad">[webview]</span> scheme intent:// accepted
+<span class="hi">[webview]</span> file-from-file / universal access: off
+
+<span class="dim">no intent:// body on this page</span>
+<span class="ok">mitsec@com.vulnapp.portal:</span></pre>
+      <h2>Why this is not “just a deeplink”</h2>
+      <p>The exported gate in the other note needs an implicit Intent from another package. This sink needs a URL the WebView will load. Origin can be a redirect the app already follows. The attacker does not have to win the intent-filter race.</p>
+      <p><code>parseUri</code> rebuilds extras, flags, and a component. A host allowlist on <code>https</code> does not apply after the scheme check is skipped.</p>
+      <h2>Fix</h2>
+      <ul>
+        <li>Override: allow <code>https</code> (and your App Link host) only. Return false / load yourself.</li>
+        <li>Never <code>parseUri</code> a document URL into <code>startActivity</code>.</li>
+        <li>If you must open a native screen from JS, use an explicit, hard-coded component and a typed bridge. Not a URL.</li>
+        <li>Keep file-from-file and universal access off. That is table stakes, not this finding.</li>
+      </ul>
+      <p class="meta" style="margin-top:40px">YUNUS EMRE ÖZTAŞ · MITSEC · LAB BUILD ONLY</p>
+    </article>
+  </main>
+  <footer><div class="wrap foot"><div>© 2026 Yunus Emre Öztaş — mitsec</div><div><a href="writeups.html">Writeups</a></div></div></footer>
+  <script src="assets/js/theme.js?v=8"></script><script src="assets/js/site.js?v=8"></script>
+</body></html>
