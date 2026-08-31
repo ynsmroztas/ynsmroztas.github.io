@@ -2,6 +2,12 @@
   if (document.querySelector(".skel")) return;
   var file = (location.pathname.split("/").pop() || "index.html");
   var map = {
+    "wallet-link.html": [
+      ["01 Problem", "Static PIN client id plus an unlink that resets merchant eligibility."],
+      ["02 Move", "Public-artifact review plus lab posture. No charge."],
+      ["03 Evidence", "Client id accepted. Linking had no bot gate. App ran on a spoofed handset fingerprint."],
+      ["04 Outcome", "Rotate the id. Persist pay-state. Step-up on unlink."]
+    ],
     "intent-redir.html": [
       ["01 Problem", "Exported router started a nested Intent extra as itself."],
       ["02 Move", "Manifest + sink on an authorized lab build."],
