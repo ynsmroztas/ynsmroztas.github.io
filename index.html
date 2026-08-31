@@ -8,9 +8,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="assets/css/site.css?v=6"/>
-  <link rel="stylesheet" href="assets/css/theme.css?v=6"/>
-  <link rel="stylesheet" href="assets/css/live.css?v=6"/>
+  <link rel="stylesheet" href="assets/css/site.css?v=7"/>
+  <link rel="stylesheet" href="assets/css/theme.css?v=7"/>
+  <link rel="stylesheet" href="assets/css/live.css?v=7"/>
   <script>(function(){try{var t=localStorage.getItem('mitsec-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 </head>
 <body class="home">
@@ -30,54 +30,49 @@
     </div>
   </header>
   <main class="wrap">
-    <section class="hero stage-hero">
-      <div class="hero-copy reveal">
-        <div class="kicker">live wire · redacted field notes</div>
-        <h1 class="wordmark">FIELD <em>CASES</em></h1>
-        <div class="livebar">
-          <span class="chip on">● now reading</span>
-          <span class="chip">clk <span data-clock>--:--:--</span></span>
-          <span class="chip">4 notes on the wire</span>
-        </div>
-        <p class="sub">Yunus Emre Öztaş — mitsec. Tokens left in JS. Passwords in query strings. Custom schemes without PKCE. mTLS on the device. Names and hosts stripped.</p>
-        <div class="row">
-          <a class="btn" href="writeups.html">Open the wire →</a>
-          <a class="btn ghost" href="androscope.html">AndroScope</a>
-        </div>
+    <section class="wire-head reveal">
+      <div class="kicker">live wire · redacted field notes</div>
+      <h1 class="wordmark wire-title">FIELD <em>CASES</em></h1>
+      <div class="livebar">
+        <span class="chip on">● now reading</span>
+        <span class="chip">clk <span data-clock>--:--:--</span></span>
+        <span class="chip">4 notes on the wire</span>
       </div>
-      <div class="hero-scope reveal d2">
-        <a class="stage" data-stage href="jwt-hardcoded.html">
-          <div class="stage-hud">
-            <span class="chip on">● live case</span>
-            <span class="chip" data-stage-pill>web</span>
-            <span class="chip" data-stage-idx>01 / 04</span>
-          </div>
-          <h2 data-stage-title>Hardcoded Entra token in public JS</h2>
-          <p data-stage-blurb>Employee JWT with Admin role left in a dated dashboard bundle.</p>
-          <div class="stage-foot">
-            <span data-stage-meta>2026 · redacted</span>
-            <span>read →</span>
-          </div>
-          <div class="stage-scan"></div>
-        </a>
-        <div class="dots" data-stage-dots></div>
-        <div class="console" data-console></div>
+      <p class="sub">Yunus Emre Öztaş — mitsec. Tokens left in JS. Passwords in the query. Custom schemes without PKCE. mTLS on the device.</p>
+      <div class="row">
+        <a class="btn" href="writeups.html">Open the wire →</a>
+        <a class="btn ghost" href="androscope.html">AndroScope</a>
       </div>
     </section>
-  </main>
-  <div class="rail-wrap">
-    <div class="case-rail" data-rail>
-      <a class="rail-card" href="jwt-hardcoded.html"><i>01</i><b>Hardcoded Entra JWT</b><span>public JS · Admin role</span></a>
-      <a class="rail-card" href="creds-query.html"><i>02</i><b>Password in the query</b><span>RN bridge · error SDK</span></a>
-      <a class="rail-card" href="oauth-scheme.html"><i>03</i><b>Custom scheme, no PKCE</b><span>OAuth redirect intercept</span></a>
-      <a class="rail-card" href="mtls-lab.html"><i>04</i><b>mTLS on the device</b><span>PKCS12 vs KeyStore</span></a>
-      <a class="rail-card" href="jwt-hardcoded.html"><i>01</i><b>Hardcoded Entra JWT</b><span>public JS · Admin role</span></a>
-      <a class="rail-card" href="creds-query.html"><i>02</i><b>Password in the query</b><span>RN bridge · error SDK</span></a>
-      <a class="rail-card" href="oauth-scheme.html"><i>03</i><b>Custom scheme, no PKCE</b><span>OAuth redirect intercept</span></a>
-      <a class="rail-card" href="mtls-lab.html"><i>04</i><b>mTLS on the device</b><span>PKCS12 vs KeyStore</span></a>
-    </div>
-  </div>
-  <main class="wrap">
+    <section class="cover-sec reveal d2">
+      <div class="coverflow" data-cover>
+        <a class="cover-card" href="jwt-hardcoded.html" data-cover-card>
+          <span class="pill">web · 01</span>
+          <h2 class="title3d">Hardcoded <em>Entra JWT</em></h2>
+          <p>Employee token with Admin role left in a dated public bundle.</p>
+          <b>read →</b>
+        </a>
+        <a class="cover-card" href="creds-query.html" data-cover-card>
+          <span class="pill">mobile · 02</span>
+          <h2 class="title3d">Password in the <em>query</em></h2>
+          <p>RN login put the secret in the URL. The error SDK copied it.</p>
+          <b>read →</b>
+        </a>
+        <a class="cover-card" href="oauth-scheme.html" data-cover-card>
+          <span class="pill">mobile · 03</span>
+          <h2 class="title3d">Custom scheme, <em>no PKCE</em></h2>
+          <p>Unverified OAuth redirect plus no code_challenge.</p>
+          <b>read →</b>
+        </a>
+        <a class="cover-card" href="mtls-lab.html" data-cover-card>
+          <span class="pill">mobile · 04</span>
+          <h2 class="title3d">mTLS on the <em>device</em></h2>
+          <p>Software PKCS12 versus AndroidKeyStore. Observer only.</p>
+          <b>read →</b>
+        </a>
+      </div>
+      <div class="dots" data-cover-dots></div>
+    </section>
     <div class="stats">
       <div class="stat"><b>100+</b><span>HoF entries</span></div>
       <div class="stat"><b>2430+</b><span>Vulns reported</span></div>
@@ -86,29 +81,12 @@
     </div>
     <section>
       <p class="h-k">On the wire</p>
-      <h2>Tap a case. The log is already moving.</h2>
-      <p class="lead">Every card is a redacted field note. Vendor names out. Method in.</p>
+      <h2>Every card is a redacted field note.</h2>
       <div class="tools case-grid" style="margin-top:16px">
-        <a class="tool pulse" href="jwt-hardcoded.html">
-          <div class="top"><h3>Hardcoded Entra token in public JS</h3><span class="pill">web</span></div>
-          <p>Employee JWT with Admin role left in a dated dashboard bundle.</p>
-          <div class="meta">2026 · redacted · live</div>
-        </a>
-        <a class="tool pulse d2" href="creds-query.html">
-          <div class="top"><h3>Password in the query string</h3><span class="pill">mobile</span></div>
-          <p>RN login put the password in the URL. Error SDK copied it.</p>
-          <div class="meta">2026 · redacted · live</div>
-        </a>
-        <a class="tool pulse d3" href="oauth-scheme.html">
-          <div class="top"><h3>Custom scheme, no PKCE</h3><span class="pill">mobile</span></div>
-          <p>Unverified OAuth redirect plus no code_challenge.</p>
-          <div class="meta">2026 · redacted · live</div>
-        </a>
-        <a class="tool pulse d4" href="mtls-lab.html">
-          <div class="top"><h3>mTLS on the device</h3><span class="pill">mobile</span></div>
-          <p>Defense module. Software PKCS12 vs AndroidKeyStore.</p>
-          <div class="meta">2026 · field note · live</div>
-        </a>
+        <a class="tool" href="jwt-hardcoded.html"><div class="top"><h3>Hardcoded Entra token in public JS</h3><span class="pill">web</span></div><p>Employee JWT with Admin role left in a dated dashboard bundle.</p><div class="meta">2026 · redacted</div></a>
+        <a class="tool" href="creds-query.html"><div class="top"><h3>Password in the query string</h3><span class="pill">mobile</span></div><p>RN login put the password in the URL. Error SDK copied it.</p><div class="meta">2026 · redacted</div></a>
+        <a class="tool" href="oauth-scheme.html"><div class="top"><h3>Custom scheme, no PKCE</h3><span class="pill">mobile</span></div><p>Unverified OAuth redirect plus no code_challenge.</p><div class="meta">2026 · redacted</div></a>
+        <a class="tool" href="mtls-lab.html"><div class="top"><h3>mTLS on the device</h3><span class="pill">mobile</span></div><p>Defense module. Software PKCS12 vs AndroidKeyStore.</p><div class="meta">2026 · field note</div></a>
       </div>
     </section>
   </main>
@@ -122,7 +100,7 @@
     <section>
       <p class="h-k">The instrument</p>
       <h2>AndroScope still sits under the wire.</h2>
-      <p class="lead">Operator console plus a runtime inside an authorized lab build. The cases above are what that work looks like on paper.</p>
+      <p class="lead">Operator console plus a runtime inside an authorized lab build.</p>
       <p style="margin-top:22px"><a class="btn ghost" href="androscope.html">Full technical writeup</a></p>
     </section>
   </main>
@@ -132,7 +110,7 @@
       <div>m.i.t@mit.tc · <a href="https://github.com/ynsmroztas">GitHub</a> · <a href="https://x.com/ynsmroztas">X</a></div>
     </div>
   </footer>
-  <script src="assets/js/theme.js?v=6"></script>
-  <script src="assets/js/site.js?v=6"></script>
+  <script src="assets/js/theme.js?v=7"></script>
+  <script src="assets/js/site.js?v=7"></script>
 </body>
 </html>
