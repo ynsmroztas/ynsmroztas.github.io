@@ -235,9 +235,9 @@
   }
 
   const lines = [
-    ["hi", "[WIRE] hardcoded JWT · public JS · Admin role"],
-    ["ok", "[WIRE] query-string password · RN bridge"],
-    ["ok", "[WIRE] custom scheme · missing PKCE"],
+    ["hi", "[WIRE] wallet link · static client id"],
+    ["ok", "[WIRE] intent redirect · FileProvider · WebView"],
+    ["ok", "[WIRE] hardcoded JWT · query-string password"],
     ["dim", "[WIRE] mTLS observer · PKCS12 vs KeyStore"],
     ["ok", "[REDACT] vendor host stripped"],
     ["ok", "[SCOPE] lab names only"]
@@ -266,4 +266,5 @@
   }
   loadExtra("assets/js/skel.js");
   loadExtra("assets/js/stats.js");
+  loadExtra("assets/js/pulse.js");
 })();
