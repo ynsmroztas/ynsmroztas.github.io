@@ -9,9 +9,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="assets/css/site.css?v=12"/>
-  <link rel="stylesheet" href="assets/css/theme.css?v=12"/>
-  <link rel="stylesheet" href="assets/css/live.css?v=12"/>
+  <link rel="stylesheet" href="assets/css/site.css?v=14"/>
+  <link rel="stylesheet" href="assets/css/theme.css?v=14"/>
+  <link rel="stylesheet" href="assets/css/live.css?v=14"/>
   <script>(function(){try{var t=localStorage.getItem('mitsec-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 </head>
 <body>
@@ -52,10 +52,13 @@
       </div>
     </section>
     <div class="ticker"><div class="ticker-track">
-      <span>conscrypt store</span><span>wallet link</span><span>intent redirect</span><span>FileProvider</span><span>WebView intent://</span><span>SDK proxy</span><span>deeplink auth</span>
-      <span>conscrypt store</span><span>wallet link</span><span>intent redirect</span><span>FileProvider</span><span>WebView intent://</span><span>SDK proxy</span><span>deeplink auth</span>
+      <span>provider sqli</span><span>dex load</span><span>js bridge</span><span>conscrypt store</span><span>wallet link</span><span>intent redirect</span>
+      <span>provider sqli</span><span>dex load</span><span>js bridge</span><span>conscrypt store</span><span>wallet link</span><span>intent redirect</span>
     </div></div>
     <div class="tools" style="margin:8px 0 72px">
+      <a class="tool" href="provider-sqli.html"><div class="top"><h3>Provider selection is SQL</h3><span class="pill">sqli</span></div><p>Exported ContentProvider glued selection into the query. Bind args unused.</p><div class="meta">2026 · field note · lab</div></a>
+      <a class="tool" href="dex-load.html"><div class="top"><h3>DEX from a writable path</h3><span class="pill">rce</span></div><p>Loader mapped a file the extract path could overwrite. No payload DEX.</p><div class="meta">2026 · field note · lab</div></a>
+      <a class="tool" href="jsbridge-rce.html"><div class="top"><h3>Bridge on the wrong origin</h3><span class="pill">rce</span></div><p>addJavascriptInterface on a WebView that later loaded an extra URL.</p><div class="meta">2026 · field note · lab</div></a>
       <a class="tool" href="conscrypt-mainline.html"><div class="top"><h3>Conscrypt owns the CA list</h3><span class="pill">tls</span></div><p>Mainline APEX store wins. User CA is a spectator. Observer only.</p><div class="meta">2026 · field note · lab</div></a>
       <a class="tool" href="wallet-link.html"><div class="top"><h3>Wallet link, static client id</h3><span class="pill">fintech</span></div><p>Static PIN client id, empty bot gate, unlink reset, emulator posture. Vendor stripped.</p><div class="meta">2026 · field case · redacted</div></a>
       <a class="tool" href="intent-redir.html"><div class="top"><h3>Intent redirection</h3><span class="pill">mobile</span></div><p>Exported router starts a nested Intent. Safer Intents not armed.</p><div class="meta">2026 · field case · lab</div></a>
@@ -72,7 +75,7 @@
     </div>
   </main>
   <footer><div class="wrap foot"><div>© 2026 Yunus Emre Öztaş — mitsec</div><div>m.i.t@mit.tc</div></div></footer>
-  <script src="assets/js/theme.js?v=12"></script>
-  <script src="assets/js/site.js?v=12"></script>
+  <script src="assets/js/theme.js?v=14"></script>
+  <script src="assets/js/site.js?v=14"></script>
 </body>
 </html>
