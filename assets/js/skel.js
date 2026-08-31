@@ -4,7 +4,7 @@
   var map = {
     "creds-query.html": [
       ["01 Problem", "Login POST put email and the password in the query string."],
-      ["02 Move", "AndroScope hooked the RN networking bridge on an unrooted lab build."],
+      ["02 Move", "AndroScope hooked the RN networking bridge on an authorized lab build."],
       ["03 Evidence", "URL + error-SDK breadcrumb + keychain write. Password redacted here."],
       ["04 Outcome", "Move the fields into the POST body. Scrub the login path."]
     ],
@@ -25,6 +25,12 @@
       ["02 Move", "Read posture only. No connect, no shell."],
       ["03 Evidence", "CVE-2026-0073 class. Patch older than 2026-05-01."],
       ["04 Outcome", "Patch. Turn the feature off off-lab."]
+    ],
+    "deeplink-auth.html": [
+      ["01 Problem", "Exported deeplink gate forwarded raw extras into a private auth activity."],
+      ["02 Move", "Module 14 on an authorized lab build. Filter plus the runtime Intent."],
+      ["03 Evidence", "host=*. pathPrefix /auth. .AuthFlow not exported."],
+      ["04 Outcome", "Allowlist host and path. Do not start auth from raw extras."]
     ],
     "androscope.html": [
       ["01 Problem", "Public labs assume Magisk + USB frida-server."],
