@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 520" width="1280" height="520">
+  <rect width="1280" height="520" fill="#050608"/>
+  <rect width="1280" height="36" fill="#12151c"/>
+  <circle cx="18" cy="18" r="6" fill="#fb7185"/><circle cx="38" cy="18" r="6" fill="#fbbf24"/><circle cx="58" cy="18" r="6" fill="#34d399"/>
+  <text x="84" y="23" fill="#6b7280" font-family="ui-monospace,Menlo,monospace" font-size="12">mitsec — intent redirect</text>
+  <g font-family="ui-monospace,Menlo,monospace" font-size="14">
+    <text x="24" y="80" fill="#7cffb2">[intent] exported: .RouterActivity</text>
+    <text x="24" y="108" fill="#fb7185">[intent] extra android.intent.extra.INTENT → Parcelable</text>
+    <text x="24" y="136" fill="#fb7185">[intent] sink startActivity(extra) — no component allowlist</text>
+    <text x="24" y="164" fill="#fbbf24">[intent] targetSdk 34 · Safer Intents not armed</text>
+    <text x="24" y="204" fill="#6b7280">no nested payload on this page</text>
+    <text x="24" y="244" fill="#34d399">mitsec@com.vulnapp.portal:</text>
+  </g>
+</svg>
