@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Provider selection is SQL — mitsec</title>
+  <meta name="description" content="AndroScope field note: exported ContentProvider concatenates selection. No payload on this page."/>
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml"/>
+  <link rel="stylesheet" href="assets/css/site.css?v=14"/>
+  <link rel="stylesheet" href="assets/css/theme.css?v=14"/>
+  <link rel="stylesheet" href="assets/css/live.css?v=14"/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+  <style>
+    .stills,.still{display:none!important}
+    .term{background:#07090c;border:1px solid var(--line-2);border-radius:16px;padding:14px 16px;font-family:var(--mono);font-size:12px;line-height:1.55;color:#9fe7b8;white-space:pre-wrap;margin:16px 0 24px}
+    .term .dim{color:#6b7280}.term .hi{color:#fbbf24}.term .ok{color:#34d399}.term .bad{color:#fb7185}
+    .diag{width:100%;border:1px solid var(--line-2);border-radius:18px;display:block;margin:12px 0 28px}
+    .tag-row{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 20px}
+    .wire-nav{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;margin:40px 0 8px;padding-top:22px;border-top:1px solid var(--line)}
+    .wire-nav a{border:1px solid var(--line-2);border-radius:14px;padding:12px 14px;background:var(--panel);color:inherit;display:flex;flex-direction:column;gap:4px;text-decoration:none}
+    .wire-nav em{font-style:normal;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ph)}
+    .wire-nav span{color:#fff;font-size:14px}.wire-nav .next{text-align:right}
+    .wire-nav .index{align-self:center;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+    @media(max-width:700px){.wire-nav{grid-template-columns:1fr}.wire-nav .next{text-align:left}}
+  </style>
+  <script>(function(){try{var t=localStorage.getItem('mitsec-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body>
+  <div class="bg"></div>
+  <header class="nav"><div class="wrap nav-in"><a class="brand" href="index.html"><i></i><b>mit</b> <span>sec</span></a><nav class="links" data-links><a href="index.html">Home</a><a href="androscope.html">AndroScope</a><a href="tools.html">Tools</a><a class="on" href="writeups.html">Writeups</a><a href="research.html">Research</a></nav><button class="burger" data-burger aria-label="Menu">☰</button></div></header>
+  <main class="wrap">
+    <section class="page-hero slim">
+      <div>
+        <p class="meta">WRITEUP · MOBILE · SQL · 2026 · @YNSMROZTAS</p>
+        <h1>Provider selection is SQL</h1>
+        <div class="livebar"><span class="chip on">● live</span><span class="chip">clk <span data-clock>--:--:--</span></span><span class="chip">module · B13</span></div>
+        <p class="lead">The exported provider took the caller's selection string and glued it into the query. Bind args never saw it.</p>
+      </div>
+      <div><div class="scope mini-scope"><canvas data-radar></canvas><div class="beam"></div><div class="ring"></div><div class="scanline"></div><div class="scope-hud"><div class="top"><span>sqli // live</span><span>observe</span></div><div class="bot"><span>radar</span><span data-clock>--:--:--</span></div></div></div></div>
+    </section>
+    <article class="prose">
+      <div class="tag-row"><span class="chip on">AndroScope</span><span class="chip">CWE-89</span><span class="chip">ContentProvider</span><span class="chip">lab only</span></div>
+      <h2>The trick</h2>
+      <p>Android <code>ContentProvider.query</code> looks like an API. Under it is SQLite. If the implementation concatenates <code>selection</code> or <code>sortOrder</code> into the statement instead of using <code>selectionArgs</code>, every caller who can reach that URI is speaking SQL with the provider's UID.</p>
+      <p>Lab package <code>lab.sample.app</code>. Authority <code>lab.sample.notes</code>. Exported. No read permission. Contacts-style stores on the platform fail the same way when a helper concatenates instead of binding.</p>
+      <svg class="diag" viewBox="0 0 860 240" role="img" aria-label="selection path">
+        <rect width="860" height="240" fill="#0b0d10" rx="18"/>
+        <rect x="36" y="50" width="200" height="80" rx="12" fill="#111827" stroke="#374151"/>
+        <text x="52" y="96" fill="#9ca3af" font-family="IBM Plex Mono,monospace" font-size="13">caller query()</text>
+        <rect x="330" y="50" width="200" height="80" rx="12" fill="#111827" stroke="#fb7185"/>
+        <text x="348" y="86" fill="#fb7185" font-family="IBM Plex Mono,monospace" font-size="13">selection +</text>
+        <text x="348" y="108" fill="#9ca3af" font-family="Sora,sans-serif" font-size="13">string glue</text>
+        <rect x="624" y="50" width="200" height="80" rx="12" fill="#111827" stroke="#7cffb2"/>
+        <text x="640" y="96" fill="#7cffb2" font-family="IBM Plex Mono,monospace" font-size="13">SQLite</text>
+        <text x="36" y="180" fill="#fbbf24" font-family="IBM Plex Mono,monospace" font-size="13">fix</text>
+        <text x="80" y="180" fill="#9ca3af" font-family="Sora,sans-serif" font-size="14">selectionArgs only. projection allowlist. un-export or perm-gate.</text>
+      </svg>
+      <pre class="term"><span class="dim">B</span>  APP ATTACK SURFACE
+<span class="ok">13</span>  Content Provider Probe          <span class="hi">★</span>
+
+<span class="hi">session — lab.sample.app</span>
+<span class="ok">[prov]</span> authority lab.sample.notes · exported
+<span class="bad">[prov]</span> query() selection concatenated
+<span class="dim">[prov]</span> selectionArgs unused on that path
+<span class="dim">[prov]</span> no rows printed on this page
+
+mitsec@lab.sample.app:</pre>
+      <h2>What AndroScope is allowed to say</h2>
+      <p>Module 13 on an authorized lab build: authority, exported flag, whether <code>selection</code> is forwarded raw. It does not print table dumps. Empty cursor means you did not hit that URI, not that the glue is safe.</p>
+      <div class="call">Class: CWE-89 through an exported provider. Same shape as platform contact-store bugs when helpers skip bind args. No tautology kit here.</div>
+      <h2>Fix</h2>
+      <ul>
+        <li>Every dynamic clause is a <code>?</code> plus <code>selectionArgs</code>.</li>
+        <li>Allowlist projection columns. Ignore caller <code>sortOrder</code> unless you parsed it.</li>
+        <li>Un-export the provider, or put a signature / dangerous permission on it.</li>
+        <li>Do not expose a notes / contacts / file-index URI to every UID on the device.</li>
+      </ul>
+      <p class="meta" style="margin-top:40px">YUNUS EMRE ÖZTAŞ · MITSEC · LAB BUILD ONLY</p>
+      <nav class="wire-nav" data-wire-nav>
+        <span></span>
+        <a class="index" href="writeups.html">all notes</a>
+        <a class="next" href="dex-load.html"><em>next</em><span>DEX from a writable path</span></a>
+      </nav>
+    </article>
+  </main>
+  <footer><div class="wrap foot"><div>© 2026 Yunus Emre Öztaş — mitsec</div><div><a href="writeups.html">Writeups</a></div></div></footer>
+  <script src="assets/js/theme.js?v=14"></script>
+  <script src="assets/js/site.js?v=14"></script>
+  <script src="assets/js/w.js"></script>
+</body></html>
