@@ -1,4 +1,5 @@
 /* site-wide life — theme tokens only */
+.stills{display:none!important;height:0!important;margin:0!important;overflow:hidden!important}
 .fx-grain,.fx-glow,.fx-orb{pointer-events:none}
 .fx-grain{position:fixed;inset:0;z-index:2;opacity:.07;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");animation:grain 1.2s steps(2) infinite}
 @keyframes grain{0%,100%{transform:translate(0,0)}50%{transform:translate(-2%,1%)}}
@@ -45,22 +46,11 @@
 .cass-reels b:last-child{animation-direction:reverse}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-.stills{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:8px 0 28px}
-.stills figure{margin:0}
-.still{position:relative;aspect-ratio:16/10;border-radius:16px;border:1px solid var(--line-2);overflow:hidden;background:#07090d}
-.still:before{content:"";position:absolute;inset:12%;border-radius:50%;border:1px solid rgba(var(--radar),.28)}
-.still i{position:absolute;width:7px;height:7px;border-radius:50%;background:var(--ph);box-shadow:0 0 10px var(--ph);animation:ping 2.4s ease-out infinite}
-.still.s1{background:radial-gradient(circle at 40% 45%,rgba(var(--radar),.18),#07090d 62%)}.still.s1 i{left:38%;top:42%}
-.still.s2{background:radial-gradient(circle at 62% 58%,rgba(var(--radar),.16),#07090d 62%)}.still.s2 i{left:60%;top:55%}
-.still.s3{background:radial-gradient(circle at 50% 30%,rgba(var(--radar),.2),#07090d 62%)}.still.s3 i{left:50%;top:28%}
-.stills figcaption{font-family:var(--mono);font-size:11px;color:var(--dim);margin-top:8px;letter-spacing:.1em;text-transform:uppercase}
-
 @media (prefers-reduced-motion:reduce){
-  .fx-grain,.fx-glow,.fx-orb,.scan,.tool:after,.chip.on,.wordmark em,.sig i,.cass-reels b,.still i{animation:none!important}
+  .fx-grain,.fx-glow,.fx-orb,.scan,.tool:after,.chip.on,.wordmark em,.sig i,.cass-reels b{animation:none!important}
   .tool:hover,.skill:hover{transform:none}
 }
 @media (max-width:700px){
   .fx-glow,.fx-orb{display:none}
   .fx-grain{opacity:.04}
-  .stills{grid-template-columns:1fr}
 }
