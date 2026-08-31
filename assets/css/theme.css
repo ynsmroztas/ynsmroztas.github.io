@@ -22,7 +22,8 @@ html,body{background:var(--ink);color:var(--sage)}
 .scope-hud{color:var(--ph)}
 .console{background:var(--ink-2);color:var(--body)}
 .themes{position:relative;margin-left:8px}
-.theme-orb{width:34px;height:34px;border-radius:50%;border:1px solid var(--line-2);background:radial-gradient(circle at 30% 30%,var(--ph),transparent 56%),var(--panel);cursor:pointer;box-shadow:0 0 16px var(--glow)}
+.theme-orb{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--ink-2);cursor:pointer;box-shadow:0 0 16px var(--glow);display:grid;place-items:center;padding:0}
+.theme-orb svg{width:22px;height:22px;display:block}
 .theme-pop{display:none;position:absolute;right:0;top:44px;z-index:80;width:280px;padding:12px;border-radius:16px;border:1px solid var(--line-2);background:var(--panel);box-shadow:0 24px 60px -24px rgba(0,0,0,.55)}
 .theme-pop.on{display:block}
 .theme-pop b{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:6px 4px 8px}
