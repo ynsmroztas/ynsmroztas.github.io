@@ -9,9 +9,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="assets/css/site.css?v=8"/>
-  <link rel="stylesheet" href="assets/css/theme.css?v=8"/>
-  <link rel="stylesheet" href="assets/css/live.css?v=8"/>
+  <link rel="stylesheet" href="assets/css/site.css?v=11"/>
+  <link rel="stylesheet" href="assets/css/theme.css?v=11"/>
+  <link rel="stylesheet" href="assets/css/live.css?v=11"/>
+  <style>.pgstat,[data-pgstat]{display:none!important;height:0!important;overflow:hidden!important;margin:0!important;padding:0!important}</style>
   <script>(function(){try{var t=localStorage.getItem('mitsec-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 </head>
 <body class="home">
@@ -94,13 +95,33 @@
       <p style="margin-top:22px"><a class="btn ghost" href="androscope.html">Full technical writeup</a></p>
     </section>
   </main>
+  <section class="xwire" data-xwire>
+    <div class="wrap" style="display:grid;grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr);gap:22px">
+      <div>
+        <p class="h-k">Live from X</p>
+        <h2>@ynsmroztas</h2>
+        <p class="lead">Threads and field notes from the timeline.</p>
+        <div class="xpicks" style="display:flex;flex-direction:column;gap:10px;margin-top:14px">
+          <a class="tool" href="https://x.com/ynsmroztas/status/2090748385657590217" target="_blank" rel="me noopener"><div class="top"><h3>OAuth scheme thread</h3><span class="pill">21 Aug</span></div><p>P2 ATO class: custom-scheme OAuth, no PKCE.</p></a>
+          <a class="tool" href="https://x.com/ynsmroztas/status/2074929881754833052" target="_blank" rel="me noopener"><div class="top"><h3>Android 0-days</h3><span class="pill">08 Jul</span></div><p>Sandbox escapes. AndroScope coming to GitHub.</p></a>
+          <a class="tool" href="https://x.com/ynsmroztas/status/2074933107325915329" target="_blank" rel="me noopener"><div class="top"><h3>AndroScope</h3><span class="pill">08 Jul</span></div><p>Rootless PREPARE → ASSESS → RUNTIME.</p></a>
+          <a class="btn ghost" href="https://x.com/ynsmroztas" target="_blank" rel="me noopener">Open X profile →</a>
+        </div>
+      </div>
+      <div class="xtimeline" style="min-height:420px;border:1px solid var(--line-2);border-radius:16px;overflow:hidden;background:#000">
+        <a class="twitter-timeline" data-theme="dark" data-height="520" data-chrome="noheader nofooter noborders transparent" href="https://x.com/ynsmroztas">Posts by @ynsmroztas</a>
+      </div>
+    </div>
+  </section>
   <footer>
     <div class="wrap foot">
       <div>© 2026 Yunus Emre Öztaş — mitsec</div>
       <div><a href="mailto:m.i.t@mit.tc">m.i.t@mit.tc</a></div>
     </div>
   </footer>
-  <script src="assets/js/theme.js?v=8"></script>
-  <script src="assets/js/site.js?v=8"></script>
+  <script src="assets/js/theme.js?v=11"></script>
+  <script src="assets/js/site.js?v=11"></script>
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  <script>document.querySelectorAll('.pgstat,[data-pgstat]').forEach(function(el){el.remove();});</script>
 </body>
 </html>
