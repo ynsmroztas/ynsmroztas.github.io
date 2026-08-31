@@ -69,7 +69,7 @@
   }
   var pageUrl = location.href.split("#")[0];
   var descEl = document.querySelector('meta[name="description"]');
-  var desc = (descEl && descEl.content) || document.querySelector(".lead, .sub, .deck") && (document.querySelector(".lead, .sub, .deck").textContent || "").trim() || "mitsec — field cases and AndroScope by Yunus Emre Öztaş.";
+  var desc = (descEl && descEl.content) || (document.querySelector(".lead, .sub, .deck") && (document.querySelector(".lead, .sub, .deck").textContent || "").trim()) || "mitsec — field cases and AndroScope by Yunus Emre Öztaş.";
   upsertMeta("name", "referrer", "strict-origin-when-cross-origin");
   upsertMeta("name", "description", desc);
   upsertMeta("property", "og:type", "article");
@@ -258,9 +258,12 @@
     setInterval(push, 1400);
   });
 
-  if (!document.querySelector("script[src*='stats.js']")) {
-    var st = document.createElement("script");
-    st.src = "assets/js/stats.js";
-    document.body.appendChild(st);
+  function loadExtra(src) {
+    if (document.querySelector("script[src*='" + src.split("/").pop() + "']")) return;
+    var s = document.createElement("script");
+    s.src = src;
+    document.body.appendChild(s);
   }
+  loadExtra("assets/js/skel.js");
+  loadExtra("assets/js/stats.js");
 })();
