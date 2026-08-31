@@ -20,6 +20,12 @@
       ["03 Evidence", "Store class printed. KeyStore unused for that alias."],
       ["04 Outcome", "Keep the key in KeyStore / StrongBox. No extraction recipe here."]
     ],
+    "wireless-adb.html": [
+      ["01 Problem", "Wireless debugging left on a LAN. adbd can trust a peer too soon."],
+      ["02 Move", "Read posture only. No connect, no shell."],
+      ["03 Evidence", "CVE-2026-0073 class. Patch older than 2026-05-01."],
+      ["04 Outcome", "Patch. Turn the feature off off-lab."]
+    ],
     "androscope.html": [
       ["01 Problem", "Public labs assume Magisk + USB frida-server."],
       ["02 Move", "Gadget inside an authorized lab APK. PREPARE → ASSESS → RUNTIME."],
