@@ -1,121 +1,62 @@
 (function () {
-  if (!document.querySelector('script[data-goatcounter]')) {
-    var g = document.createElement("script");
-    g.dataset.goatcounter = "https://ynsmroztas.goatcounter.com/count";
-    g.async = true;
-    g.src = "https://gc.zgo.at/count.js";
-    document.head.appendChild(g);
-  }
+  document.querySelectorAll(".pgstat, [data-pgstat]").forEach(function (el) {
+    el.remove();
+  });
+  document.querySelectorAll('script[data-goatcounter], script[src*="gc.zgo.at"]').forEach(function (el) {
+    el.remove();
+  });
 
-  if (!document.getElementById("pgstat-css")) {
+  if (document.querySelector("[data-xwire]")) return;
+
+  if (!document.getElementById("xwire-css")) {
     var css = document.createElement("style");
-    css.id = "pgstat-css";
+    css.id = "xwire-css";
     css.textContent =
-      ".pgstat{border-top:1px solid var(--line);background:color-mix(in srgb,var(--panel) 88%,transparent);margin-top:36px}" +
-      ".pgstat-in{max-width:1120px;margin:0 auto;padding:22px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}" +
-      ".pgstat-in span{border:1px solid var(--line-2);border-radius:14px;padding:16px 14px;background:var(--ink-2)}" +
-      ".pgstat-in b{display:block;font-family:var(--display),Syne,sans-serif;font-size:clamp(26px,3vw,34px);color:var(--ph);line-height:1;letter-spacing:-.03em}" +
-      ".pgstat-in i{display:block;margin-top:8px;font-style:normal;font-family:var(--mono),monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}" +
-      "@media(max-width:700px){.pgstat-in{grid-template-columns:1fr}}";
+      ".xwire{border-top:1px solid var(--line);background:var(--ink-2);padding:36px 0 28px}" +
+      ".xwire .wrap{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr);gap:22px;align-items:start}" +
+      ".xwire .h-k{margin:0 0 8px}" +
+      ".xwire h2{margin:0 0 14px}" +
+      ".xwire .lead{margin:0 0 16px}" +
+      ".xpicks{display:flex;flex-direction:column;gap:10px}" +
+      ".xpicks a{display:block;border:1px solid var(--line-2);border-radius:14px;padding:14px 16px;background:var(--panel);color:inherit}" +
+      ".xpicks a:hover{border-color:var(--ph)}" +
+      ".xpicks em{display:block;font-style:normal;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ph);margin-bottom:6px}" +
+      ".xpicks p{margin:0;color:var(--mute);font-size:14px}" +
+      ".xtimeline{min-height:420px;border:1px solid var(--line-2);border-radius:16px;overflow:hidden;background:#000}" +
+      "@media(max-width:860px){.xwire .wrap{grid-template-columns:1fr}}";
     document.head.appendChild(css);
   }
 
-  var bar = document.querySelector("[data-pgstat]");
-  if (!bar) {
-    bar = document.createElement("div");
-    bar.className = "pgstat";
-    bar.setAttribute("data-pgstat", "");
-    bar.innerHTML =
-      '<div class="pgstat-in">' +
-      '<span><b data-st-total>0</b><i>total visits</i></span>' +
-      '<span><b data-st-today>0</b><i>today</i></span>' +
-      '<span><b data-st-now>1</b><i>on site now</i></span>' +
-      "</div>";
-    var foot = document.querySelector("footer");
-    if (foot && foot.parentNode) foot.parentNode.insertBefore(bar, foot);
-    else document.body.appendChild(bar);
+  var box = document.createElement("section");
+  box.className = "xwire";
+  box.setAttribute("data-xwire", "");
+  box.innerHTML =
+    '<div class="wrap">' +
+      "<div>" +
+        '<p class="h-k">Live from X</p>' +
+        "<h2>@ynsmroztas</h2>" +
+        '<p class="lead">Threads, field notes, and whatever else landed on the timeline.</p>' +
+        '<div class="xpicks">' +
+          '<a href="https://x.com/ynsmroztas/status/2090748385657590217" target="_blank" rel="me noopener"><em>21 Aug 2026 · thread</em><p>P2 ATO class: custom-scheme OAuth, no PKCE. How to hunt it on Android.</p></a>' +
+          '<a href="https://x.com/ynsmroztas/status/2074929881754833052" target="_blank" rel="me noopener"><em>08 Jul 2026</em><p>Android 0-days, sandbox escapes, AndroScope coming to GitHub in limited form.</p></a>' +
+          '<a href="https://x.com/ynsmroztas/status/2074933107325915329" target="_blank" rel="me noopener"><em>08 Jul 2026 · AndroScope</em><p>Rootless gadget workflow. PREPARE → ASSESS → RUNTIME on an unrooted phone.</p></a>' +
+          '<a href="https://x.com/ynsmroztas" target="_blank" rel="me noopener"><em>full profile</em><p>Open x.com/ynsmroztas →</p></a>' +
+        "</div>" +
+      "</div>" +
+      '<div class="xtimeline">' +
+        '<a class="twitter-timeline" data-theme="dark" data-height="520" data-chrome="noheader nofooter noborders transparent" href="https://x.com/ynsmroztas">Posts by @ynsmroztas</a>' +
+      "</div>" +
+    "</div>";
+
+  var foot = document.querySelector("footer");
+  if (foot && foot.parentNode) foot.parentNode.insertBefore(box, foot);
+  else document.body.appendChild(box);
+
+  if (!document.querySelector('script[src*="platform.twitter.com/widgets.js"]')) {
+    var s = document.createElement("script");
+    s.async = true;
+    s.src = "https://platform.twitter.com/widgets.js";
+    s.charset = "utf-8";
+    document.body.appendChild(s);
   }
-
-  function fmt(n) {
-    n = Math.max(0, parseInt(n, 10) || 0);
-    try { return n.toLocaleString("en-US"); } catch (e) { return String(n); }
-  }
-  function set(sel, n) {
-    var el = document.querySelector(sel);
-    if (el) el.textContent = fmt(n);
-  }
-  function num(x) {
-    if (x == null) return 0;
-    if (typeof x === "number") return x;
-    return parseInt(String(x).replace(/[^\d]/g, ""), 10) || 0;
-  }
-
-  var day = new Date().toISOString().slice(0, 10);
-  var seenAll = "mitsec-hit-all";
-  var seenDay = "mitsec-hit-" + day;
-  var bumpAll = !sessionStorage.getItem(seenAll);
-  var bumpDay = !sessionStorage.getItem(seenDay);
-  if (bumpAll) sessionStorage.setItem(seenAll, "1");
-  if (bumpDay) sessionStorage.setItem(seenDay, "1");
-
-  var NS = "ynsmroztas-github-io";
-
-  function abacus(key, op) {
-    var url = "https://abacus.jasoncameron.dev/" + op + "/" + NS + "/" + encodeURIComponent(key);
-    return fetch(url).then(function (r) { return r.ok ? r.json() : Promise.reject(); });
-  }
-
-  function goat(path) {
-    return fetch("https://ynsmroztas.goatcounter.com/counter/" + encodeURIComponent(path) + ".json")
-      .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
-      .then(function (d) { return num(d.count || d.count_unique); });
-  }
-
-  function visitor() {
-    var q = "domain=ynsmroztas.github.io&page_path=" + encodeURIComponent(location.pathname || "/");
-    return fetch("https://visitor.6developer.com/visit?" + q)
-      .then(function (r) { return r.ok ? r.json() : Promise.reject(); });
-  }
-
-  visitor().then(function (d) {
-    if (d.totalCount != null) set("[data-st-total]", d.totalCount);
-    if (d.todayCount != null) set("[data-st-today]", d.todayCount);
-  }).catch(function () {
-    Promise.all([
-      goat("/").catch(function () { return 0; }),
-      goat(location.pathname || "/").catch(function () { return 0; }),
-      abacus("total", bumpAll ? "hit" : "get").then(function (d) { return num(d.value || d.count); }).catch(function () { return 0; })
-    ]).then(function (vals) {
-      set("[data-st-total]", Math.max.apply(null, vals));
-    });
-    abacus("day-" + day, bumpDay ? "hit" : "get").then(function (d) {
-      set("[data-st-today]", d.value || d.count);
-    }).catch(function () {
-      goat(location.pathname || "/").then(function (n) { set("[data-st-today]", n); }).catch(function () {});
-    });
-  });
-
-  var liveKey = "now";
-  abacus(liveKey, "hit").then(function (d) {
-    set("[data-st-now]", Math.max(1, num(d.value || d.count)));
-  }).catch(function () {
-    set("[data-st-now]", 1);
-  });
-
-  function leave() {
-    try {
-      navigator.sendBeacon("https://abacus.jasoncameron.dev/hit/" + NS + "/" + liveKey + "/down");
-    } catch (e) {}
-    try {
-      fetch("https://abacus.jasoncameron.dev/down/" + NS + "/" + liveKey, { method: "GET", keepalive: true });
-    } catch (e2) {}
-  }
-  window.addEventListener("pagehide", leave);
-  window.addEventListener("beforeunload", leave);
-
-  setInterval(function () {
-    abacus(liveKey, "get").then(function (d) {
-      set("[data-st-now]", Math.max(1, num(d.value || d.count)));
-    }).catch(function () {});
-  }, 20000);
 })();
