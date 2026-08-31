@@ -48,6 +48,59 @@
   paintBrand();
   window.addEventListener("mitsec-theme", paintBrand);
 
+  function upsertMeta(attr, key, val) {
+    var sel = "meta[" + attr + "=\"" + key + "\"]";
+    var el = document.head.querySelector(sel);
+    if (!el) {
+      el = document.createElement("meta");
+      el.setAttribute(attr, key);
+      document.head.appendChild(el);
+    }
+    el.setAttribute("content", val);
+  }
+  function upsertLink(rel, href) {
+    var el = document.head.querySelector('link[rel="' + rel + '"]');
+    if (!el) {
+      el = document.createElement("link");
+      el.rel = rel;
+      document.head.appendChild(el);
+    }
+    el.href = href;
+  }
+  var pageUrl = location.href.split("#")[0];
+  var descEl = document.querySelector('meta[name="description"]');
+  var desc = (descEl && descEl.content) || document.querySelector(".lead, .sub, .deck") && (document.querySelector(".lead, .sub, .deck").textContent || "").trim() || "mitsec — field cases and AndroScope by Yunus Emre Öztaş.";
+  upsertMeta("name", "referrer", "strict-origin-when-cross-origin");
+  upsertMeta("name", "description", desc);
+  upsertMeta("property", "og:type", "article");
+  upsertMeta("property", "og:title", document.title);
+  upsertMeta("property", "og:description", desc);
+  upsertMeta("property", "og:url", pageUrl);
+  upsertMeta("property", "og:image", new URL("assets/img/favicon.svg", pageUrl).href);
+  upsertMeta("name", "twitter:card", "summary");
+  upsertMeta("name", "twitter:title", document.title);
+  upsertMeta("name", "twitter:description", desc);
+  upsertMeta("name", "twitter:site", "@ynsmroztas");
+  upsertLink("canonical", pageUrl);
+
+  if (!document.querySelector("[data-proof]")) {
+    var proof = document.createElement("div");
+    proof.className = "proof";
+    proof.setAttribute("data-proof", "");
+    proof.innerHTML = '<div class="proof-in"><em>proof</em><a href="https://github.com/ynsmroztas" rel="me noopener" target="_blank">GitHub</a><a href="https://x.com/ynsmroztas" rel="me noopener" target="_blank">X</a><a href="https://hackerone.com/ynsmroztas" rel="me noopener" target="_blank">HackerOne</a><a href="https://bugcrowd.com/ynsmroztas" rel="me noopener" target="_blank">Bugcrowd</a><a href="https://app.intigriti.com/researcher/ynsmroztas" rel="me noopener" target="_blank">Intigriti</a><a href="security.txt">security.txt</a></div>';
+    var band = document.createElement("div");
+    band.className = "contact-band";
+    band.innerHTML = '<div class="wrap"><p>Private programs, lab work, collaboration.</p><a class="btn" href="mailto:m.i.t@mit.tc">m.i.t@mit.tc</a></div>';
+    var foot = document.querySelector("footer");
+    if (foot && foot.parentNode) {
+      foot.parentNode.insertBefore(proof, foot);
+      foot.parentNode.insertBefore(band, foot);
+    } else {
+      document.body.appendChild(proof);
+      document.body.appendChild(band);
+    }
+  }
+
   const btn = document.querySelector("[data-burger]");
   const links = document.querySelector("[data-links]");
   if (btn && links) btn.addEventListener("click", function () { links.classList.toggle("open"); });
