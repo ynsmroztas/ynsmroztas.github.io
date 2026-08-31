@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" width="1280" height="640">
+  <rect width="1280" height="640" fill="#050608"/>
+  <rect width="1280" height="36" fill="#12151c"/>
+  <circle cx="18" cy="18" r="6" fill="#fb7185"/><circle cx="38" cy="18" r="6" fill="#fbbf24"/><circle cx="58" cy="18" r="6" fill="#34d399"/>
+  <text x="84" y="23" fill="#6b7280" font-family="ui-monospace,Menlo,monospace" font-size="12">mitsec — wallet link // redacted</text>
+  <g font-family="ui-monospace,Menlo,monospace" font-size="14">
+    <text x="24" y="78" fill="#c4b5fd">LabWallet Emulator Posture  ·  mitsec @ynsmroztas</text>
+    <text x="24" y="108" fill="#6b7280">target  lab.device  ·  pkg  com.lab.wallet</text>
+    <text x="24" y="148" fill="#38bdf8">— Step 0  fingerprint —</text>
+    <text x="24" y="176" fill="#e5e7eb">model            SM-XXXX</text>
+    <text x="24" y="200" fill="#e5e7eb">qemu flag         [REDACTED / suppressed]</text>
+    <text x="24" y="224" fill="#e5e7eb">debuggable        0     secure  1</text>
+    <text x="24" y="248" fill="#fbbf24">verdict           looks like a handset  (lab score)</text>
+    <text x="24" y="288" fill="#38bdf8">— Step 1  app surface —</text>
+    <text x="24" y="316" fill="#34d399">[ok]  splash rendered  ·  no integrity block</text>
+    <text x="24" y="340" fill="#34d399">[ok]  home reached    ·  linked-apps row present</text>
+    <text x="24" y="380" fill="#38bdf8">— Step 2  API class —</text>
+    <text x="24" y="408" fill="#fb7185">[id]   X-Client-Id  static  ·  first seen public 2024</text>
+    <text x="24" y="432" fill="#fb7185">[api]  /v1/linking/*  no bot challenge on lab probe</text>
+    <text x="24" y="456" fill="#fbbf24">[logic] unlink resets eligibility for the same merchant</text>
+    <text x="24" y="500" fill="#6b7280">no OTP grab  ·  no pin  ·  no charge  ·  no tap script</text>
+    <text x="24" y="536" fill="#34d399">mitsec@com.lab.wallet:</text>
+  </g>
+</svg>

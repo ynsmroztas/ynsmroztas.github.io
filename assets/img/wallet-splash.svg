@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 760" width="420" height="760">
+  <rect width="420" height="760" fill="#0b1220"/>
+  <rect x="18" y="18" width="384" height="724" rx="28" fill="#1aa7c4"/>
+  <rect x="168" y="300" width="84" height="64" rx="14" fill="#fff"/>
+  <rect x="184" y="316" width="52" height="32" rx="6" fill="#1aa7c4"/>
+  <text x="210" y="400" text-anchor="middle" fill="#fff" font-family="Sora,Arial,sans-serif" font-size="28" font-weight="700">LabWallet</text>
+  <text x="210" y="428" text-anchor="middle" fill="#d6f6fb" font-family="IBM Plex Mono,monospace" font-size="11">lab build  ·  vendor chrome removed</text>
+</svg>

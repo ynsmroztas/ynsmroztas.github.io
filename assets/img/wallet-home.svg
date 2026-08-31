@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 760" width="420" height="760">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1b4f7a"/>
+      <stop offset="1" stop-color="#0e1622"/>
+    </linearGradient>
+  </defs>
+  <rect width="420" height="760" fill="url(#g)"/>
+  <text x="24" y="36" fill="#9ca3af" font-family="IBM Plex Mono,monospace" font-size="11">23:46</text>
+  <text x="24" y="70" fill="#fff" font-family="Sora,Arial,sans-serif" font-size="18" font-weight="700">LabWallet</text>
+  <rect x="130" y="54" width="170" height="22" rx="11" fill="#be123c"/>
+  <text x="215" y="69" text-anchor="middle" fill="#fff" font-family="IBM Plex Mono,monospace" font-size="10">REDACTED FIELD UI</text>
+  <text x="24" y="120" fill="#fff" font-family="Sora,Arial,sans-serif" font-size="32" font-weight="700">— —</text>
+  <text x="24" y="144" fill="#93c5fd" font-family="IBM Plex Mono,monospace" font-size="11">balance hidden</text>
+  <rect x="270" y="100" width="126" height="36" rx="12" fill="#1e3a5f"/>
+  <text x="333" y="123" text-anchor="middle" fill="#e5e7eb" font-family="Sora,Arial,sans-serif" font-size="12">Top up</text>
+  <rect x="24" y="200" width="372" height="220" rx="22" fill="#151b24"/>
+  <g font-family="Sora,Arial,sans-serif" font-size="11" fill="#d1d5db">
+    <rect x="44" y="220" width="72" height="72" rx="16" fill="#1f2937"/>
+    <text x="80" y="312" text-anchor="middle">Transfer</text>
+    <rect x="132" y="220" width="72" height="72" rx="16" fill="#1f2937"/>
+    <text x="168" y="312" text-anchor="middle">Bills</text>
+    <rect x="220" y="220" width="72" height="72" rx="16" fill="#1f2937"/>
+    <text x="256" y="312" text-anchor="middle">Pulsa</text>
+    <rect x="308" y="220" width="72" height="72" rx="16" fill="#1f2937"/>
+    <text x="344" y="312" text-anchor="middle">More</text>
+  </g>
+  <rect x="24" y="440" width="372" height="88" rx="18" fill="#1f2937"/>
+  <text x="40" y="476" fill="#fbbf24" font-family="IBM Plex Mono,monospace" font-size="11">linked apps</text>
+  <text x="40" y="500" fill="#9ca3af" font-family="Sora,Arial,sans-serif" font-size="13">merchant row  ·  unlink had no step-up</text>
+  <rect x="24" y="680" width="372" height="56" rx="18" fill="#111827"/>
+  <text x="210" y="714" text-anchor="middle" fill="#6b7280" font-family="IBM Plex Mono,monospace" font-size="11">home  ·  pay  ·  history  ·  profile</text>
+</svg>
