@@ -16,6 +16,9 @@
   }
 
   var WIRE = [
+    ["provider-sqli.html", "Provider selection is SQL"],
+    ["dex-load.html", "DEX from a writable path"],
+    ["jsbridge-rce.html", "Bridge on the wrong origin"],
     ["conscrypt-mainline.html", "Conscrypt owns the CA list"],
     ["wallet-link.html", "Wallet link, static id"],
     ["intent-redir.html", "Intent redirection"],
