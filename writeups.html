@@ -52,10 +52,14 @@
       </div>
     </section>
     <div class="ticker"><div class="ticker-track">
-      <span>deeplink auth</span><span>wireless debug</span><span>hardcoded JWT</span><span>mTLS observer</span><span>query-string password</span><span>OAuth scheme</span>
-      <span>deeplink auth</span><span>wireless debug</span><span>hardcoded JWT</span><span>mTLS observer</span><span>query-string password</span><span>OAuth scheme</span>
+      <span>intent redirect</span><span>FileProvider</span><span>WebView intent://</span><span>SDK proxy</span><span>deeplink auth</span><span>wireless debug</span>
+      <span>intent redirect</span><span>FileProvider</span><span>WebView intent://</span><span>SDK proxy</span><span>deeplink auth</span><span>wireless debug</span>
     </div></div>
     <div class="tools" style="margin:8px 0 72px">
+      <a class="tool" href="intent-redir.html"><div class="top"><h3>Intent redirection</h3><span class="pill">mobile</span></div><p>Exported router starts a nested Intent. Safer Intents not armed.</p><div class="meta">2026 · field case · lab</div></a>
+      <a class="tool" href="fileprovider.html"><div class="top"><h3>FileProvider, root-path</h3><span class="pill">mobile</span></div><p>paths.xml mapped /. grantUriPermissions on. No file read here.</p><div class="meta">2026 · field case · lab</div></a>
+      <a class="tool" href="webview-intent.html"><div class="top"><h3>WebView, intent://</h3><span class="pill">mobile</span></div><p>parseUri on a document URL, then startActivity.</p><div class="meta">2026 · field case · lab</div></a>
+      <a class="tool" href="sdk-proxy.html"><div class="top"><h3>The SDK exported the proxy</h3><span class="pill">mobile</span></div><p>Merged AAR activity. Host UID. Nested Intent sink.</p><div class="meta">2026 · field case · lab</div></a>
       <a class="tool" href="deeplink-auth.html"><div class="top"><h3>Deeplink into the auth flow</h3><span class="pill">mobile</span></div><p>Exported gate, no host allowlist, private AuthFlow on the other side.</p><div class="meta">2026 · field case · lab</div></a>
       <a class="tool" href="wireless-adb.html"><div class="top"><h3>Wireless debugging trust class</h3><span class="pill">platform</span></div><p>adbd can trust a LAN peer too soon. Observer only. CVE-2026-0073.</p><div class="meta">2026 · field note · credited</div></a>
       <a class="tool" href="jwt-hardcoded.html"><div class="top"><h3>Hardcoded Entra token in public JS</h3><span class="pill">web</span></div><p>Employee JWT with Admin role left in a dated dashboard bundle.</p><div class="meta">2026 · field case · redacted</div></a>
