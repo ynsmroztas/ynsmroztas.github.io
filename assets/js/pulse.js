@@ -4,12 +4,15 @@
   mark.setAttribute("data-pulse", "1");
   document.head.appendChild(mark);
 
-  if (!document.querySelector('link[href*="pulse.css"]')) {
+  function css(href) {
+    if (document.querySelector('link[href*="' + href.split("/").pop().split("?")[0] + '"]')) return;
     var l = document.createElement("link");
     l.rel = "stylesheet";
-    l.href = "assets/css/pulse.css?v=2";
+    l.href = href;
     document.head.appendChild(l);
   }
+  css("assets/css/pulse.css?v=2");
+  css("assets/css/cover.css?v=1");
 
   var grain = document.createElement("div");
   grain.className = "fx-grain";
@@ -80,6 +83,23 @@
       if (tags && tags.nextSibling) article.insertBefore(strip, tags.nextSibling);
       else article.insertBefore(strip, article.firstChild);
     }
+  }
+
+  if (!window.THREE && !(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) && window.innerWidth >= 700) {
+    var t = document.createElement("script");
+    t.src = "https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js";
+    t.onload = function () {
+      var f = document.createElement("script");
+      f.src = "assets/js/three-field.js";
+      document.body.appendChild(f);
+    };
+    document.body.appendChild(t);
+  }
+
+  var stage = document.querySelector("[data-cover]");
+  if (stage) {
+    stage.addEventListener("mouseenter", function () { stage.setAttribute("data-hold", "1"); });
+    stage.addEventListener("mouseleave", function () { stage.removeAttribute("data-hold"); });
   }
 
   var io = "IntersectionObserver" in window ? new IntersectionObserver(function (ents) {
