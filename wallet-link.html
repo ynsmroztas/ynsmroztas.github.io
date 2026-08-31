@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Wallet link, static client id — mitsec</title>
+  <meta name="description" content="Redacted field note: static PIN client id, linking API with no bot challenge, unlink reset, emulator posture. Vendor and secrets stripped."/>
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/site.css?v=8"/>
+  <link rel="stylesheet" href="assets/css/theme.css?v=8"/>
+  <link rel="stylesheet" href="assets/css/live.css?v=8"/>
+  <style>
+    .term{background:#07090c;border:1px solid var(--line-2);border-radius:16px;padding:14px 16px;font-family:var(--mono);font-size:12px;line-height:1.55;color:#9fe7b8;overflow:auto;margin:16px 0 24px;white-space:pre-wrap}
+    .term .dim{color:#6b7280}.term .hi{color:#fbbf24}.term .bad{color:#fb7185}.term .ok{color:#34d399}
+    .tag-row{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 20px}
+    .phone-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:18px 0 32px}
+    .phone-row figure{margin:0}
+    .phone-row img{display:block;width:100%;aspect-ratio:9/16;object-fit:cover;object-position:top;border-radius:22px;border:1px solid var(--line-2);background:#050608}
+    .phone-row figcaption{font-family:var(--mono);font-size:11px;color:var(--dim);margin-top:8px}
+    @media (max-width:700px){.phone-row{grid-template-columns:1fr}}
+  </style>
+  <script>(function(){try{var t=localStorage.getItem('mitsec-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body>
+  <div class="bg"></div>
+  <header class="nav">
+    <div class="wrap nav-in">
+      <a class="brand" href="index.html"><i></i><b>mit</b> <span>sec</span></a>
+      <nav class="links" data-links>
+        <a href="index.html">Home</a>
+        <a href="androscope.html">AndroScope</a>
+        <a href="tools.html">Tools</a>
+        <a class="on" href="writeups.html">Writeups</a>
+        <a href="research.html">Research</a>
+      </nav>
+      <button class="burger" data-burger aria-label="Menu">☰</button>
+    </div>
+  </header>
+  <main class="wrap">
+    <section class="page-hero slim">
+      <div>
+        <p class="meta">WRITEUP · FINTECH · LINKING · 2026 · @YNSMROZTAS</p>
+        <h1>Wallet link, static client id</h1>
+        <div class="livebar">
+          <span class="chip on">● live</span>
+          <span class="chip">clk <span data-clock>--:--:--</span></span>
+          <span class="chip">com.lab.wallet</span>
+        </div>
+        <p class="lead">Four classes on one lab wallet. Vendor hosts, PIN client id, account files and tap scripts are not on this page.</p>
+      </div>
+      <div>
+        <div class="scope mini-scope">
+          <canvas data-radar></canvas>
+          <div class="beam"></div>
+          <div class="ring"></div>
+          <div class="scanline"></div>
+          <div class="scope-hud"><div class="top"><span>wallet // live</span><span>redacted</span></div><div class="bot"><span>radar</span><span data-clock>--:--:--</span></div></div>
+        </div>
+      </div>
+    </section>
+    <article class="prose">
+      <div class="tag-row">
+        <span class="chip on">AndroScope</span>
+        <span class="chip">CWE-798</span>
+        <span class="chip">linking API</span>
+        <span class="chip">posture</span>
+      </div>
+      <div class="skel">
+        <article><b>01 Problem</b><p>A static PIN client id plus an unlink that resets merchant eligibility.</p></article>
+        <article><b>02 Move</b><p>Public-artifact review + lab posture on an authorized emulator session. No charge.</p></article>
+        <article><b>03 Evidence</b><p>Client id accepted (not 401). Linking probes had no bot challenge. App ran on a spoofed handset fingerprint.</p></article>
+        <article><b>04 Outcome</b><p>Rotate the id. Bind sessions. Persist pay-state across unlink. Step-up on unlink.</p></article>
+      </div>
+
+      <h2>Summary</h2>
+      <p>Lab wallet <code>com.lab.wallet</code> talks to <code>api.lab.wallet.test</code> for third-party merchant linking. A static <code>X-Client-Id</code> has been sitting in public artifacts since 2024. Linking routes answered lab probes without a bot challenge. Unlinking a merchant reset whatever flag the wallet used for “already paid this service.” The Android client accepted a spoofed handset fingerprint and showed its home surface with no integrity block.</p>
+      <p>This page is the class, not the kit. No PIN, no OTP path, no charge call, no coordinate list.</p>
+      <div class="call">Classes: CWE-798 static client id · missing bot control on link · business-logic reset on unlink · empty emulator posture. Vendor chrome stripped.</div>
+
+      <h2>Lab frames</h2>
+      <p>Rebuilt from the session. Branding, balance and merchant tiles removed.</p>
+      <div class="phone-row">
+        <figure>
+          <img src="assets/img/wallet-splash.svg" alt="Redacted wallet splash"/>
+          <figcaption>Splash — lab wallet, vendor mark gone</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/img/wallet-home.svg" alt="Redacted wallet home"/>
+          <figcaption>Home — linked-apps row present, balance hidden</figcaption>
+        </figure>
+      </div>
+      <figure class="media-full" style="aspect-ratio:auto">
+        <img src="assets/img/wallet-term.svg" alt="Redacted posture terminal" style="aspect-ratio:16/8;object-fit:cover"/>
+        <figcaption>Posture + API class. Secrets and hosts replaced.</figcaption>
+      </figure>
+
+      <h2>Four findings, one wallet</h2>
+      <h3>1. Static PIN client id</h3>
+      <p>PIN-token mint used a header <code>X-Client-Id</code> that is not per-user and not per-session. The same literal appears in more than one public artifact. A lab probe that sent the id and omitted the PIN body came back as a field-validation error — not <code>401</code> / <code>invalid_client</code>. The id is treated as a known client, not as a secret that failed.</p>
+      <pre class="term"><span class="dim">POST</span>  api.lab.wallet.test/v1/users/pin/tokens/nb
+<span class="dim">X-Client-Id:</span>  [REDACTED · static · public since 2024]
+
+<span class="hi">→  200   field cannot be blank</span>
+<span class="dim">    not 401  ·  id accepted, body incomplete</span>
+
+<span class="ok">mitsec@com.lab.wallet:</span></pre>
+
+      <h3>2. Linking API without a bot gate</h3>
+      <p>Consent / validate-reference style routes on the linking host answered. There was no CAPTCHA, no device-bound assertion, no session cookie required for the probe to be parsed. Rate limit, if any, was not visible at the single-call layer. This page does not replay the six-step merchant charge.</p>
+
+      <h3>3. Unlink resets eligibility</h3>
+      <p>After a merchant link, the in-app “linked apps” row could drop the merchant. The next link treated the wallet as clean for that merchant again. No step-up (PIN / biometric) sat on the unlink confirm in the lab build. That is a state machine bug, not a tap recipe.</p>
+
+      <h3>4. Emulator posture</h3>
+      <p>The lab runtime presented a mid-range Samsung model string, <code>user</code> build, <code>debuggable=0</code>, <code>secure=1</code>, empty qemu flag. A twelve-check fingerprint scorer on that session printed “handset.” <code>com.lab.wallet</code> drew splash and home. No integrity interstitial. AndroScope logs the posture. It does not publish the ADB input sequence.</p>
+
+      <h2>What this is not</h2>
+      <ul>
+        <li>Not a PIN oracle. Challenge format and PIN values stay off-site.</li>
+        <li>Not an OTP intercept note. Channels used to read messages are not described.</li>
+        <li>Not a charge cookbook. Snap / merchant charge hosts are unnamed.</li>
+        <li>Not a dump of third-party account files from public repos.</li>
+      </ul>
+
+      <h2>Impact (class)</h2>
+      <p>A static client id plus an unlink-reset means one authorized wallet can be driven through the same merchant link more than the product intended. Bot-empty linking means the drive does not need a human at each step. Emulator-blind UI means the drive can sit off a physical handset. Money movement is a program issue; this page stops at the four controls that failed.</p>
+
+      <h2>Fix</h2>
+      <ul>
+        <li>Rotate the PIN client id. Stop accepting a static header. Bind a short-lived, per-session assertion.</li>
+        <li>Audit logs for that id since 2024.</li>
+        <li>Bot / device signal on every <code>/v1/linking/*</code> route. Rate-limit OTP triggers per MSISDN, not per TCP socket.</li>
+        <li>Persist “this MSISDN already completed merchant Y” across unlink.</li>
+        <li>Step-up on unlink of a payment-authorized merchant.</li>
+        <li>Refuse the client on emulator / spoofed integrity. Play Integrity (or the vendor equivalent) on splash, not only on first open.</li>
+      </ul>
+
+      <h2>Lab frame</h2>
+      <p>Android 12 class image, authorized session, 2026-05-29. Static review of public artifacts plus passive probes. No live payment, no third-party mailbox, no customer PIN.</p>
+      <p class="meta" style="margin-top:40px">YUNUS EMRE ÖZTAŞ · MITSEC · RESPONSIBLE DISCLOSURE · LAB NAMES ONLY</p>
+    </article>
+  </main>
+  <footer>
+    <div class="wrap foot">
+      <div>© 2026 Yunus Emre Öztaş — mitsec</div>
+      <div><a href="writeups.html">Writeups</a> · <a href="mailto:m.i.t@mit.tc">m.i.t@mit.tc</a></div>
+    </div>
+  </footer>
+  <script src="assets/js/theme.js?v=8"></script>
+  <script src="assets/js/site.js?v=8"></script>
+</body>
+</html>
