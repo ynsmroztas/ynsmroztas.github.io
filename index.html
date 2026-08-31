@@ -4,7 +4,7 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>mitsec — field cases / Yunus Emre Öztaş</title>
-  <meta name="description" content="Redacted field cases from Yunus Emre Öztaş / mitsec. Mobile OAuth, RN secrets, public JWTs, mTLS, wireless-debug posture."/>
+  <meta name="description" content="Redacted field cases from Yunus Emre Öztaş / mitsec. Deeplink auth, wireless debug, JWTs, RN secrets, OAuth, mTLS."/>
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -37,9 +37,9 @@
       <div class="livebar">
         <span class="chip on">● now reading</span>
         <span class="chip">clk <span data-clock>--:--:--</span></span>
-        <span class="chip">5 notes on the wire</span>
+        <span class="chip">6 notes on the wire</span>
       </div>
-      <p class="sub">Yunus Emre Öztaş — mitsec. Tokens in JS. Passwords in the query. Custom schemes without PKCE. mTLS on the device. Wireless debugging left on.</p>
+      <p class="sub">Yunus Emre Öztaş — mitsec. Deeplinks into login. Wireless debugging left on. Tokens in JS. Passwords in the query. No PKCE. mTLS on the device.</p>
       <div class="row">
         <a class="btn" href="writeups.html">Open the wire →</a>
         <a class="btn ghost" href="mailto:m.i.t@mit.tc">Contact</a>
@@ -47,6 +47,12 @@
     </section>
     <section class="cover-sec reveal d2">
       <div class="coverflow" data-cover>
+        <a class="cover-card" href="deeplink-auth.html" data-cover-card>
+          <span class="pill">mobile · 06</span>
+          <h2 class="title3d">Deeplink into <em>auth</em></h2>
+          <p>Exported gate. No host allowlist. Private AuthFlow on the other side.</p>
+          <b>read →</b>
+        </a>
         <a class="cover-card" href="wireless-adb.html" data-cover-card>
           <span class="pill">platform · 05</span>
           <h2 class="title3d">Wireless debug <em>trust</em></h2>
@@ -90,7 +96,7 @@
       <p class="h-k">Surface</p>
       <h2>What I hunt.</h2>
       <div class="skills">
-        <div class="skill"><b>Mobile</b><span>Android · gadget-in-target · RN bridge</span></div>
+        <div class="skill"><b>Mobile</b><span>Android · gadget-in-target · deeplink</span></div>
         <div class="skill"><b>OAuth</b><span>custom schemes · PKCE · public clients</span></div>
         <div class="skill"><b>Secrets</b><span>JWT in JS · query-string creds · DEX strings</span></div>
         <div class="skill"><b>Posture</b><span>mTLS store · pinning · wireless debug</span></div>
@@ -114,6 +120,7 @@
       <p class="h-k">On the wire</p>
       <h2>Every card is a redacted field note.</h2>
       <div class="tools case-grid" style="margin-top:16px">
+        <a class="tool" href="deeplink-auth.html"><div class="top"><h3>Deeplink into the auth flow</h3><span class="pill">mobile</span></div><p>Exported gate, no host allowlist, private AuthFlow on the other side.</p><div class="meta">2026 · lab</div></a>
         <a class="tool" href="wireless-adb.html"><div class="top"><h3>Wireless debugging trust class</h3><span class="pill">platform</span></div><p>adbd can trust a LAN peer too soon. No shell kit.</p><div class="meta">2026 · credited</div></a>
         <a class="tool" href="jwt-hardcoded.html"><div class="top"><h3>Hardcoded Entra token in public JS</h3><span class="pill">web</span></div><p>Employee JWT with Admin role left in a dated dashboard bundle.</p><div class="meta">2026 · redacted</div></a>
         <a class="tool" href="creds-query.html"><div class="top"><h3>Password in the query string</h3><span class="pill">mobile</span></div><p>RN login put the password in the URL. Error SDK copied it.</p><div class="meta">2026 · redacted</div></a>
