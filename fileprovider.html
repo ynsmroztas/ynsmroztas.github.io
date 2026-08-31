@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>FileProvider root-path — mitsec</title>
+  <meta name="description" content="Field note: FileProvider root-path plus grantUriPermissions on a lab Android app."/>
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml"/>
+  <link rel="stylesheet" href="assets/css/site.css?v=8"/>
+  <link rel="stylesheet" href="assets/css/theme.css?v=8"/>
+  <link rel="stylesheet" href="assets/css/live.css?v=8"/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+  <style>.term{background:#07090c;border:1px solid var(--line-2);border-radius:16px;padding:14px 16px;font-family:var(--mono);font-size:12px;line-height:1.55;color:#9fe7b8;white-space:pre-wrap}.term .dim{color:#6b7280}.term .hi{color:#fbbf24}.term .bad{color:#fb7185}.term .ok{color:#34d399}.tag-row{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 20px}</style>
+  <script>(function(){try{var t=localStorage.getItem('mitsec-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body>
+  <div class="bg"></div>
+  <header class="nav"><div class="wrap nav-in"><a class="brand" href="index.html"><i></i><b>mit</b> <span>sec</span></a><nav class="links" data-links><a href="index.html">Home</a><a href="androscope.html">AndroScope</a><a href="tools.html">Tools</a><a class="on" href="writeups.html">Writeups</a><a href="research.html">Research</a></nav><button class="burger" data-burger aria-label="Menu">☰</button></div></header>
+  <main class="wrap">
+    <section class="page-hero slim">
+      <div>
+        <p class="meta">WRITEUP · MOBILE · STORAGE · 2026 · @YNSMROZTAS</p>
+        <h1>FileProvider, root-path</h1>
+        <div class="livebar"><span class="chip on">● live</span><span class="chip">clk <span data-clock>--:--:--</span></span><span class="chip">com.vulnapp.portal</span></div>
+        <p class="lead">paths.xml mapped the filesystem root. grantUriPermissions was on. Share sheet minted content:// URIs.</p>
+      </div>
+      <div><div class="scope mini-scope"><canvas data-radar></canvas><div class="beam"></div><div class="ring"></div><div class="scanline"></div><div class="scope-hud"><div class="top"><span>files // live</span><span>grant</span></div><div class="bot"><span>radar</span><span data-clock>--:--:--</span></div></div></div></div>
+    </section>
+    <article class="prose">
+      <div class="tag-row"><span class="chip on">AndroScope</span><span class="chip">FileProvider</span><span class="chip">root-path</span><span class="chip">lab</span></div>
+      <div class="skel">
+        <article><b>01 Problem</b><p>The provider tree started at / and grants were sticky.</p></article>
+        <article><b>02 Move</b><p>Manifest + res/xml/paths.xml on the authorized lab APK.</p></article>
+        <article><b>03 Evidence</b><p>root-path name=root path=. grantUriPermissions=true.</p></article>
+        <article><b>04 Outcome</b><p>files-path or cache-path only. Narrow the URI. Drop the grant when the sheet closes.</p></article>
+      </div>
+      <h2>Summary</h2>
+      <p>Lab package <code>com.vulnapp.portal</code> declared <code>${applicationId}.files</code> as a FileProvider with <code>grantUriPermissions=true</code>. The path file contained <code>&lt;root-path name="root" path="." /&gt;</code>. A share action in the app built a <code>content://</code> URI under that authority and handed it to an implicit sheet with read-grant flags.</p>
+      <p><code>root-path</code> is the device filesystem as the provider sees it, not “the pictures folder.” Combined with a grant, a receiving app that keeps the URI can ask the portal to open files the portal’s UID can open — including its own private tree — without the provider being exported.</p>
+      <div class="call">Class: over-broad FileProvider + grant. The provider does not need to be exported. This page does not read a file.</div>
+      <figure class="media-full" style="aspect-ratio:auto"><img src="assets/img/fileprovider-term.svg" alt="Redacted FileProvider observer" style="aspect-ratio:16/7;object-fit:cover"/><figcaption>Path set printed. Bytes not.</figcaption></figure>
+      <h2>What AndroScope printed</h2>
+      <pre class="term"><span class="ok">[provider]</span> ${applicationId}.files
+<span class="bad">[provider]</span> paths.xml → root-path name="root" path="."
+<span class="bad">[provider]</span> grantUriPermissions=true
+<span class="hi">[provider]</span> share sheet builds content:// … under that authority
+
+<span class="dim">no file read on this page</span>
+<span class="ok">mitsec@com.vulnapp.portal:</span></pre>
+      <h2>Why export=false is not the fix</h2>
+      <p>Android checks provider permissions when a foreign UID talks to the provider directly. A grant attached to a URI the portal itself minted is a different door. The portal is the client of its own provider. The foreign app only holds the URI.</p>
+      <p><code>files-path</code> and <code>cache-path</code> still need a tight <code>path</code>. <code>external-path</code> is shared storage, not an excuse for <code>root-path</code>.</p>
+      <h2>Fix</h2>
+      <ul>
+        <li>Delete <code>root-path</code>. Map one subdirectory.</li>
+        <li>Grant only for the URI you just created. Revoke when the sheet is done.</li>
+        <li>Do not put shared_prefs, databases, or token files under a mapped tree.</li>
+        <li>Treat a share-sheet grant as a capability leak until the path file is boring.</li>
+      </ul>
+      <p class="meta" style="margin-top:40px">YUNUS EMRE ÖZTAŞ · MITSEC · LAB BUILD ONLY</p>
+    </article>
+  </main>
+  <footer><div class="wrap foot"><div>© 2026 Yunus Emre Öztaş — mitsec</div><div><a href="writeups.html">Writeups</a></div></div></footer>
+  <script src="assets/js/theme.js?v=8"></script><script src="assets/js/site.js?v=8"></script>
+</body></html>
