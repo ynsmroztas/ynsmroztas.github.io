@@ -2,6 +2,12 @@
   if (document.querySelector(".skel")) return;
   var file = (location.pathname.split("/").pop() || "index.html");
   var map = {
+    "conscrypt-mainline.html": [
+      ["01 Problem", "User CA installed. Handshake still dies. Conscrypt APEX store won."],
+      ["02 Move", "AndroScope TLS observer + request intelligence on the lab process."],
+      ["03 Evidence", "Provider Conscrypt. APEX cacerts present. User CA not in the loaded list."],
+      ["04 Outcome", "Write the store path. Pin what you mean. No remount recipe here."]
+    ],
     "wallet-link.html": [
       ["01 Problem", "Static PIN client id plus an unlink that resets merchant eligibility."],
       ["02 Move", "Public-artifact review plus lab posture. No charge."],
