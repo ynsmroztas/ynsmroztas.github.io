@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Hardcoded Entra token in public JS — mitsec</title>
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/site.css?v=5"/>
+  <link rel="stylesheet" href="assets/css/theme.css?v=5"/>
+  <link rel="stylesheet" href="assets/css/live.css?v=5"/>
+  <style>
+    .term{background:#07090c;border:1px solid var(--line-2);border-radius:16px;padding:14px 16px;font-family:var(--mono);font-size:12px;line-height:1.55;color:#9fe7b8;overflow:auto;margin:16px 0 24px;white-space:pre-wrap}
+    .term .dim{color:#6b7280}.term .hi{color:#fbbf24}.term .bad{color:#fb7185}.term .ok{color:#34d399}
+    .tag-row{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 20px}
+  </style>
+  <script>(function(){try{var t=localStorage.getItem('mitsec-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body>
+  <div class="bg"></div>
+  <header class="nav">
+    <div class="wrap nav-in">
+      <a class="brand" href="index.html"><i></i><b>mit</b> <span>sec</span></a>
+      <nav class="links" data-links>
+        <a href="index.html">Home</a>
+        <a href="androscope.html">AndroScope</a>
+        <a href="tools.html">Tools</a>
+        <a class="on" href="writeups.html">Writeups</a>
+        <a href="research.html">Research</a>
+      </nav>
+      <button class="burger" data-burger aria-label="Menu">☰</button>
+    </div>
+  </header>
+  <main class="wrap">
+    <section class="page-hero slim">
+      <div>
+        <p class="meta">WRITEUP · PUBLIC JS · ENTRA JWT · 2026 · @YNSMROZTAS</p>
+        <h1>Hardcoded access token in public JavaScript</h1>
+        <div class="livebar">
+          <span class="chip on">● live</span>
+          <span class="chip">clk <span data-clock>--:--:--</span></span>
+          <span class="chip">insights.lab.carrier.test</span>
+        </div>
+        <p class="lead">Same string-hunt used in AndroScope PREPARE — JWT regex against a public dashboard bundle. Vendor host, employee, tenant and token body stripped.</p>
+      </div>
+      <div>
+        <div class="scope mini-scope">
+          <canvas data-radar></canvas>
+          <div class="beam"></div>
+          <div class="ring"></div>
+          <div class="scanline"></div>
+          <div class="scope-hud"><div class="top"><span>js // live</span><span>public</span></div><div class="bot"><span>radar</span><span data-clock>--:--:--</span></div></div>
+        </div>
+      </div>
+    </section>
+    <article class="prose">
+      <div class="tag-row">
+        <span class="chip on">AndroScope string hunt</span>
+        <span class="chip">Entra ID</span>
+        <span class="chip">FH-ID · secrets</span>
+        <span class="chip">redacted</span>
+      </div>
+      <h2>Summary</h2>
+      <p>A Microsoft Entra ID access token sat in a JavaScript file that anyone could fetch. No login. The payload carried an employee display name, corporate mailbox, object id, tenant id, application id, and roles that included <code>Admin</code>.</p>
+      <p>The token in the lab copy was already expired. That does not close the finding. Shipping a live employee token into a production bundle is a build-process failure. The filename itself encoded the issue date (<code>maps2x260309.js</code> ↔ 9 March 2026).</p>
+      <div class="call">Class: secret in public JS. Same JWT pattern AndroScope flags in DEX / assets. Fix: delete the literal, rotate, scan the rest of the host.</div>
+
+      <h2>Lab frame</h2>
+      <p>Terminal rebuilt from the capture. Host, mailbox and token body replaced.</p>
+      <figure class="media-full" style="aspect-ratio:auto">
+        <img src="assets/img/jwt-term.svg" alt="Redacted terminal: JWT grep on public JS" style="aspect-ratio:16/9;object-fit:cover"/>
+        <figcaption>curl + JWT regex against the public dashboard bundle — token and vendor stripped</figcaption>
+      </figure>
+
+      <h2>Affected lab asset</h2>
+      <ul>
+        <li>Host: <code>https://insights.lab.carrier.test/field_dashboard/</code></li>
+        <li>Bundle: <code>/field_dashboard/maps/maps2x260309.js</code></li>
+      </ul>
+
+      <h2>What the hunt printed</h2>
+      <pre class="term"><span class="dim"># page embed JWT?</span>
+curl -s "$R/field_dashboard/" | grep -oE 'eyJ[A-Za-z0-9_-]{20,}' | head
+
+<span class="dim"># pull JS bundles</span>
+curl -s "$R/field_dashboard/" | grep -oE 'src="[^"]+\.js[^"]*"'
+
+<span class="dim"># hunt the dated bundle</span>
+curl -s "$R/field_dashboard/maps/maps2x260309.js" | grep -oE 'eyJ[A-Za-z0-9_-]{20,}'
+
+<span class="bad">eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6In[REDACTED].eyJhdWQiOiI[REDACTED].[SIG REDACTED]</span>
+
+<span class="ok">mitsec@insights.lab.carrier.test:</span></pre>
+
+      <h2>Decoded claims of interest</h2>
+      <table>
+        <thead><tr><th>Claim</th><th>Lab value</th></tr></thead>
+        <tbody>
+          <tr><td>name</td><td>[REDACTED]</td></tr>
+          <tr><td>preferred_username</td><td>analyst.one@lab.carrier.test</td></tr>
+          <tr><td>oid</td><td>[REDACTED]</td></tr>
+          <tr><td>roles</td><td>Admin, Internal_Users, External_Users</td></tr>
+          <tr><td>scp</td><td>test.read</td></tr>
+          <tr><td>tid / aud</td><td>[REDACTED]</td></tr>
+          <tr><td>iat → exp</td><td>2026-03-09 23:31 → 2026-03-10 00:37 UTC</td></tr>
+          <tr><td>alg</td><td>RS256 · issuer = login.microsoftonline.com / {tid} / v2.0</td></tr>
+        </tbody>
+      </table>
+      <p>The <code>iat</code> day matches the <code>260309</code> stamp in the filename. That is a developer token that rode the build out the door.</p>
+
+      <h2>Impact</h2>
+      <ol>
+        <li>Employee PII in a file the CDN will cache.</li>
+        <li>Authorization model leaked: an <code>Admin</code> role exists on that app registration.</li>
+        <li>Tenant id and client id become free reconnaissance.</li>
+        <li>Process failure — if one live token shipped, scan the rest of the host and the pipeline.</li>
+      </ol>
+      <p>The copy recovered here was expired. No replay. The disclosure is still a privacy and SDLC issue.</p>
+
+      <h2>Fix</h2>
+      <ul>
+        <li>Strip every hardcoded JWT from JS and HTML. Rotate anything tied to that session.</li>
+        <li>Scan the host and staging for <code>eyJ</code>, client secrets, connection strings.</li>
+        <li>CI secret scanning plus a pre-commit block on JWT / well-known secret shapes.</li>
+        <li>Tokens stay in memory after a proper OIDC dance. They do not live in a dated bundle name.</li>
+      </ul>
+      <p class="meta" style="margin-top:40px">YUNUS EMRE ÖZTAŞ · MITSEC · RESPONSIBLE DISCLOSURE · LAB NAMES ONLY</p>
+    </article>
+  </main>
+  <footer>
+    <div class="wrap foot">
+      <div>© 2026 Yunus Emre Öztaş — mitsec</div>
+      <div><a href="writeups.html">Writeups</a> · <a href="androscope.html">AndroScope</a></div>
+    </div>
+  </footer>
+  <script src="assets/js/theme.js?v=5"></script>
+  <script src="assets/js/site.js?v=5"></script>
+</body>
+</html>

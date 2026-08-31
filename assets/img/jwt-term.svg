@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720">
+  <rect width="1280" height="720" fill="#050608"/>
+  <rect x="0" y="0" width="1280" height="36" fill="#12151c"/>
+  <circle cx="18" cy="18" r="6" fill="#fb7185"/>
+  <circle cx="38" cy="18" r="6" fill="#fbbf24"/>
+  <circle cx="58" cy="18" r="6" fill="#34d399"/>
+  <text x="84" y="23" fill="#6b7280" font-family="ui-monospace,Menlo,monospace" font-size="12">mitsec — surface // public JS</text>
+  <g font-family="ui-monospace,Menlo,monospace" font-size="13">
+    <text x="24" y="68" fill="#6b7280">(mitsec-venv) root@lab ~/go/bin</text>
+    <text x="24" y="92" fill="#7cffb2"># R=https://insights.lab.carrier.test</text>
+    <text x="24" y="124" fill="#6b7280"># page embed JWT?</text>
+    <text x="24" y="148" fill="#e5e7eb">curl -s "$R/field_dashboard/" | grep -oE 'eyJ[A-Za-z0-9_-]{20,}' | head</text>
+    <text x="24" y="180" fill="#6b7280"># pull JS bundles</text>
+    <text x="24" y="204" fill="#e5e7eb">curl -s "$R/field_dashboard/" | grep -oE 'src="[^"]+\.js[^"]*"'</text>
+    <text x="24" y="236" fill="#6b7280"># hunt every bundle</text>
+    <text x="24" y="260" fill="#e5e7eb">curl -s "$R/field_dashboard/maps/maps2x260309.js" | grep -oE 'eyJ[A-Za-z0-9_-]{20,}' | head</text>
+    <text x="24" y="292" fill="#fb7185">eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6In[REDACTED].eyJhdWQiOiI[REDACTED]. [SIG REDACTED]</text>
+    <text x="24" y="332" fill="#7dd3fc">src="https://insights.lab.carrier.test/field_dashboard/maps/maps2x260309.js"</text>
+    <text x="24" y="356" fill="#7dd3fc">src="https://insights.lab.carrier.test/field_dashboard/maps/search.js"</text>
+    <text x="24" y="380" fill="#7dd3fc">src="https://insights.lab.carrier.test/field_dashboard/maps/cluster.js"</text>
+    <text x="24" y="420" fill="#fbbf24">[DECODE] name=[REDACTED]  preferred_username=analyst.one@lab.carrier.test</text>
+    <text x="24" y="444" fill="#fbbf24">[DECODE] roles=[Admin, Internal_Users, External_Users]  scp=test.read</text>
+    <text x="24" y="468" fill="#fbbf24">[DECODE] tid=[REDACTED]  aud=[REDACTED]  iat=2026-03-09 ↔ filename 260309</text>
+    <text x="24" y="508" fill="#34d399">mitsec@insights.lab.carrier.test:  JWT in public JS · expired · still a process failure</text>
+    <text x="24" y="548" fill="#6b7280">lab capture · vendor host / employee / tenant ids stripped</text>
+  </g>
+</svg>
