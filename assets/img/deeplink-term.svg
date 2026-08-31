@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 560" width="1280" height="560">
+  <rect width="1280" height="560" fill="#050608"/>
+  <rect width="1280" height="36" fill="#12151c"/>
+  <circle cx="18" cy="18" r="6" fill="#fb7185"/>
+  <circle cx="38" cy="18" r="6" fill="#fbbf24"/>
+  <circle cx="58" cy="18" r="6" fill="#34d399"/>
+  <text x="84" y="23" fill="#6b7280" font-family="ui-monospace,Menlo,monospace" font-size="12">mitsec — intent // deeplink</text>
+  <g font-family="ui-monospace,Menlo,monospace" font-size="14">
+    <text x="24" y="80" fill="#6b7280">C  SURFACE</text>
+    <text x="24" y="108" fill="#34d399">14  intent / deeplink capture           ★</text>
+    <text x="24" y="148" fill="#fbbf24">session — com.vulnapp.portal</text>
+    <text x="24" y="180" fill="#7cffb2">[intent] exported: .LinkGate</text>
+    <text x="24" y="208" fill="#7cffb2">[intent] scheme=vulnapp host=* pathPrefix=/auth</text>
+    <text x="24" y="236" fill="#fb7185">[intent] host allowlist: none</text>
+    <text x="24" y="264" fill="#fb7185">[intent] forwarded → .AuthFlow (not exported)</text>
+    <text x="24" y="292" fill="#fbbf24">[intent] extra next=[REDACTED]</text>
+    <text x="24" y="332" fill="#6b7280">no second APK · no token grab on this page</text>
+    <text x="24" y="372" fill="#34d399">mitsec@com.vulnapp.portal:</text>
+  </g>
+</svg>

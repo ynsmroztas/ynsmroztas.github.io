@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Deeplink into the auth flow — mitsec</title>
+  <meta name="description" content="Redacted field note: exported deeplink handler with no host allowlist forwarded into a private auth activity."/>
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/site.css?v=8"/>
+  <link rel="stylesheet" href="assets/css/theme.css?v=8"/>
+  <link rel="stylesheet" href="assets/css/live.css?v=8"/>
+  <style>
+    .term{background:#07090c;border:1px solid var(--line-2);border-radius:16px;padding:14px 16px;font-family:var(--mono);font-size:12px;line-height:1.55;color:#9fe7b8;overflow:auto;margin:16px 0 24px;white-space:pre-wrap}
+    .term .dim{color:#6b7280}.term .hi{color:#fbbf24}.term .bad{color:#fb7185}.term .ok{color:#34d399}
+    .tag-row{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 20px}
+  </style>
+  <script>(function(){try{var t=localStorage.getItem('mitsec-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body>
+  <div class="bg"></div>
+  <header class="nav">
+    <div class="wrap nav-in">
+      <a class="brand" href="index.html"><i></i><b>mit</b> <span>sec</span></a>
+      <nav class="links" data-links>
+        <a href="index.html">Home</a>
+        <a href="androscope.html">AndroScope</a>
+        <a href="tools.html">Tools</a>
+        <a class="on" href="writeups.html">Writeups</a>
+        <a href="research.html">Research</a>
+      </nav>
+      <button class="burger" data-burger aria-label="Menu">☰</button>
+    </div>
+  </header>
+  <main class="wrap">
+    <section class="page-hero slim">
+      <div>
+        <p class="meta">WRITEUP · MOBILE · DEEPLINK · 2026 · @YNSMROZTAS</p>
+        <h1>Deeplink into the auth flow</h1>
+        <div class="livebar">
+          <span class="chip on">● live</span>
+          <span class="chip">clk <span data-clock>--:--:--</span></span>
+          <span class="chip">com.vulnapp.portal</span>
+        </div>
+        <p class="lead">Exported gate, no host allowlist, private auth activity on the other side. Lab names only.</p>
+      </div>
+      <div>
+        <div class="scope mini-scope">
+          <canvas data-radar></canvas>
+          <div class="beam"></div>
+          <div class="ring"></div>
+          <div class="scanline"></div>
+          <div class="scope-hud"><div class="top"><span>link // live</span><span>exported</span></div><div class="bot"><span>radar</span><span data-clock>--:--:--</span></div></div>
+        </div>
+      </div>
+    </section>
+    <article class="prose">
+      <div class="tag-row">
+        <span class="chip on">AndroScope</span>
+        <span class="chip">intent / deeplink</span>
+        <span class="chip">CWE-284</span>
+        <span class="chip">lab only</span>
+      </div>
+      <div class="skel">
+        <article><b>01 Problem</b><p>An exported handler accepted any host on the app scheme and forwarded into login.</p></article>
+        <article><b>02 Move</b><p>Module 14 on an authorized lab build. Manifest filter plus the runtime Intent.</p></article>
+        <article><b>03 Evidence</b><p>pathPrefix /auth. Host unchecked. Extra next reached .AuthFlow.</p></article>
+        <article><b>04 Outcome</b><p>Allowlist host and path. Drop substring checks. Do not start auth from raw extras.</p></article>
+      </div>
+      <h2>Summary</h2>
+      <p>Lab package <code>com.vulnapp.portal</code> exported <code>.LinkGate</code> on <code>vulnapp://</code> with a path prefix of <code>/auth</code> and no host allowlist. The activity did a substring test on the URI, then started <code>.AuthFlow</code> — a component that is not exported — and handed it the original extras.</p>
+      <p>That is the finding. A second package on the device can aim an intent at the gate and land inside the login sequence with fields the gate did not normalize. Class: CWE-284 on an exported deeplink. Account takeover is a chain, not this page.</p>
+      <div class="call">Class: exported deeplink → private auth activity. AndroScope saw the filter and the forward. No second APK here.</div>
+
+      <h2>Lab frame</h2>
+      <figure class="media-full" style="aspect-ratio:auto">
+        <img src="assets/img/deeplink-term.svg" alt="Redacted deeplink observer" style="aspect-ratio:16/7;object-fit:cover"/>
+        <figcaption>Surface deck — gate exported, auth activity not, extras redacted</figcaption>
+      </figure>
+
+      <h2>What AndroScope printed</h2>
+      <pre class="term"><span class="ok">[intent]</span> exported: .LinkGate
+<span class="ok">[intent]</span> scheme=vulnapp  host=*  pathPrefix=/auth
+<span class="bad">[intent]</span> host allowlist: none
+<span class="bad">[intent]</span> forwarded → .AuthFlow (not exported)
+<span class="hi">[intent]</span> extra next=[REDACTED]
+
+<span class="dim">no second APK · no token grab</span>
+<span class="ok">mitsec@com.vulnapp.portal:</span></pre>
+
+      <h2>Why the two checks fail together</h2>
+      <p>The manifest filter is not a security boundary. It is a router. <code>host="*"</code> plus a path prefix means any sender that can fire an implicit intent can reach the gate.</p>
+      <p>The Java side used a substring on the URI string. Substring is not an allowlist. A host, a path segment, or a query value can still contain the token the check was looking for and carry extra data the auth activity will read.</p>
+      <p><code>.AuthFlow</code> being non-exported does not help once the exported gate starts it with attacker-shaped extras. The private activity trusts its caller. The caller is now the gate.</p>
+
+      <h2>Impact (class)</h2>
+      <p>Control of where the login sequence begins and which <code>next</code> / <code>redirect</code> / token-shaped extra it consumes. On its own: unexpected navigation. Chained with a weak token handler or an open redirect inside that flow: session issues. This page stops at the injection into the flow.</p>
+
+      <h2>Fix</h2>
+      <ul>
+        <li>Verified App Links for anything that must be public. Custom schemes are not proof of origin.</li>
+        <li>Exact host and path allowlist in code, not a substring.</li>
+        <li>Do not forward raw extras into an auth activity. Parse, type-check, drop the rest.</li>
+        <li>If the gate only exists to open login, it should not take a caller-controlled destination.</li>
+      </ul>
+      <p class="meta" style="margin-top:40px">YUNUS EMRE ÖZTAŞ · MITSEC · LAB BUILD ONLY</p>
+    </article>
+  </main>
+  <footer>
+    <div class="wrap foot">
+      <div>© 2026 Yunus Emre Öztaş — mitsec</div>
+      <div><a href="writeups.html">Writeups</a> · <a href="mailto:m.i.t@mit.tc">m.i.t@mit.tc</a></div>
+    </div>
+  </footer>
+  <script src="assets/js/theme.js?v=8"></script>
+  <script src="assets/js/site.js?v=8"></script>
+</body>
+</html>
