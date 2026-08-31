@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Conscrypt store vs user CA — mitsec</title>
+  <meta name="description" content="AndroScope field note: Mainline Conscrypt owns the CA list. User-CA intercept is not the store the process loads."/>
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/site.css?v=12"/>
+  <link rel="stylesheet" href="assets/css/theme.css?v=12"/>
+  <link rel="stylesheet" href="assets/css/live.css?v=12"/>
+  <style>
+    .term{background:#07090c;border:1px solid var(--line-2);border-radius:16px;padding:14px 16px;font-family:var(--mono);font-size:12px;line-height:1.55;color:#9fe7b8;overflow:auto;margin:16px 0 24px;white-space:pre-wrap}
+    .term .dim{color:#6b7280}.term .hi{color:#fbbf24}.term .ok{color:#34d399}.term .bad{color:#fb7185}
+    .diag{width:100%;border:1px solid var(--line-2);border-radius:18px;background:var(--panel);margin:12px 0 28px;display:block}
+    .tag-row{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 20px}
+    .steps{display:grid;gap:10px;margin:16px 0 28px}
+    .steps article{border:1px solid var(--line-2);border-radius:14px;padding:14px 16px;background:var(--panel)}
+    .steps b{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ph);margin-bottom:6px}
+    .steps p{margin:0;color:var(--mute)}
+  </style>
+  <script>(function(){try{var t=localStorage.getItem('mitsec-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body>
+  <div class="bg"></div>
+  <header class="nav">
+    <div class="wrap nav-in">
+      <a class="brand" href="index.html"><i></i><b>mit</b> <span>sec</span></a>
+      <nav class="links" data-links>
+        <a href="index.html">Home</a>
+        <a href="androscope.html">AndroScope</a>
+        <a href="tools.html">Tools</a>
+        <a class="on" href="writeups.html">Writeups</a>
+        <a href="research.html">Research</a>
+      </nav>
+      <button class="burger" data-burger aria-label="Menu">☰</button>
+    </div>
+  </header>
+  <main class="wrap">
+    <section class="page-hero slim">
+      <div>
+        <p class="meta">WRITEUP · MOBILE · TLS · 2026 · @YNSMROZTAS</p>
+        <h1>Conscrypt owns the CA list</h1>
+        <div class="livebar">
+          <span class="chip on">● live</span>
+          <span class="chip">clk <span data-clock>--:--:--</span></span>
+          <span class="chip">module · traffic</span>
+        </div>
+        <p class="lead">Mainline ships Conscrypt on its own clock. The process does not load the store you think you patched.</p>
+      </div>
+      <div>
+        <div class="scope mini-scope">
+          <canvas data-radar></canvas>
+          <div class="beam"></div>
+          <div class="ring"></div>
+          <div class="scanline"></div>
+          <div class="scope-hud"><div class="top"><span>tls // store</span><span>observe</span></div><div class="bot"><span>radar</span><span data-clock>--:--:--</span></div></div>
+        </div>
+      </div>
+    </section>
+    <article class="prose">
+      <div class="tag-row">
+        <span class="chip on">AndroScope</span>
+        <span class="chip">Conscrypt</span>
+        <span class="chip">Mainline</span>
+        <span class="chip">lab only</span>
+      </div>
+
+      <h2>01 — Two clocks on the same phone</h2>
+      <p>A modern image advertises two patch dates. One is the Android Security Update. The other is a Google Play System Update that refreshes Mainline modules without an OTA. Conscrypt — the default Java TLS provider since Android 9, BoringSSL underneath — lives in that second stream. The CA list can move while the rest of the build number stays still.</p>
+      <svg class="diag" viewBox="0 0 860 240" role="img" aria-label="ASU vs GPSU">
+        <rect width="860" height="240" fill="#0b0d10" rx="18"/>
+        <rect x="40" y="48" width="360" height="144" rx="14" fill="#111827" stroke="#374151"/>
+        <text x="60" y="88" fill="#7cffb2" font-family="IBM Plex Mono,monospace" font-size="13">ASU</text>
+        <text x="60" y="118" fill="#e5e7eb" font-family="Sora,sans-serif" font-size="16">Android Security Update</text>
+        <text x="60" y="148" fill="#9ca3af" font-family="Sora,sans-serif" font-size="13">system image · slow clock</text>
+        <rect x="460" y="48" width="360" height="144" rx="14" fill="#111827" stroke="#7cffb2"/>
+        <text x="480" y="88" fill="#7cffb2" font-family="IBM Plex Mono,monospace" font-size="13">GPSU</text>
+        <text x="480" y="118" fill="#e5e7eb" font-family="Sora,sans-serif" font-size="16">Play System Update</text>
+        <text x="480" y="148" fill="#9ca3af" font-family="Sora,sans-serif" font-size="13">Mainline APEX · Conscrypt</text>
+      </svg>
+
+      <h2>02 — Two stores, one winner</h2>
+      <p>Classic intercept assumed one bag of roots: <code>/system/etc/security/cacerts</code>, plus a user store the app opted into. From Android 14 the Conscrypt APEX ships its own <code>cacerts</code>. If that folder is present, it wins. A user cert sitting only in the old path is invisible to the TrustManager the process actually constructed.</p>
+      <svg class="diag" viewBox="0 0 860 280" role="img" aria-label="store priority">
+        <rect width="860" height="280" fill="#0b0d10" rx="18"/>
+        <rect x="40" y="40" width="240" height="90" rx="12" fill="#111827" stroke="#374151"/>
+        <text x="56" y="78" fill="#9ca3af" font-family="IBM Plex Mono,monospace" font-size="12">user CA</text>
+        <text x="56" y="102" fill="#6b7280" font-family="Sora,sans-serif" font-size="13">settings · user store</text>
+        <rect x="310" y="40" width="240" height="90" rx="12" fill="#111827" stroke="#374151"/>
+        <text x="326" y="78" fill="#9ca3af" font-family="IBM Plex Mono,monospace" font-size="12">/system/.../cacerts</text>
+        <text x="326" y="102" fill="#6b7280" font-family="Sora,sans-serif" font-size="13">image roots</text>
+        <rect x="580" y="40" width="240" height="90" rx="12" fill="#111827" stroke="#7cffb2"/>
+        <text x="596" y="78" fill="#7cffb2" font-family="IBM Plex Mono,monospace" font-size="12">apex conscrypt</text>
+        <text x="596" y="102" fill="#e5e7eb" font-family="Sora,sans-serif" font-size="13">wins if present</text>
+        <text x="40" y="190" fill="#fbbf24" font-family="IBM Plex Mono,monospace" font-size="13">process TrustManager</text>
+        <text x="40" y="220" fill="#9ca3af" font-family="Sora,sans-serif" font-size="14">loads the APEX list first. private /apex mount per app. sibling processes do not share your edit.</text>
+      </svg>
+
+      <h2>03 — Why the lab session looks empty</h2>
+      <p>You installed a user CA. Network Security Config on a lab build even allows user CAs. The handshake still dies. AndroScope traffic + defense modules on an authorized lab process answer the only question that matters: which provider, which store path, which NSC flag. They do not publish a mount kit.</p>
+      <pre class="term"><span class="dim">C</span>  TRAFFIC &amp; SECRETS
+<span class="ok">35</span>  Request intelligence           <span class="hi">★</span>
+<span class="dim">E</span>  DEFENSE
+<span class="ok">50</span>  TLS pinning observer           <span class="hi">★</span>
+
+<span class="hi">session — lab.sample.app</span>
+<span class="ok">[tls]</span> provider: Conscrypt
+<span class="ok">[tls]</span> store class: APEX cacerts present
+<span class="bad">[tls]</span> user CA: installed, not in the loaded list
+<span class="dim">[tls]</span> NSC user-ca flag: on — still not the APEX bag
+<span class="dim">[nsc]</span> cleartext: off · domain pin: none
+
+mitsec@lab.sample.app:</pre>
+
+      <h2>04 — Walk the class on the lab build</h2>
+      <div class="steps">
+        <article><b>1 · Attach</b><p>Authorized lab variant. Traffic module + TLS observer. No second Play app. No other UID.</p></article>
+        <article><b>2 · Name the provider</b><p>Print the default SSLContext provider. Conscrypt means the APEX path is in play on current images.</p></article>
+        <article><b>3 · Name the store</b><p>Does the process see an APEX cacerts bag? If yes, that list is the one the handshake uses. The user store is a spectator.</p></article>
+        <article><b>4 · Read NSC</b><p>networkSecurityConfig can allow user CAs and still lose to the APEX list. Record both facts. Do not collapse them.</p></article>
+        <article><b>5 · Watch one request</b><p>Trigger login or a sync. Request intelligence logs the failure class: pin, unknown CA, or expired. Empty log means you did not hit TLS yet.</p></article>
+        <article><b>6 · Stop</b><p>The public note ends at store identity. Overlay, rbind, zygote remount, and module names stay off this page.</p></article>
+      </div>
+
+      <h2>05 — Older images, same idea</h2>
+      <p>Mainline back-ported an updatable CA bag onto 11–13 via Play System Updates. The Java side still fell back to <code>/system</code> below 14 in several builds. Treat “I copied a cert into /system” as incomplete evidence. Ask the process. AndroScope prints what that process loaded, not what the host overlay claims.</p>
+
+      <h2>06 — What this is not</h2>
+      <ul>
+        <li>Not a Magisk / KernelSU cookbook.</li>
+        <li>Not a TrustAll SSLSocketFactory.</li>
+        <li>Not a promise that pinning, RASP, or Integrity fall because the store moved.</li>
+        <li>Not a report against a live customer. Demo target is <code>lab.sample.app</code>.</li>
+      </ul>
+      <div class="call">AndroScope reports provider + store class + NSC. It does not ship the remount recipe on this site.</div>
+
+      <h2>Fix, on the app side</h2>
+      <ul>
+        <li>Do not treat “user CA allowed” as “we control trust.” Pin what you mean, in NSC or in the stack you actually call.</li>
+        <li>If you pin, pin the leaf or the intermediate you own. A store swap should fail closed.</li>
+        <li>On the operator side, write the store path into the evidence pack. “Proxy cert installed” is not a finding.</li>
+      </ul>
+      <p class="meta" style="margin-top:40px">YUNUS EMRE ÖZTAŞ · MITSEC · LAB BUILD ONLY</p>
+    </article>
+  </main>
+  <footer>
+    <div class="wrap foot">
+      <div>© 2026 Yunus Emre Öztaş — mitsec</div>
+      <div><a href="writeups.html">Writeups</a> · <a href="androscope.html">AndroScope</a></div>
+    </div>
+  </footer>
+  <script src="assets/js/theme.js?v=12"></script>
+  <script src="assets/js/site.js?v=12"></script>
+</body>
+</html>
