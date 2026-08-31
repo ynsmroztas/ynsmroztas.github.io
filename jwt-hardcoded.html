@@ -4,13 +4,14 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Hardcoded Entra token in public JS — mitsec</title>
+  <meta name="description" content="Redacted field case: employee Entra access token hardcoded in a public dashboard JavaScript bundle."/>
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="assets/css/site.css?v=5"/>
-  <link rel="stylesheet" href="assets/css/theme.css?v=5"/>
-  <link rel="stylesheet" href="assets/css/live.css?v=5"/>
+  <link rel="stylesheet" href="assets/css/site.css?v=8"/>
+  <link rel="stylesheet" href="assets/css/theme.css?v=8"/>
+  <link rel="stylesheet" href="assets/css/live.css?v=8"/>
   <style>
     .term{background:#07090c;border:1px solid var(--line-2);border-radius:16px;padding:14px 16px;font-family:var(--mono);font-size:12px;line-height:1.55;color:#9fe7b8;overflow:auto;margin:16px 0 24px;white-space:pre-wrap}
     .term .dim{color:#6b7280}.term .hi{color:#fbbf24}.term .bad{color:#fb7185}.term .ok{color:#34d399}
@@ -62,24 +63,27 @@
         <span class="chip">FH-ID · secrets</span>
         <span class="chip">redacted</span>
       </div>
+      <div class="skel">
+        <article><b>01 Problem</b><p>A production JS bundle shipped a live employee Entra token with Admin in the roles claim.</p></article>
+        <article><b>02 Move</b><p>Unauth GET on the dashboard, pull script src, JWT regex — the same hunt AndroScope runs on DEX strings.</p></article>
+        <article><b>03 Evidence</b><p>Filename date matched iat. Claims: mailbox class, tid, aud, Admin. Token body not published.</p></article>
+        <article><b>04 Outcome</b><p>Expired copy. Still an SDLC failure. Fix: strip literals, rotate, scan the host.</p></article>
+      </div>
       <h2>Summary</h2>
       <p>A Microsoft Entra ID access token sat in a JavaScript file that anyone could fetch. No login. The payload carried an employee display name, corporate mailbox, object id, tenant id, application id, and roles that included <code>Admin</code>.</p>
       <p>The token in the lab copy was already expired. That does not close the finding. Shipping a live employee token into a production bundle is a build-process failure. The filename itself encoded the issue date (<code>maps2x260309.js</code> ↔ 9 March 2026).</p>
       <div class="call">Class: secret in public JS. Same JWT pattern AndroScope flags in DEX / assets. Fix: delete the literal, rotate, scan the rest of the host.</div>
-
       <h2>Lab frame</h2>
       <p>Terminal rebuilt from the capture. Host, mailbox and token body replaced.</p>
       <figure class="media-full" style="aspect-ratio:auto">
         <img src="assets/img/jwt-term.svg" alt="Redacted terminal: JWT grep on public JS" style="aspect-ratio:16/9;object-fit:cover"/>
         <figcaption>curl + JWT regex against the public dashboard bundle — token and vendor stripped</figcaption>
       </figure>
-
       <h2>Affected lab asset</h2>
       <ul>
         <li>Host: <code>https://insights.lab.carrier.test/field_dashboard/</code></li>
         <li>Bundle: <code>/field_dashboard/maps/maps2x260309.js</code></li>
       </ul>
-
       <h2>What the hunt printed</h2>
       <pre class="term"><span class="dim"># page embed JWT?</span>
 curl -s "$R/field_dashboard/" | grep -oE 'eyJ[A-Za-z0-9_-]{20,}' | head
@@ -93,38 +97,23 @@ curl -s "$R/field_dashboard/maps/maps2x260309.js" | grep -oE 'eyJ[A-Za-z0-9_-]{2
 <span class="bad">eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6In[REDACTED].eyJhdWQiOiI[REDACTED].[SIG REDACTED]</span>
 
 <span class="ok">mitsec@insights.lab.carrier.test:</span></pre>
-
       <h2>Decoded claims of interest</h2>
       <table>
         <thead><tr><th>Claim</th><th>Lab value</th></tr></thead>
         <tbody>
           <tr><td>name</td><td>[REDACTED]</td></tr>
           <tr><td>preferred_username</td><td>analyst.one@lab.carrier.test</td></tr>
-          <tr><td>oid</td><td>[REDACTED]</td></tr>
           <tr><td>roles</td><td>Admin, Internal_Users, External_Users</td></tr>
           <tr><td>scp</td><td>test.read</td></tr>
-          <tr><td>tid / aud</td><td>[REDACTED]</td></tr>
+          <tr><td>tid / aud / oid</td><td>[REDACTED]</td></tr>
           <tr><td>iat → exp</td><td>2026-03-09 23:31 → 2026-03-10 00:37 UTC</td></tr>
-          <tr><td>alg</td><td>RS256 · issuer = login.microsoftonline.com / {tid} / v2.0</td></tr>
         </tbody>
       </table>
-      <p>The <code>iat</code> day matches the <code>260309</code> stamp in the filename. That is a developer token that rode the build out the door.</p>
-
-      <h2>Impact</h2>
-      <ol>
-        <li>Employee PII in a file the CDN will cache.</li>
-        <li>Authorization model leaked: an <code>Admin</code> role exists on that app registration.</li>
-        <li>Tenant id and client id become free reconnaissance.</li>
-        <li>Process failure — if one live token shipped, scan the rest of the host and the pipeline.</li>
-      </ol>
-      <p>The copy recovered here was expired. No replay. The disclosure is still a privacy and SDLC issue.</p>
-
       <h2>Fix</h2>
       <ul>
         <li>Strip every hardcoded JWT from JS and HTML. Rotate anything tied to that session.</li>
         <li>Scan the host and staging for <code>eyJ</code>, client secrets, connection strings.</li>
-        <li>CI secret scanning plus a pre-commit block on JWT / well-known secret shapes.</li>
-        <li>Tokens stay in memory after a proper OIDC dance. They do not live in a dated bundle name.</li>
+        <li>CI secret scanning plus a pre-commit block on JWT shapes.</li>
       </ul>
       <p class="meta" style="margin-top:40px">YUNUS EMRE ÖZTAŞ · MITSEC · RESPONSIBLE DISCLOSURE · LAB NAMES ONLY</p>
     </article>
@@ -132,10 +121,10 @@ curl -s "$R/field_dashboard/maps/maps2x260309.js" | grep -oE 'eyJ[A-Za-z0-9_-]{2
   <footer>
     <div class="wrap foot">
       <div>© 2026 Yunus Emre Öztaş — mitsec</div>
-      <div><a href="writeups.html">Writeups</a> · <a href="androscope.html">AndroScope</a></div>
+      <div><a href="writeups.html">Writeups</a> · <a href="mailto:m.i.t@mit.tc">m.i.t@mit.tc</a></div>
     </div>
   </footer>
-  <script src="assets/js/theme.js?v=5"></script>
-  <script src="assets/js/site.js?v=5"></script>
+  <script src="assets/js/theme.js?v=8"></script>
+  <script src="assets/js/site.js?v=8"></script>
 </body>
 </html>
