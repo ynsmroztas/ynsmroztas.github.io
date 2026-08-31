@@ -16,6 +16,17 @@
   ];
   const ALL = DARK.concat(LIGHT).map(function(x){ return x[0]; });
 
+  function markSvg(ph) {
+    return '<svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><text x="16" y="24" text-anchor="middle" font-family="Syne,Arial Black,sans-serif" font-weight="800" font-size="16" fill="' + ph + '">A</text><circle cx="16" cy="12.5" r="5.2" stroke="' + ph + '" stroke-width="1.3"/><path d="M16 8.4v8.2M11.8 12.5h8.4" stroke="' + ph + '" stroke-width=".9"/><circle cx="16" cy="12.5" r="1.1" fill="' + ph + '"/></svg>';
+  }
+
+  function paintOrb() {
+    var orb = document.querySelector(".theme-orb");
+    if (!orb) return;
+    var ph = getComputedStyle(document.documentElement).getPropertyValue("--ph").trim() || "#7cffb2";
+    orb.innerHTML = markSvg(ph);
+  }
+
   const apply = function(t){
     if (ALL.indexOf(t) < 0) t = "scope";
     document.documentElement.setAttribute("data-theme", t);
@@ -23,6 +34,7 @@
     document.querySelectorAll(".theme-opt").forEach(function(b){
       b.classList.toggle("on", b.getAttribute("data-t") === t);
     });
+    paintOrb();
     window.dispatchEvent(new Event("mitsec-theme"));
   };
 
@@ -77,4 +89,5 @@
 
   var burger = host.querySelector(".burger");
   host.insertBefore(wrap, burger || null);
+  paintOrb();
 })();
