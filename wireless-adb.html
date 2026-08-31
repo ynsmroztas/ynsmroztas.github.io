@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Wireless debugging trust class — mitsec</title>
+  <meta name="description" content="Field note on the wireless-debugging / adbd trust class (CVE-2026-0073). Posture only. No public shell kit. Source credited."/>
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/site.css?v=8"/>
+  <link rel="stylesheet" href="assets/css/theme.css?v=8"/>
+  <link rel="stylesheet" href="assets/css/live.css?v=8"/>
+  <style>
+    .term{background:#07090c;border:1px solid var(--line-2);border-radius:16px;padding:14px 16px;font-family:var(--mono);font-size:12px;line-height:1.55;color:#9fe7b8;overflow:auto;margin:16px 0 24px;white-space:pre-wrap}
+    .term .dim{color:#6b7280}.term .hi{color:#fbbf24}.term .bad{color:#fb7185}.term .ok{color:#34d399}
+    .tag-row{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 20px}
+  </style>
+  <script>(function(){try{var t=localStorage.getItem('mitsec-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body>
+  <div class="bg"></div>
+  <header class="nav">
+    <div class="wrap nav-in">
+      <a class="brand" href="index.html"><i></i><b>mit</b> <span>sec</span></a>
+      <nav class="links" data-links>
+        <a href="index.html">Home</a>
+        <a href="androscope.html">AndroScope</a>
+        <a href="tools.html">Tools</a>
+        <a class="on" href="writeups.html">Writeups</a>
+        <a href="research.html">Research</a>
+      </nav>
+      <button class="burger" data-burger aria-label="Menu">☰</button>
+    </div>
+  </header>
+  <main class="wrap">
+    <section class="page-hero slim">
+      <div>
+        <p class="meta">WRITEUP · PLATFORM · ADBD · 2026 · @YNSMROZTAS</p>
+        <h1>Wireless debugging, trusted too soon</h1>
+        <div class="livebar">
+          <span class="chip on">● live</span>
+          <span class="chip">clk <span data-clock>--:--:--</span></span>
+          <span class="chip">CVE-2026-0073</span>
+        </div>
+        <p class="lead">Platform class, not an app bug. AndroScope reports the debug surface. This page does not open a shell.</p>
+      </div>
+      <div>
+        <div class="scope mini-scope">
+          <canvas data-radar></canvas>
+          <div class="beam"></div>
+          <div class="ring"></div>
+          <div class="scanline"></div>
+          <div class="scope-hud"><div class="top"><span>adbd // live</span><span>observe</span></div><div class="bot"><span>radar</span><span data-clock>--:--:--</span></div></div>
+        </div>
+      </div>
+    </section>
+    <article class="prose">
+      <div class="tag-row">
+        <span class="chip on">AndroScope</span>
+        <span class="chip">adbd</span>
+        <span class="chip">wireless debug</span>
+        <span class="chip">no kit</span>
+      </div>
+      <div class="skel">
+        <article><b>01 Problem</b><p>Wireless debugging left on a LAN. adbd can accept a peer as trusted when it should not.</p></article>
+        <article><b>02 Move</b><p>Read posture only: toggle state, listen port class, patch level, pairing record present or not.</p></article>
+        <article><b>03 Evidence</b><p>Public class CVE-2026-0073. Same-LAN, no tap after the feature is already on.</p></article>
+        <article><b>04 Outcome</b><p>Patch ≥ 2026-05-01. Turn the feature off. Do not treat cafe Wi-Fi as a lab.</p></article>
+      </div>
+      <h2>Summary</h2>
+      <p>Wireless debugging is ADB over the local network with a pairing ceremony. The 2026 class is an authentication miss in <code>adbd</code>: a peer on the same LAN can be treated as already trusted. Impact class is a shell user on the device. No extra tap once the feature is enabled.</p>
+      <p>This is device posture, not <code>com.vulnapp</code>. AndroScope still cares — a lab build sitting on a shared SSID with wireless debugging on is a contaminated session.</p>
+      <div class="call">Class: adbd wireless-debug trust. Source note: Mobile Hacker, May 2026. No connect command, no pairing walkthrough, no payload on this page.</div>
+
+      <h2>Lab frame</h2>
+      <p>Observer output only. Addresses and pairing material stripped.</p>
+      <figure class="media-full" style="aspect-ratio:auto">
+        <img src="assets/img/adb-term.svg" alt="Redacted debug-surface observer" style="aspect-ratio:16/7;object-fit:cover"/>
+        <figcaption>Defense deck — debug surface armed, shell not opened</figcaption>
+      </figure>
+
+      <h2>What has to be true</h2>
+      <ul>
+        <li>Wireless debugging is on and reachable on the LAN.</li>
+        <li>The device has been paired at least once in its life.</li>
+        <li>Build patch level is older than 2026-05-01.</li>
+      </ul>
+      <p>That is the whole precondition set this page will print. How the daemon is talked to stays off-site.</p>
+
+      <h2>Why AndroScope logs it</h2>
+      <p>PREPARE maps the <em>app</em>. RUNTIME still inherits the <em>device</em>. An open wireless-debug surface means findings from that session can be blamed on the wrong layer. The observer answers three questions and stops:</p>
+      <pre class="term"><span class="ok">[debug]</span> wireless debugging: ON
+<span class="ok">[debug]</span> adbd on the local network
+<span class="bad">[debug]</span> prior pairing record present
+<span class="hi">[debug]</span> patch level older than 2026-05-01
+
+<span class="dim">no connect · no shell</span>
+<span class="ok">mitsec@lab.device:</span></pre>
+
+      <h2>Fix</h2>
+      <ul>
+        <li>Ship / install a build with security patch 2026-05-01 or later.</li>
+        <li>Leave wireless debugging off except on a lab SSID you own.</li>
+        <li>Treat “I paired this phone last year” as a standing trust record, not a forgotten toggle.</li>
+      </ul>
+
+      <h2>Credit</h2>
+      <p>Public write-up of the class: <a href="https://www.mobile-hacker.com/2026/05/12/android-rce-via-wireless-debugging-from-network-access-to-shell/" rel="noopener" target="_blank">Mobile Hacker — Android RCE via Wireless Debugging</a> (May 2026). This page is a posture note in the mitsec voice, not a reprint and not an exploit guide.</p>
+      <p class="meta" style="margin-top:40px">YUNUS EMRE ÖZTAŞ · MITSEC · PLATFORM CLASS · NO KIT</p>
+    </article>
+  </main>
+  <footer>
+    <div class="wrap foot">
+      <div>© 2026 Yunus Emre Öztaş — mitsec</div>
+      <div><a href="writeups.html">Writeups</a> · <a href="mailto:m.i.t@mit.tc">m.i.t@mit.tc</a></div>
+    </div>
+  </footer>
+  <script src="assets/js/theme.js?v=8"></script>
+  <script src="assets/js/site.js?v=8"></script>
+</body>
+</html>

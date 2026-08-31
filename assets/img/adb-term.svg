@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 560" width="1280" height="560">
+  <rect width="1280" height="560" fill="#050608"/>
+  <rect width="1280" height="36" fill="#12151c"/>
+  <circle cx="18" cy="18" r="6" fill="#fb7185"/>
+  <circle cx="38" cy="18" r="6" fill="#fbbf24"/>
+  <circle cx="58" cy="18" r="6" fill="#34d399"/>
+  <text x="84" y="23" fill="#6b7280" font-family="ui-monospace,Menlo,monospace" font-size="12">mitsec — posture // wireless debug</text>
+  <g font-family="ui-monospace,Menlo,monospace" font-size="14">
+    <text x="24" y="80" fill="#6b7280">E  DEFENSE</text>
+    <text x="24" y="108" fill="#34d399">50  TLS pinning observer</text>
+    <text x="24" y="136" fill="#34d399">56  debug-surface observer              ★</text>
+    <text x="24" y="176" fill="#fbbf24">session — lab.device</text>
+    <text x="24" y="208" fill="#7cffb2">[debug] wireless debugging: ON</text>
+    <text x="24" y="236" fill="#7cffb2">[debug] adbd listening on the local network</text>
+    <text x="24" y="264" fill="#fb7185">[debug] prior pairing record present</text>
+    <text x="24" y="292" fill="#fb7185">[debug] patch level older than 2026-05-01 — class CVE-2026-0073</text>
+    <text x="24" y="332" fill="#6b7280">no connect · no shell · no pairing dance on this page</text>
+    <text x="24" y="372" fill="#34d399">mitsec@lab.device:  turn it off · patch · untrusted LAN is in scope</text>
+  </g>
+</svg>
