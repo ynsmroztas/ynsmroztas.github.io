@@ -7,7 +7,7 @@
   if (!document.querySelector('link[href*="pulse.css"]')) {
     var l = document.createElement("link");
     l.rel = "stylesheet";
-    l.href = "assets/css/pulse.css?v=1";
+    l.href = "assets/css/pulse.css?v=2";
     document.head.appendChild(l);
   }
 
@@ -48,6 +48,39 @@
     sc.className = "scan";
     el.appendChild(sc);
   });
+
+  document.querySelectorAll(".console[data-console]").forEach(function (box) {
+    if (box.closest(".cassette")) return;
+    var cass = document.createElement("div");
+    cass.className = "cassette";
+    cass.innerHTML = '<div class="cass-top"><i></i><i></i><i></i><span>mitsec · session tape</span></div>';
+    box.parentNode.insertBefore(cass, box);
+    cass.appendChild(box);
+    box.classList.add("cass-screen");
+    var reels = document.createElement("div");
+    reels.className = "cass-reels";
+    reels.innerHTML = "<b></b><b></b>";
+    cass.appendChild(reels);
+  });
+
+  var article = document.querySelector("article.prose");
+  var file = (location.pathname.split("/").pop() || "");
+  if (article && /\.html$/.test(file) && file !== "index.html" && file !== "androscope.html" && !article.querySelector(".stills")) {
+    var strip = document.createElement("div");
+    strip.className = "stills";
+    strip.innerHTML =
+      '<figure><div class="still s1"><i></i></div><figcaption>surface</figcaption></figure>' +
+      '<figure><div class="still s2"><i></i></div><figcaption>sink</figcaption></figure>' +
+      '<figure><div class="still s3"><i></i></div><figcaption>posture</figcaption></figure>';
+    var skel = article.querySelector(".skel");
+    if (skel && skel.nextSibling) article.insertBefore(strip, skel.nextSibling);
+    else if (skel) article.appendChild(strip);
+    else {
+      var tags = article.querySelector(".tag-row");
+      if (tags && tags.nextSibling) article.insertBefore(strip, tags.nextSibling);
+      else article.insertBefore(strip, article.firstChild);
+    }
+  }
 
   var io = "IntersectionObserver" in window ? new IntersectionObserver(function (ents) {
     ents.forEach(function (en) {
