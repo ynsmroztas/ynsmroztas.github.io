@@ -4,13 +4,14 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Writeups — mitsec</title>
+  <meta name="description" content="AndroScope paper plus redacted field cases."/>
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="assets/css/site.css?v=5"/>
-  <link rel="stylesheet" href="assets/css/theme.css?v=5"/>
-  <link rel="stylesheet" href="assets/css/live.css?v=5"/>
+  <link rel="stylesheet" href="assets/css/site.css?v=8"/>
+  <link rel="stylesheet" href="assets/css/theme.css?v=8"/>
+  <link rel="stylesheet" href="assets/css/live.css?v=8"/>
   <script>(function(){try{var t=localStorage.getItem('mitsec-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 </head>
 <body>
@@ -51,10 +52,11 @@
       </div>
     </section>
     <div class="ticker"><div class="ticker-track">
-      <span>hardcoded JWT</span><span>mTLS observer</span><span>query-string password</span><span>OAuth scheme</span><span>AndroScope</span>
-      <span>hardcoded JWT</span><span>mTLS observer</span><span>query-string password</span><span>OAuth scheme</span><span>AndroScope</span>
+      <span>wireless debug</span><span>hardcoded JWT</span><span>mTLS observer</span><span>query-string password</span><span>OAuth scheme</span>
+      <span>wireless debug</span><span>hardcoded JWT</span><span>mTLS observer</span><span>query-string password</span><span>OAuth scheme</span>
     </div></div>
     <div class="tools" style="margin:8px 0 72px">
+      <a class="tool" href="wireless-adb.html"><div class="top"><h3>Wireless debugging trust class</h3><span class="pill">platform</span></div><p>adbd can trust a LAN peer too soon. Observer only. CVE-2026-0073.</p><div class="meta">2026 · field note · credited</div></a>
       <a class="tool" href="jwt-hardcoded.html"><div class="top"><h3>Hardcoded Entra token in public JS</h3><span class="pill">web</span></div><p>Employee JWT with Admin role left in a dated dashboard bundle.</p><div class="meta">2026 · field case · redacted</div></a>
       <a class="tool" href="mtls-lab.html"><div class="top"><h3>mTLS on the device</h3><span class="pill">mobile</span></div><p>AndroScope defense module. Software PKCS12 vs AndroidKeyStore. No public bypass kit.</p><div class="meta">2026 · field note</div></a>
       <a class="tool" href="creds-query.html"><div class="top"><h3>Password in the query string</h3><span class="pill">mobile</span></div><p>RN login put the password in the URL. Error SDK copied it.</p><div class="meta">2026 · field case · redacted</div></a>
@@ -63,7 +65,7 @@
     </div>
   </main>
   <footer><div class="wrap foot"><div>© 2026 Yunus Emre Öztaş — mitsec</div><div>m.i.t@mit.tc</div></div></footer>
-  <script src="assets/js/theme.js?v=5"></script>
-  <script src="assets/js/site.js?v=5"></script>
+  <script src="assets/js/theme.js?v=8"></script>
+  <script src="assets/js/site.js?v=8"></script>
 </body>
 </html>
