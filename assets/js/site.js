@@ -145,16 +145,61 @@
     requestAnimationFrame(function () { fit(); draw(); });
   });
 
+  const cases = [
+    { href: "jwt-hardcoded.html", pill: "web", title: "Hardcoded Entra token in public JS", blurb: "Employee JWT with Admin role left in a dated dashboard bundle.", meta: "2026 · redacted" },
+    { href: "creds-query.html", pill: "mobile", title: "Password in the query string", blurb: "RN login put the password in the URL. Error SDK copied it.", meta: "2026 · redacted" },
+    { href: "oauth-scheme.html", pill: "mobile", title: "Custom scheme, no PKCE", blurb: "Unverified OAuth redirect plus no code_challenge.", meta: "2026 · redacted" },
+    { href: "mtls-lab.html", pill: "mobile", title: "mTLS on the device", blurb: "Defense module. Software PKCS12 vs AndroidKeyStore.", meta: "2026 · field note" }
+  ];
+  const stage = document.querySelector("[data-stage]");
+  if (stage) {
+    var n = 0;
+    var dots = document.querySelector("[data-stage-dots]");
+    function paint(i) {
+      n = (i + cases.length) % cases.length;
+      var c = cases[n];
+      stage.href = c.href;
+      stage.classList.remove("swap");
+      void stage.offsetWidth;
+      stage.classList.add("swap");
+      var t = stage.querySelector("[data-stage-title]");
+      var b = stage.querySelector("[data-stage-blurb]");
+      var m = stage.querySelector("[data-stage-meta]");
+      var p = stage.querySelector("[data-stage-pill]");
+      var x = stage.querySelector("[data-stage-idx]");
+      if (t) t.textContent = c.title;
+      if (b) b.textContent = c.blurb;
+      if (m) m.textContent = c.meta;
+      if (p) p.textContent = c.pill;
+      if (x) x.textContent = String(n + 1).padStart(2, "0") + " / " + String(cases.length).padStart(2, "0");
+      if (dots) {
+        dots.querySelectorAll("button").forEach(function (d, k) {
+          d.classList.toggle("on", k === n);
+        });
+      }
+    }
+    if (dots) {
+      cases.forEach(function (_, i) {
+        var d = document.createElement("button");
+        d.type = "button";
+        d.setAttribute("aria-label", "Case " + (i + 1));
+        d.addEventListener("click", function (e) { e.preventDefault(); paint(i); });
+        dots.appendChild(d);
+      });
+    }
+    paint(0);
+    setInterval(function () { paint(n + 1); }, 4800);
+  }
+
   const lines = [
-    ["ok", "[PREPARE] AXML string pool indexed"],
-    ["ok", "[PREPARE] DEX string_ids scanned"],
-    ["dim", "[ASSESS] exported activity → MEDIUM"],
-    ["hi", "[ASSESS] FH-ID issued"],
-    ["ok", "[PLAN] surface-matched steps only"],
-    ["dim", "[RUNTIME] wait · first frame held"],
-    ["ok", "[RUNTIME] session transcript open"],
-    ["dim", "[RADAR] no invented findings"],
-    ["ok", "[SCOPE] lab.sample.app mapped"]
+    ["hi", "[WIRE] hardcoded JWT · public JS · Admin role"],
+    ["ok", "[WIRE] query-string password · RN bridge"],
+    ["ok", "[WIRE] custom scheme · missing PKCE"],
+    ["dim", "[WIRE] mTLS observer · PKCS12 vs KeyStore"],
+    ["ok", "[REDACT] vendor host stripped"],
+    ["dim", "[REDACT] employee / tenant / token body out"],
+    ["hi", "[LIVE] stage rotating field cases"],
+    ["ok", "[SCOPE] lab names only"]
   ];
   document.querySelectorAll("[data-console]").forEach(function (box) {
     let i = 0;
