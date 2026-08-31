@@ -1,4 +1,6 @@
 (function () {
+  document.querySelectorAll(".pgstat, [data-pgstat]").forEach(function (el) { el.remove(); });
+
   function cssVar(name, fallback) {
     var v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
     return v || fallback;
@@ -265,6 +267,5 @@
     document.body.appendChild(s);
   }
   loadExtra("assets/js/skel.js");
-  loadExtra("assets/js/stats.js");
   loadExtra("assets/js/pulse.js");
 })();
