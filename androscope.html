@@ -8,13 +8,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="assets/css/site.css?v=5"/>
-  <link rel="stylesheet" href="assets/css/op.css?v=5"/>
-  <link rel="stylesheet" href="assets/css/theme.css?v=5"/>
-  <link rel="stylesheet" href="assets/css/live.css?v=5"/>
+  <link rel="stylesheet" href="assets/css/site.css?v=12"/>
+  <link rel="stylesheet" href="assets/css/op.css?v=12"/>
+  <link rel="stylesheet" href="assets/css/theme.css?v=12"/>
+  <link rel="stylesheet" href="assets/css/live.css?v=12"/>
   <script>(function(){try{var t=localStorage.getItem('mitsec-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 </head>
-<body>
+<body class="scope-page">
   <div class="bg" aria-hidden="true"></div>
   <header class="nav">
     <div class="wrap nav-in">
@@ -50,18 +50,23 @@
         </div>
       </div>
       <div class="reveal d2">
-        <div class="scope">
-          <canvas data-radar></canvas>
-          <div class="beam"></div>
-          <div class="ring"></div>
-          <div class="ring d2"></div>
-          <div class="scanline"></div>
-          <div class="scope-hud">
-            <div class="top"><span>scope // live</span><span>unrooted</span></div>
-            <div class="bot"><span>radar</span><span data-clock>--:--:--</span></div>
+        <div class="device">
+          <div class="notch"></div>
+          <div class="device-screen">
+            <div class="scope">
+              <canvas data-radar></canvas>
+              <div class="beam"></div>
+              <div class="ring"></div>
+              <div class="ring d2"></div>
+              <div class="scanline"></div>
+              <div class="scope-hud">
+                <div class="top"><span>scope // live</span><span>unrooted</span></div>
+                <div class="bot"><span>radar</span><span data-clock>--:--:--</span></div>
+              </div>
+            </div>
+            <div class="console" data-console></div>
           </div>
         </div>
-        <div class="console" data-console></div>
       </div>
     </section>
     <div class="ticker"><div class="ticker-track">
@@ -74,6 +79,7 @@
       <div class="card"><div class="tag">03</div><h3>RUNTIME</h3><p>The log follows your hands.</p></div>
     </div>
     <section id="deck" class="op">
+      <div class="term-bar"><i></i><i></i><i></i><span>androscope · session · tty</span></div>
       <div class="op-head">
         <div><b>AndroSCOPE Final Edition</b> · @ynsmroztas</div>
         <div>target: <span class="tgt">lab.sample.app</span> · mode: rootless · evidence: full</div>
@@ -151,8 +157,8 @@
       <div><a href="index.html">Home</a> · <a href="tools.html">Tools</a> · <a href="https://x.com/ynsmroztas">X</a></div>
     </div>
   </footer>
-  <script src="assets/js/theme.js?v=5"></script>
-  <script src="assets/js/site.js?v=5"></script>
-  <script src="assets/js/deck.js?v=5"></script>
+  <script src="assets/js/theme.js?v=12"></script>
+  <script src="assets/js/site.js?v=12"></script>
+  <script src="assets/js/deck.js?v=12"></script>
 </body>
 </html>
