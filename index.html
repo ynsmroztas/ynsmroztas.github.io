@@ -4,13 +4,14 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>mitsec — field cases / Yunus Emre Öztaş</title>
+  <meta name="description" content="Redacted field cases from Yunus Emre Öztaş / mitsec. Mobile OAuth, RN secrets, public JWTs, mTLS. AndroScope is the instrument."/>
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="assets/css/site.css?v=7"/>
-  <link rel="stylesheet" href="assets/css/theme.css?v=7"/>
-  <link rel="stylesheet" href="assets/css/live.css?v=7"/>
+  <link rel="stylesheet" href="assets/css/site.css?v=8"/>
+  <link rel="stylesheet" href="assets/css/theme.css?v=8"/>
+  <link rel="stylesheet" href="assets/css/live.css?v=8"/>
   <script>(function(){try{var t=localStorage.getItem('mitsec-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 </head>
 <body class="home">
@@ -24,7 +25,7 @@
         <a href="tools.html">Tools</a>
         <a href="writeups.html">Writeups</a>
         <a href="research.html">Research</a>
-        <a class="cta" href="writeups.html">Field cases</a>
+        <a class="cta" href="mailto:m.i.t@mit.tc">m.i.t@mit.tc</a>
       </nav>
       <button class="burger" data-burger aria-label="Menu">☰</button>
     </div>
@@ -41,7 +42,7 @@
       <p class="sub">Yunus Emre Öztaş — mitsec. Tokens left in JS. Passwords in the query. Custom schemes without PKCE. mTLS on the device.</p>
       <div class="row">
         <a class="btn" href="writeups.html">Open the wire →</a>
-        <a class="btn ghost" href="androscope.html">AndroScope</a>
+        <a class="btn ghost" href="mailto:m.i.t@mit.tc">Contact</a>
       </div>
     </section>
     <section class="cover-sec reveal d2">
@@ -74,11 +75,35 @@
       <div class="dots" data-cover-dots></div>
     </section>
     <div class="stats">
-      <div class="stat"><b>100+</b><span>HoF entries</span></div>
-      <div class="stat"><b>2430+</b><span>Vulns reported</span></div>
-      <div class="stat"><b>1100+</b><span>P1 critical</span></div>
+      <a class="stat" href="research.html"><b>100+</b><span>HoF entries</span></a>
+      <a class="stat" href="research.html"><b>2430+</b><span>Vulns reported</span></a>
+      <a class="stat" href="research.html"><b>1100+</b><span>P1 critical</span></a>
       <div class="stat"><b>12+</b><span>Years exp</span></div>
     </div>
+    <section>
+      <p class="h-k">Surface</p>
+      <h2>What I hunt.</h2>
+      <div class="skills">
+        <div class="skill"><b>Mobile</b><span>Android · gadget-in-target · RN bridge</span></div>
+        <div class="skill"><b>OAuth</b><span>custom schemes · PKCE · public clients</span></div>
+        <div class="skill"><b>Secrets</b><span>JWT in JS · query-string creds · DEX strings</span></div>
+        <div class="skill"><b>Transport</b><span>mTLS store class · pinning observer</span></div>
+      </div>
+    </section>
+    <section>
+      <p class="h-k">Hall of fame</p>
+      <h2>Programs, not a logo dump.</h2>
+      <div class="hof">
+        <a href="research.html"><b>Apple</b><i>HoF · private</i></a>
+        <a href="research.html"><b>Microsoft</b><i>HoF · private</i></a>
+        <a href="research.html"><b>Meta</b><i>HoF · private</i></a>
+        <a href="research.html"><b>IBM</b><i>HoF · private</i></a>
+        <a href="https://app.intigriti.com/researcher/ynsmroztas" target="_blank" rel="noopener"><b>Intigriti</b><i>platform</i></a>
+        <a href="https://bugcrowd.com/ynsmroztas" target="_blank" rel="noopener"><b>Bugcrowd</b><i>platform</i></a>
+        <a href="https://hackerone.com/ynsmroztas" target="_blank" rel="noopener"><b>HackerOne</b><i>platform</i></a>
+        <a href="research.html"><b>YesWeHack</b><i>platform</i></a>
+      </div>
+    </section>
     <section>
       <p class="h-k">On the wire</p>
       <h2>Every card is a redacted field note.</h2>
@@ -99,18 +124,18 @@
   <main class="wrap">
     <section>
       <p class="h-k">The instrument</p>
-      <h2>AndroScope still sits under the wire.</h2>
-      <p class="lead">Operator console plus a runtime inside an authorized lab build.</p>
+      <h2>AndroScope lives on its own page.</h2>
+      <p class="lead">Home is the wire. The console, deck, and rootless model sit under AndroScope.</p>
       <p style="margin-top:22px"><a class="btn ghost" href="androscope.html">Full technical writeup</a></p>
     </section>
   </main>
   <footer>
     <div class="wrap foot">
       <div>© 2026 Yunus Emre Öztaş — mitsec</div>
-      <div>m.i.t@mit.tc · <a href="https://github.com/ynsmroztas">GitHub</a> · <a href="https://x.com/ynsmroztas">X</a></div>
+      <div><a href="mailto:m.i.t@mit.tc">m.i.t@mit.tc</a></div>
     </div>
   </footer>
-  <script src="assets/js/theme.js?v=7"></script>
-  <script src="assets/js/site.js?v=7"></script>
+  <script src="assets/js/theme.js?v=8"></script>
+  <script src="assets/js/site.js?v=8"></script>
 </body>
 </html>
