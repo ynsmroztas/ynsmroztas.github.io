@@ -4,7 +4,7 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>mitsec — field cases / Yunus Emre Öztaş</title>
-  <meta name="description" content="Redacted field cases from Yunus Emre Öztaş / mitsec. Deeplink auth, wireless debug, JWTs, RN secrets, OAuth, mTLS."/>
+  <meta name="description" content="Redacted field cases. Intent redirect, FileProvider, WebView intent://, SDK proxy, plus prior notes."/>
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -37,9 +37,9 @@
       <div class="livebar">
         <span class="chip on">● now reading</span>
         <span class="chip">clk <span data-clock>--:--:--</span></span>
-        <span class="chip">6 notes on the wire</span>
+        <span class="chip">10 notes on the wire</span>
       </div>
-      <p class="sub">Yunus Emre Öztaş — mitsec. Deeplinks into login. Wireless debugging left on. Tokens in JS. Passwords in the query. No PKCE. mTLS on the device.</p>
+      <p class="sub">Yunus Emre Öztaş — mitsec. Intent redirect. FileProvider root-path. WebView intent://. SDK proxy. Then the older notes.</p>
       <div class="row">
         <a class="btn" href="writeups.html">Open the wire →</a>
         <a class="btn ghost" href="mailto:m.i.t@mit.tc">Contact</a>
@@ -47,42 +47,12 @@
     </section>
     <section class="cover-sec reveal d2">
       <div class="coverflow" data-cover>
-        <a class="cover-card" href="deeplink-auth.html" data-cover-card>
-          <span class="pill">mobile · 06</span>
-          <h2 class="title3d">Deeplink into <em>auth</em></h2>
-          <p>Exported gate. No host allowlist. Private AuthFlow on the other side.</p>
-          <b>read →</b>
-        </a>
-        <a class="cover-card" href="wireless-adb.html" data-cover-card>
-          <span class="pill">platform · 05</span>
-          <h2 class="title3d">Wireless debug <em>trust</em></h2>
-          <p>adbd can accept a LAN peer as trusted. Observer only.</p>
-          <b>read →</b>
-        </a>
-        <a class="cover-card" href="jwt-hardcoded.html" data-cover-card>
-          <span class="pill">web · 01</span>
-          <h2 class="title3d">Hardcoded <em>Entra JWT</em></h2>
-          <p>Employee token with Admin role left in a dated public bundle.</p>
-          <b>read →</b>
-        </a>
-        <a class="cover-card" href="creds-query.html" data-cover-card>
-          <span class="pill">mobile · 02</span>
-          <h2 class="title3d">Password in the <em>query</em></h2>
-          <p>RN login put the secret in the URL. The error SDK copied it.</p>
-          <b>read →</b>
-        </a>
-        <a class="cover-card" href="oauth-scheme.html" data-cover-card>
-          <span class="pill">mobile · 03</span>
-          <h2 class="title3d">Custom scheme, <em>no PKCE</em></h2>
-          <p>Unverified OAuth redirect plus no code_challenge.</p>
-          <b>read →</b>
-        </a>
-        <a class="cover-card" href="mtls-lab.html" data-cover-card>
-          <span class="pill">mobile · 04</span>
-          <h2 class="title3d">mTLS on the <em>device</em></h2>
-          <p>Software PKCS12 versus AndroidKeyStore. Observer only.</p>
-          <b>read →</b>
-        </a>
+        <a class="cover-card" href="intent-redir.html" data-cover-card><span class="pill">mobile · 07</span><h2 class="title3d">Intent <em>redirection</em></h2><p>Exported router starts a nested Intent. Safer Intents off.</p><b>read →</b></a>
+        <a class="cover-card" href="fileprovider.html" data-cover-card><span class="pill">mobile · 08</span><h2 class="title3d">FileProvider <em>root-path</em></h2><p>paths.xml mapped /. Grants on. Bytes not printed.</p><b>read →</b></a>
+        <a class="cover-card" href="webview-intent.html" data-cover-card><span class="pill">mobile · 09</span><h2 class="title3d">WebView <em>intent://</em></h2><p>parseUri on a document URL, then startActivity.</p><b>read →</b></a>
+        <a class="cover-card" href="sdk-proxy.html" data-cover-card><span class="pill">mobile · 10</span><h2 class="title3d">SDK exported the <em>proxy</em></h2><p>Merged AAR activity. Host UID. Nested Intent sink.</p><b>read →</b></a>
+        <a class="cover-card" href="deeplink-auth.html" data-cover-card><span class="pill">mobile · 06</span><h2 class="title3d">Deeplink into <em>auth</em></h2><p>Exported gate. No host allowlist. Private AuthFlow.</p><b>read →</b></a>
+        <a class="cover-card" href="wireless-adb.html" data-cover-card><span class="pill">platform · 05</span><h2 class="title3d">Wireless debug <em>trust</em></h2><p>adbd can accept a LAN peer as trusted. Observer only.</p><b>read →</b></a>
       </div>
       <div class="dots" data-cover-dots></div>
     </section>
@@ -96,50 +66,31 @@
       <p class="h-k">Surface</p>
       <h2>What I hunt.</h2>
       <div class="skills">
-        <div class="skill"><b>Mobile</b><span>Android · gadget-in-target · deeplink</span></div>
-        <div class="skill"><b>OAuth</b><span>custom schemes · PKCE · public clients</span></div>
-        <div class="skill"><b>Secrets</b><span>JWT in JS · query-string creds · DEX strings</span></div>
-        <div class="skill"><b>Posture</b><span>mTLS store · pinning · wireless debug</span></div>
-      </div>
-    </section>
-    <section>
-      <p class="h-k">Hall of fame</p>
-      <h2>Programs, not a logo dump.</h2>
-      <div class="hof">
-        <a href="research.html"><b>Apple</b><i>HoF · private</i></a>
-        <a href="research.html"><b>Microsoft</b><i>HoF · private</i></a>
-        <a href="research.html"><b>Meta</b><i>HoF · private</i></a>
-        <a href="research.html"><b>IBM</b><i>HoF · private</i></a>
-        <a href="https://app.intigriti.com/researcher/ynsmroztas" target="_blank" rel="noopener"><b>Intigriti</b><i>platform</i></a>
-        <a href="https://bugcrowd.com/ynsmroztas" target="_blank" rel="noopener"><b>Bugcrowd</b><i>platform</i></a>
-        <a href="https://hackerone.com/ynsmroztas" target="_blank" rel="noopener"><b>HackerOne</b><i>platform</i></a>
-        <a href="research.html"><b>YesWeHack</b><i>platform</i></a>
+        <div class="skill"><b>IPC</b><span>intent redirect · deeplink · SDK proxy</span></div>
+        <div class="skill"><b>WebView</b><span>intent:// · parseUri · no file access</span></div>
+        <div class="skill"><b>Storage</b><span>FileProvider · root-path · grants</span></div>
+        <div class="skill"><b>Posture</b><span>mTLS · pinning · wireless debug</span></div>
       </div>
     </section>
     <section>
       <p class="h-k">On the wire</p>
       <h2>Every card is a redacted field note.</h2>
       <div class="tools case-grid" style="margin-top:16px">
-        <a class="tool" href="deeplink-auth.html"><div class="top"><h3>Deeplink into the auth flow</h3><span class="pill">mobile</span></div><p>Exported gate, no host allowlist, private AuthFlow on the other side.</p><div class="meta">2026 · lab</div></a>
-        <a class="tool" href="wireless-adb.html"><div class="top"><h3>Wireless debugging trust class</h3><span class="pill">platform</span></div><p>adbd can trust a LAN peer too soon. No shell kit.</p><div class="meta">2026 · credited</div></a>
-        <a class="tool" href="jwt-hardcoded.html"><div class="top"><h3>Hardcoded Entra token in public JS</h3><span class="pill">web</span></div><p>Employee JWT with Admin role left in a dated dashboard bundle.</p><div class="meta">2026 · redacted</div></a>
-        <a class="tool" href="creds-query.html"><div class="top"><h3>Password in the query string</h3><span class="pill">mobile</span></div><p>RN login put the password in the URL. Error SDK copied it.</p><div class="meta">2026 · redacted</div></a>
-        <a class="tool" href="oauth-scheme.html"><div class="top"><h3>Custom scheme, no PKCE</h3><span class="pill">mobile</span></div><p>Unverified OAuth redirect plus no code_challenge.</p><div class="meta">2026 · redacted</div></a>
-        <a class="tool" href="mtls-lab.html"><div class="top"><h3>mTLS on the device</h3><span class="pill">mobile</span></div><p>Defense module. Software PKCS12 vs AndroidKeyStore.</p><div class="meta">2026 · field note</div></a>
+        <a class="tool" href="intent-redir.html"><div class="top"><h3>Intent redirection</h3><span class="pill">mobile</span></div><p>Exported router starts a nested Intent. Safer Intents off.</p><div class="meta">2026 · lab</div></a>
+        <a class="tool" href="fileprovider.html"><div class="top"><h3>FileProvider, root-path</h3><span class="pill">mobile</span></div><p>paths.xml mapped /. grantUriPermissions on.</p><div class="meta">2026 · lab</div></a>
+        <a class="tool" href="webview-intent.html"><div class="top"><h3>WebView, intent://</h3><span class="pill">mobile</span></div><p>parseUri on a document URL, then startActivity.</p><div class="meta">2026 · lab</div></a>
+        <a class="tool" href="sdk-proxy.html"><div class="top"><h3>The SDK exported the proxy</h3><span class="pill">mobile</span></div><p>Merged AAR activity. Host UID.</p><div class="meta">2026 · lab</div></a>
+        <a class="tool" href="deeplink-auth.html"><div class="top"><h3>Deeplink into the auth flow</h3><span class="pill">mobile</span></div><p>Exported gate, private AuthFlow.</p><div class="meta">2026 · lab</div></a>
+        <a class="tool" href="writeups.html"><div class="top"><h3>Full wire</h3><span class="pill">index</span></div><p>JWT, query-string, OAuth, mTLS, wireless debug.</p><div class="meta">all notes</div></a>
       </div>
     </section>
   </main>
-  <div class="marquee">
-    <div class="marquee-track">
-      <span>APPLE</span><span>MICROSOFT</span><span>META</span><span>IBM</span><span>INTIGRITI</span><span>YESWEHACK</span><span>BUGCROWD</span><span>HACKERONE</span>
-      <span>APPLE</span><span>MICROSOFT</span><span>META</span><span>IBM</span><span>INTIGRITI</span><span>YESWEHACK</span><span>BUGCROWD</span><span>HACKERONE</span>
-    </div>
-  </div>
+  <div class="marquee"><div class="marquee-track"><span>APPLE</span><span>MICROSOFT</span><span>META</span><span>IBM</span><span>INTIGRITI</span><span>YESWEHACK</span><span>BUGCROWD</span><span>HACKERONE</span><span>APPLE</span><span>MICROSOFT</span><span>META</span><span>IBM</span><span>INTIGRITI</span><span>YESWEHACK</span><span>BUGCROWD</span><span>HACKERONE</span></div></div>
   <main class="wrap">
     <section>
       <p class="h-k">The instrument</p>
       <h2>AndroScope lives on its own page.</h2>
-      <p class="lead">Home is the wire. The console, deck, and rootless model sit under AndroScope.</p>
+      <p class="lead">Home is the wire. The console sits under AndroScope.</p>
       <p style="margin-top:22px"><a class="btn ghost" href="androscope.html">Full technical writeup</a></p>
     </section>
   </main>
