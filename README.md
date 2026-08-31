@@ -1,20 +1,14 @@
 # mitsec — ynsmroztas.github.io
 
-Static site for Yunus Emre Öztaş / mitsec. Flagship page is **AndroScope**.
+Static site for Yunus Emre Öztaş / mitsec.
 
-- No admin panel
-- No FridHunter
-- No build step — push to `main`, GitHub Pages serves the root
+- Home = field cases (live wire)
+- `/androscope.html` = the instrument
+- Writeups use the same skeleton: Problem → Move → Evidence → Outcome
+- No admin panel, no FridHunter, no build step
 
-```
-index.html          home + 3D AndroScope hero + stats + HoF
-androscope.html     technical writeup
-tools.html          arsenal
-writeups.html       notes
-research.html       CVE slice + HoF
-assets/css/site.css
-assets/js/site.js
-assets/img/         generated plates + HUD + pipeline + surface
-```
+Proof: GitHub / X / HackerOne / Bugcrowd / Intigriti — handle `ynsmroztas`.
+Contact: `m.i.t@mit.tc`
+Disclosure: `/security.txt` and `/.well-known/security.txt`
 
-Pages → Source: `main` / root.
+Custom domain steps: `DOMAIN.md`.

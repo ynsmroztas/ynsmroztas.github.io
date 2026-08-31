@@ -1,0 +1,6 @@
+Contact: mailto:m.i.t@mit.tc
+Expires: 2027-08-31T00:00:00.000Z
+Preferred-Languages: en, tr
+Canonical: https://ynsmroztas.github.io/security.txt
+Policy: https://ynsmroztas.github.io/research.html
+Acknowledgments: https://ynsmroztas.github.io/research.html
