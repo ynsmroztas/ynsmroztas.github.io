@@ -2,6 +2,30 @@
   if (document.querySelector(".skel")) return;
   var file = (location.pathname.split("/").pop() || "index.html");
   var map = {
+    "intent-redir.html": [
+      ["01 Problem", "Exported router started a nested Intent extra as itself."],
+      ["02 Move", "Manifest + sink on an authorized lab build."],
+      ["03 Evidence", "getParcelableExtra → startActivity. targetSdk 34."],
+      ["04 Outcome", "Do not start foreign Intents. targetSdk 36."]
+    ],
+    "fileprovider.html": [
+      ["01 Problem", "FileProvider mapped / and handed out grants."],
+      ["02 Move", "Manifest + paths.xml on the authorized lab APK."],
+      ["03 Evidence", "root-path path=. grantUriPermissions=true."],
+      ["04 Outcome", "files-path only. Revoke the grant."]
+    ],
+    "webview-intent.html": [
+      ["01 Problem", "WebView parsed a document URL into startActivity."],
+      ["02 Move", "Hook shouldOverrideUrlLoading on the lab build."],
+      ["03 Evidence", "Intent.parseUri. intent:// accepted."],
+      ["04 Outcome", "https only. Never parseUri into startActivity."]
+    ],
+    "sdk-proxy.html": [
+      ["01 Problem", "The AAR exported the proxy. The host did not."],
+      ["02 Move", "Merged manifest + DEX on the lab APK."],
+      ["03 Evidence", "lab.engage.ProxyActivity. Nested Intent sink."],
+      ["04 Outcome", "Bump the AAR or tools:node=remove."]
+    ],
     "creds-query.html": [
       ["01 Problem", "Login POST put email and the password in the query string."],
       ["02 Move", "AndroScope hooked the RN networking bridge on an authorized lab build."],
