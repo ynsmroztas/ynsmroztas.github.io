@@ -9,10 +9,27 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="assets/css/site.css?v=11"/>
-  <link rel="stylesheet" href="assets/css/theme.css?v=11"/>
-  <link rel="stylesheet" href="assets/css/live.css?v=11"/>
-  <style>.pgstat,[data-pgstat]{display:none!important;height:0!important;overflow:hidden!important;margin:0!important;padding:0!important}</style>
+  <link rel="stylesheet" href="assets/css/site.css?v=12"/>
+  <link rel="stylesheet" href="assets/css/theme.css?v=12"/>
+  <link rel="stylesheet" href="assets/css/live.css?v=12"/>
+  <style>
+    .pgstat,[data-pgstat],.xtimeline,iframe.twitter-timeline{display:none!important}
+    .xwire{border-top:1px solid var(--line);padding:36px 0 28px;position:relative;z-index:2}
+    .xwire-head{margin-bottom:16px}
+    .xgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .xpost{display:block;border:1px solid var(--line-2);border-radius:16px;padding:16px 16px 14px;background:var(--panel);color:inherit;min-height:0}
+    .xpost:hover{border-color:var(--ph)}
+    .xpost .who{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+    .xpost .who b{color:#fff;font-size:14px}
+    .xpost .who span{font-family:var(--mono);font-size:11px;color:var(--dim)}
+    .xpost p{margin:0;color:var(--mute);font-size:14.5px;line-height:1.5}
+    .xpost .when{display:block;margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--ph);letter-spacing:.08em;text-transform:uppercase}
+    @media (max-width:800px){
+      .xgrid{grid-template-columns:1fr}
+      .xwire .wrap{display:block!important}
+      .nav .mark + .mark, header .theme-orb{display:none}
+    }
+  </style>
   <script>(function(){try{var t=localStorage.getItem('mitsec-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 </head>
 <body class="home">
@@ -96,21 +113,35 @@
     </section>
   </main>
   <section class="xwire" data-xwire>
-    <div class="wrap" style="display:grid;grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr);gap:22px">
-      <div>
-        <p class="h-k">Live from X</p>
+    <div class="wrap">
+      <div class="xwire-head">
+        <p class="h-k">From X</p>
         <h2>@ynsmroztas</h2>
-        <p class="lead">Threads and field notes from the timeline.</p>
-        <div class="xpicks" style="display:flex;flex-direction:column;gap:10px;margin-top:14px">
-          <a class="tool" href="https://x.com/ynsmroztas/status/2090748385657590217" target="_blank" rel="me noopener"><div class="top"><h3>OAuth scheme thread</h3><span class="pill">21 Aug</span></div><p>P2 ATO class: custom-scheme OAuth, no PKCE.</p></a>
-          <a class="tool" href="https://x.com/ynsmroztas/status/2074929881754833052" target="_blank" rel="me noopener"><div class="top"><h3>Android 0-days</h3><span class="pill">08 Jul</span></div><p>Sandbox escapes. AndroScope coming to GitHub.</p></a>
-          <a class="tool" href="https://x.com/ynsmroztas/status/2074933107325915329" target="_blank" rel="me noopener"><div class="top"><h3>AndroScope</h3><span class="pill">08 Jul</span></div><p>Rootless PREPARE → ASSESS → RUNTIME.</p></a>
-          <a class="btn ghost" href="https://x.com/ynsmroztas" target="_blank" rel="me noopener">Open X profile →</a>
-        </div>
+        <p class="lead">Selected posts. Full feed stays on X.</p>
       </div>
-      <div class="xtimeline" style="min-height:420px;border:1px solid var(--line-2);border-radius:16px;overflow:hidden;background:#000">
-        <a class="twitter-timeline" data-theme="dark" data-height="520" data-chrome="noheader nofooter noborders transparent" href="https://x.com/ynsmroztas">Posts by @ynsmroztas</a>
+      <div class="xgrid">
+        <a class="xpost" href="https://x.com/ynsmroztas/status/2090748385657590217" target="_blank" rel="me noopener">
+          <div class="who"><b>Yunus Emre Öztaş</b><span>@ynsmroztas</span></div>
+          <p>P2 account takeover class: OAuth2 authorization code interception via custom URI scheme, PKCE missing entirely. How to hunt this on Android.</p>
+          <span class="when">21 Aug 2026 · thread</span>
+        </a>
+        <a class="xpost" href="https://x.com/ynsmroztas/status/2074929881754833052" target="_blank" rel="me noopener">
+          <div class="who"><b>Yunus Emre Öztaş</b><span>@ynsmroztas</span></div>
+          <p>Working the Android 0-day surface. Six findings, sandbox escapes in particular. AndroScope goes to GitHub in limited form.</p>
+          <span class="when">08 Jul 2026</span>
+        </a>
+        <a class="xpost" href="https://x.com/ynsmroztas/status/2074933107325915329" target="_blank" rel="me noopener">
+          <div class="who"><b>Yunus Emre Öztaş</b><span>@ynsmroztas</span></div>
+          <p>AndroScope — rootless gadget workflow. Patch once. PREPARE → ASSESS → RUNTIME on an unrooted phone.</p>
+          <span class="when">08 Jul 2026</span>
+        </a>
+        <a class="xpost" href="https://x.com/ynsmroztas/status/2074933242780696699" target="_blank" rel="me noopener">
+          <div class="who"><b>Yunus Emre Öztaş</b><span>@ynsmroztas</span></div>
+          <p>Part 2 — the arsenal. Defense, traffic, IPC, native, niche surfaces. Rootless. Evidence on every run.</p>
+          <span class="when">08 Jul 2026</span>
+        </a>
       </div>
+      <p style="margin-top:18px"><a class="btn ghost" href="https://x.com/ynsmroztas" target="_blank" rel="me noopener">Open x.com/ynsmroztas →</a></p>
     </div>
   </section>
   <footer>
@@ -119,9 +150,8 @@
       <div><a href="mailto:m.i.t@mit.tc">m.i.t@mit.tc</a></div>
     </div>
   </footer>
-  <script src="assets/js/theme.js?v=11"></script>
-  <script src="assets/js/site.js?v=11"></script>
-  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-  <script>document.querySelectorAll('.pgstat,[data-pgstat]').forEach(function(el){el.remove();});</script>
+  <script src="assets/js/theme.js?v=12"></script>
+  <script src="assets/js/site.js?v=12"></script>
+  <script>document.querySelectorAll('.pgstat,[data-pgstat],.xtimeline').forEach(function(el){el.remove();});</script>
 </body>
 </html>
