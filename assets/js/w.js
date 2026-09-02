@@ -16,6 +16,7 @@
   }
 
   var WIRE = [
+    ["artifactory-join.html", "Empty join key, admin token"],
     ["provider-sqli.html", "Provider selection is SQL"],
     ["dex-load.html", "DEX from a writable path"],
     ["jsbridge-rce.html", "Bridge on the wrong origin"],
