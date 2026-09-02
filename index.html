@@ -4,14 +4,14 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>mitsec — field cases / Yunus Emre Öztaş</title>
-  <meta name="description" content="Redacted field cases. Artifactory join key, provider SQLi, DEX load, WebView bridge."/>
+  <meta name="description" content="Redacted field cases. CVE-2026-82329 Artifactory join key, provider SQLi, DEX load."/>
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="assets/css/site.css?v=15"/>
-  <link rel="stylesheet" href="assets/css/theme.css?v=15"/>
-  <link rel="stylesheet" href="assets/css/live.css?v=15"/>
+  <link rel="stylesheet" href="assets/css/site.css?v=16"/>
+  <link rel="stylesheet" href="assets/css/theme.css?v=16"/>
+  <link rel="stylesheet" href="assets/css/live.css?v=16"/>
   <style>
     .pgstat,[data-pgstat],.xtimeline,iframe.twitter-timeline{display:none!important}
     .xwire{border-top:1px solid var(--line);padding:36px 0 28px;position:relative;z-index:2}
@@ -24,6 +24,10 @@
     .xpost .who span{font-family:var(--mono);font-size:11px;color:var(--dim)}
     .xpost p{margin:0;color:var(--mute);font-size:14.5px;line-height:1.5}
     .xpost .when{display:block;margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--ph);letter-spacing:.08em;text-transform:uppercase}
+    .pin{display:block;border:1px solid var(--ph);border-radius:16px;padding:16px 18px;margin:8px 0 28px;background:var(--panel);color:inherit;text-decoration:none}
+    .pin em{font-style:normal;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ph)}
+    .pin h2{margin:6px 0 6px;font-size:22px}
+    .pin p{margin:0;color:var(--mute)}
     @media (max-width:800px){
       .xgrid{grid-template-columns:1fr}
       .xwire .wrap{display:block!important}
@@ -63,6 +67,11 @@
         <a class="btn ghost" href="mailto:m.i.t@mit.tc">Contact</a>
       </div>
     </section>
+    <a class="pin" href="artifactory-join.html">
+      <em>pinned · CVE-2026-82329</em>
+      <h2>Empty join key, admin token</h2>
+      <p>Self-hosted Artifactory Access trusted a blank join key. Lab still on 7.161.19. Host and JWT stripped.</p>
+    </a>
     <section class="cover-sec reveal d2">
       <div class="coverflow" data-cover>
         <a class="cover-card" href="artifactory-join.html" data-cover-card><span class="pill">auth · 16</span><h2 class="title3d">Empty join key, <em>admin token</em></h2><p>CVE-2026-82329. Self-hosted Artifactory trusted a blank join key.</p><b>read →</b></a>
@@ -151,8 +160,8 @@
       <div><a href="mailto:m.i.t@mit.tc">m.i.t@mit.tc</a></div>
     </div>
   </footer>
-  <script src="assets/js/theme.js?v=15"></script>
-  <script src="assets/js/site.js?v=15"></script>
+  <script src="assets/js/theme.js?v=16"></script>
+  <script src="assets/js/site.js?v=16"></script>
   <script>document.querySelectorAll('.pgstat,[data-pgstat],.xtimeline').forEach(function(el){el.remove();});</script>
 </body>
 </html>
