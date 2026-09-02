@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 520" role="img" aria-label="Redacted Artifactory lab session">
+  <rect width="920" height="520" fill="#07090c" rx="16"/>
+  <rect x="24" y="20" width="872" height="56" rx="8" fill="#0b1210" stroke="#34d399" stroke-width="1.2"/>
+  <text x="40" y="42" fill="#34d399" font-family="IBM Plex Mono,monospace" font-size="13">artifactory</text>
+  <text x="200" y="42" fill="#9ca3af" font-family="IBM Plex Mono,monospace" font-size="13">CVE-2026-82329 · unauth admin class</text>
+  <text x="40" y="62" fill="#34d399" font-family="IBM Plex Mono,monospace" font-size="13">mitsec</text>
+  <text x="200" y="62" fill="#6b7280" font-family="IBM Plex Mono,monospace" font-size="13">x.com/ynsmroztas</text>
+  <text x="40" y="110" fill="#6b7280" font-family="IBM Plex Mono,monospace" font-size="13">[*] targets=1</text>
+  <text x="40" y="136" fill="#fb7185" font-family="IBM Plex Mono,monospace" font-size="13">[VULN]</text>
+  <rect x="110" y="122" width="220" height="18" rx="3" fill="#e11d48"/>
+  <text x="340" y="136" fill="#9fe7b8" font-family="IBM Plex Mono,monospace" font-size="13">version=7.161.19</text>
+  <text x="40" y="162" fill="#fbbf24" font-family="IBM Plex Mono,monospace" font-size="13">scp=applied-permissions/admin · aud=*</text>
+  <text x="40" y="188" fill="#6b7280" font-family="IBM Plex Mono,monospace" font-size="13">join accepted · config 200 · tokens 200</text>
+  <text x="40" y="224" fill="#9fe7b8" font-family="IBM Plex Mono,monospace" font-size="13">token=</text>
+  <rect x="110" y="210" width="760" height="48" rx="4" fill="#e11d48"/>
+  <text x="40" y="290" fill="#6b7280" font-family="IBM Plex Mono,monospace" font-size="13">[*] findings=1 · vulnerable=1 · safe=0</text>
+  <text x="40" y="328" fill="#9ca3af" font-family="IBM Plex Mono,monospace" font-size="13">admin session class · host stripped</text>
+  <text x="40" y="360" fill="#e5e7eb" font-family="IBM Plex Mono,monospace" font-size="13">"version": "7.161.19"</text>
+  <text x="40" y="384" fill="#9ca3af" font-family="IBM Plex Mono,monospace" font-size="13">"revision": "86119900"</text>
+  <text x="40" y="408" fill="#9ca3af" font-family="IBM Plex Mono,monospace" font-size="13">entitlements present · replication flags on</text>
+  <text x="40" y="440" fill="#e5e7eb" font-family="IBM Plex Mono,monospace" font-size="13">users[] · username=</text>
+  <rect x="240" y="426" width="200" height="18" rx="3" fill="#e11d48"/>
+  <text x="40" y="488" fill="#34d399" font-family="IBM Plex Mono,monospace" font-size="13">mitsec@artifactory:</text>
+  <text x="280" y="488" fill="#4b5563" font-family="IBM Plex Mono,monospace" font-size="12">no mint recipe on this still</text>
+</svg>
