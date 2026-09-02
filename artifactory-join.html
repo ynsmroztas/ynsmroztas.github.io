@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Empty join key, admin token — mitsec</title>
+  <meta name="description" content="Field note: CVE-2026-82329. Self-hosted Artifactory trusted a blank join key. Class only. No mint kit."/>
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml"/>
+  <link rel="stylesheet" href="assets/css/site.css?v=15"/>
+  <link rel="stylesheet" href="assets/css/theme.css?v=15"/>
+  <link rel="stylesheet" href="assets/css/live.css?v=15"/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+  <style>
+    .stills,.still{display:none!important}
+    .term{background:#07090c;border:1px solid var(--line-2);border-radius:16px;padding:14px 16px;font-family:var(--mono);font-size:12px;line-height:1.55;color:#9fe7b8;white-space:pre-wrap;margin:16px 0 24px}
+    .term .dim{color:#6b7280}.term .hi{color:#fbbf24}.term .ok{color:#34d399}.term .bad{color:#fb7185}
+    .diag{width:100%;border:1px solid var(--line-2);border-radius:18px;display:block;margin:12px 0 28px}
+    .tag-row{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 20px}
+    .wire-nav{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;margin:40px 0 8px;padding-top:22px;border-top:1px solid var(--line)}
+    .wire-nav a{border:1px solid var(--line-2);border-radius:14px;padding:12px 14px;background:var(--panel);color:inherit;display:flex;flex-direction:column;gap:4px;text-decoration:none}
+    .wire-nav em{font-style:normal;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ph)}
+    .wire-nav span{color:#fff;font-size:14px}.wire-nav .next{text-align:right}
+    .wire-nav .index{align-self:center;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+    @media(max-width:700px){.wire-nav{grid-template-columns:1fr}.wire-nav .next{text-align:left}}
+  </style>
+  <script>(function(){try{var t=localStorage.getItem('mitsec-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body>
+  <div class="bg"></div>
+  <header class="nav"><div class="wrap nav-in"><a class="brand" href="index.html"><i></i><b>mit</b> <span>sec</span></a><nav class="links" data-links><a href="index.html">Home</a><a href="androscope.html">AndroScope</a><a href="tools.html">Tools</a><a class="on" href="writeups.html">Writeups</a><a href="research.html">Research</a></nav><button class="burger" data-burger aria-label="Menu">☰</button></div></header>
+  <main class="wrap">
+    <section class="page-hero slim">
+      <div>
+        <p class="meta">WRITEUP · PLATFORM · AUTH · CVE-2026-82329 · @YNSMROZTAS</p>
+        <h1>Empty join key, admin token</h1>
+        <div class="livebar"><span class="chip on">● live</span><span class="chip">clk <span data-clock>--:--:--</span></span><span class="chip">CWE-287</span></div>
+        <p class="lead">Self-hosted Artifactory trusted a blank cluster join key. That default is the finding. This page does not mint tokens.</p>
+      </div>
+      <div><div class="scope mini-scope"><canvas data-radar></canvas><div class="beam"></div><div class="ring"></div><div class="scanline"></div><div class="scope-hud"><div class="top"><span>join // access</span><span>observe</span></div><div class="bot"><span>radar</span><span data-clock>--:--:--</span></div></div></div></div>
+    </section>
+    <article class="prose">
+      <div class="tag-row"><span class="chip on">CVE-2026-82329</span><span class="chip">Artifactory</span><span class="chip">self-hosted</span><span class="chip">auth bypass</span></div>
+      <h2>The class</h2>
+      <p>Access, on a default self-hosted box, treated an empty join key as a valid cluster secret. A known empty secret is not a secret. Anything signed under that default can be accepted as a peer. The impact class is an unauthenticated platform administrator session — configuration, users, tokens, repositories — not “a local account appeared.”</p>
+      <p>Cloud-hosted Artifactory is out of scope. Self-hosted branches in the 7.111–7.161 lines were the surface. Vendor builds that reject the empty key close the class.</p>
+      <svg class="diag" viewBox="0 0 860 250" role="img" aria-label="empty key trust">
+        <rect width="860" height="250" fill="#0b0d10" rx="18"/>
+        <rect x="36" y="40" width="240" height="92" rx="12" fill="#111827" stroke="#fb7185"/>
+        <text x="52" y="78" fill="#fb7185" font-family="IBM Plex Mono,monospace" font-size="13">join key</text>
+        <text x="52" y="102" fill="#e5e7eb" font-family="Sora,sans-serif" font-size="14">default = empty</text>
+        <rect x="310" y="40" width="240" height="92" rx="12" fill="#111827" stroke="#fbbf24"/>
+        <text x="326" y="78" fill="#fbbf24" font-family="IBM Plex Mono,monospace" font-size="13">Access</text>
+        <text x="326" y="102" fill="#9ca3af" font-family="Sora,sans-serif" font-size="14">trusts that default</text>
+        <rect x="584" y="40" width="240" height="92" rx="12" fill="#111827" stroke="#7cffb2"/>
+        <text x="600" y="78" fill="#7cffb2" font-family="IBM Plex Mono,monospace" font-size="13">admin scope</text>
+        <text x="600" y="102" fill="#9ca3af" font-family="Sora,sans-serif" font-size="14">platform token class</text>
+        <text x="36" y="180" fill="#fbbf24" font-family="IBM Plex Mono,monospace" font-size="13">fix</text>
+        <text x="80" y="180" fill="#9ca3af" font-family="Sora,sans-serif" font-size="14">patched build + a real join key. empty must fail closed.</text>
+        <text x="36" y="214" fill="#6b7280" font-family="IBM Plex Mono,monospace" font-size="12">no join request, no token body, no signing recipe on this page</text>
+      </svg>
+      <pre class="term"><span class="hi">CVE-2026-82329</span>  JFrog Artifactory · self-hosted Access
+<span class="dim">class</span>            CWE-287  empty default join key
+<span class="dim">impact</span>           unauthenticated platform admin
+<span class="ok">cloud</span>            not this class
+<span class="bad">self-host</span>        default empty key accepted
+
+<span class="dim">lab only · authorized instance · no mint on this page</span>
+
+mitsec@artifactory:</pre>
+      <h2>What this page will not do</h2>
+      <ul>
+        <li>No join-endpoint walkthrough.</li>
+        <li>No signing-key derivation.</li>
+        <li>No token exchange, no admin-create flag, no recon query.</li>
+        <li>Persistence (“a user exists after”) is a follow-on, not the root finding.</li>
+      </ul>
+      <div class="call">Report the class as unauthenticated administrator token acquisition on a default self-hosted Access node. Patch first. Then rotate the join key so empty is rejected.</div>
+      <h2>Affected lines (vendor advisory)</h2>
+      <p>Vulnerable bands sat under 7.111.20, 7.117.27, 7.125.19, 7.133.28, 7.146.37, 7.161.19. Fixed counterparts start at the next build on each line; 7.191.14 is the later unified floor. Confirm on the box you own. Do not scan third-party hosts.</p>
+      <h2>Fix</h2>
+      <ul>
+        <li>Upgrade to a fixed self-hosted build before you argue about keys.</li>
+        <li>Set a join key that is not empty. Restart Access so the old default is dead.</li>
+        <li>Rotate tokens issued while the box was on a vulnerable build.</li>
+        <li>If the instance was on the public internet, treat it as compromised until logs say otherwise.</li>
+      </ul>
+      <h2>Repo</h2>
+      <p>Authorized lab helper lives next to this note. The site does not mirror the script.</p>
+      <p><a class="btn ghost" href="https://github.com/ynsmroztas/CVE-2026-82329-JFrog-Artifactory-Auth-Bypass" target="_blank" rel="me noopener">github.com/ynsmroztas/…Artifactory-Auth-Bypass</a></p>
+      <p class="meta" style="margin-top:40px">YUNUS EMRE ÖZTAŞ · MITSEC · AUTHORIZED TESTING ONLY</p>
+      <nav class="wire-nav" data-wire-nav>
+        <span></span>
+        <a class="index" href="writeups.html">all notes</a>
+        <a class="next" href="provider-sqli.html"><em>next</em><span>Provider selection is SQL</span></a>
+      </nav>
+    </article>
+  </main>
+  <footer><div class="wrap foot"><div>© 2026 Yunus Emre Öztaş — mitsec</div><div><a href="writeups.html">Writeups</a></div></div></footer>
+  <script src="assets/js/theme.js?v=15"></script>
+  <script src="assets/js/site.js?v=15"></script>
+  <script src="assets/js/w.js"></script>
+</body></html>

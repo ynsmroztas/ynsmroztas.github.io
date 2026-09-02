@@ -1,0 +1,34 @@
+{
+  "notes": [
+    {
+      "id": "artifactory-join",
+      "href": "artifactory-join.html",
+      "title": "Empty join key, admin token",
+      "pill": "auth",
+      "blurb": "CVE-2026-82329. Self-hosted Artifactory trusted a blank join key.",
+      "repo": "https://github.com/ynsmroztas/CVE-2026-82329-JFrog-Artifactory-Auth-Bypass",
+      "year": 2026
+    },
+    {
+      "id": "provider-sqli",
+      "href": "provider-sqli.html",
+      "title": "Provider selection is SQL",
+      "pill": "sqli",
+      "blurb": "Exported ContentProvider glued selection into the query."
+    },
+    {
+      "id": "dex-load",
+      "href": "dex-load.html",
+      "title": "DEX from a writable path",
+      "pill": "rce",
+      "blurb": "Loader mapped extract output. No payload DEX."
+    },
+    {
+      "id": "jsbridge-rce",
+      "href": "jsbridge-rce.html",
+      "title": "Bridge on the wrong origin",
+      "pill": "rce",
+      "blurb": "Interface on a WebView that loaded an extra URL."
+    }
+  ]
+}
