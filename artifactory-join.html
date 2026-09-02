@@ -4,11 +4,11 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Empty join key, admin token — mitsec</title>
-  <meta name="description" content="Field note: CVE-2026-82329. Self-hosted Artifactory trusted a blank join key. Class only. No mint kit."/>
+  <meta name="description" content="CVE-2026-82329 field note. Self-hosted Artifactory trusted a blank join key. Lab session still. Host and token stripped."/>
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml"/>
-  <link rel="stylesheet" href="assets/css/site.css?v=15"/>
-  <link rel="stylesheet" href="assets/css/theme.css?v=15"/>
-  <link rel="stylesheet" href="assets/css/live.css?v=15"/>
+  <link rel="stylesheet" href="assets/css/site.css?v=16"/>
+  <link rel="stylesheet" href="assets/css/theme.css?v=16"/>
+  <link rel="stylesheet" href="assets/css/live.css?v=16"/>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
   <style>
     .stills,.still{display:none!important}
@@ -33,16 +33,33 @@
       <div>
         <p class="meta">WRITEUP · PLATFORM · AUTH · CVE-2026-82329 · @YNSMROZTAS</p>
         <h1>Empty join key, admin token</h1>
-        <div class="livebar"><span class="chip on">● live</span><span class="chip">clk <span data-clock>--:--:--</span></span><span class="chip">CWE-287</span></div>
-        <p class="lead">Self-hosted Artifactory trusted a blank cluster join key. That default is the finding. This page does not mint tokens.</p>
+        <div class="livebar"><span class="chip on">● live</span><span class="chip">clk <span data-clock>--:--:--</span></span><span class="chip">CWE-287 · CVSS 9.8</span></div>
+        <p class="lead">Self-hosted Artifactory Access trusted a blank cluster join key. Lab session on 7.161.19 printed an admin-scoped session. Host and token are not on this page.</p>
       </div>
       <div><div class="scope mini-scope"><canvas data-radar></canvas><div class="beam"></div><div class="ring"></div><div class="scanline"></div><div class="scope-hud"><div class="top"><span>join // access</span><span>observe</span></div><div class="bot"><span>radar</span><span data-clock>--:--:--</span></div></div></div></div>
     </section>
     <article class="prose">
-      <div class="tag-row"><span class="chip on">CVE-2026-82329</span><span class="chip">Artifactory</span><span class="chip">self-hosted</span><span class="chip">auth bypass</span></div>
-      <h2>The class</h2>
-      <p>Access, on a default self-hosted box, treated an empty join key as a valid cluster secret. A known empty secret is not a secret. Anything signed under that default can be accepted as a peer. The impact class is an unauthenticated platform administrator session — configuration, users, tokens, repositories — not “a local account appeared.”</p>
-      <p>Cloud-hosted Artifactory is out of scope. Self-hosted branches in the 7.111–7.161 lines were the surface. Vendor builds that reject the empty key close the class.</p>
+      <div class="tag-row"><span class="chip on">CVE-2026-82329</span><span class="chip">Artifactory</span><span class="chip">self-hosted</span><span class="chip">CISA KEV</span></div>
+
+      <h2>Summary</h2>
+      <p>CVE-2026-82329 is an authentication bypass on <strong>self-hosted</strong> JFrog Artifactory. Access treated an empty join key as a live cluster secret. A default that everyone can know is not a secret. The impact class is an unauthenticated <em>platform administrator</em> session — not a low-priv user, not “an account was created later.”</p>
+      <p>Cloud-hosted Artifactory is a different product surface and is out of this note. CISA listed the CVE in KEV. That is operational urgency, not a recipe.</p>
+
+      <figure class="media-full" style="aspect-ratio:auto">
+        <img src="assets/img/artifactory-term.svg" alt="Redacted lab session: VULN, version 7.161.19, admin scope, token stripped" style="aspect-ratio:16/9;object-fit:cover"/>
+        <figcaption>Lab still rebuilt from the operator session. Host, JWT and account rows painted out. Same layout as the capture you filed.</figcaption>
+      </figure>
+
+      <h2>What the still actually shows</h2>
+      <ul>
+        <li><code>[VULN]</code> on one authorized target.</li>
+        <li>Build string <code>7.161.19</code> / revision <code>86119900</code>.</li>
+        <li>Session scope class <code>applied-permissions/admin</code>, audience <code>*</code>.</li>
+        <li>Admin-plane reads that returned 200 (version, user list, token list, repository list) — proof the session is platform-admin, not a login form bypass.</li>
+        <li>A username row existed. The name is not published here.</li>
+      </ul>
+      <div class="call">The finding is the empty default. Persistence after the session (a new local admin) is a follow-on. Do not report the follow-on as the root cause.</div>
+
       <svg class="diag" viewBox="0 0 860 250" role="img" aria-label="empty key trust">
         <rect width="860" height="250" fill="#0b0d10" rx="18"/>
         <rect x="36" y="40" width="240" height="92" rx="12" fill="#111827" stroke="#fb7185"/>
@@ -56,37 +73,33 @@
         <text x="600" y="102" fill="#9ca3af" font-family="Sora,sans-serif" font-size="14">platform token class</text>
         <text x="36" y="180" fill="#fbbf24" font-family="IBM Plex Mono,monospace" font-size="13">fix</text>
         <text x="80" y="180" fill="#9ca3af" font-family="Sora,sans-serif" font-size="14">patched build + a real join key. empty must fail closed.</text>
-        <text x="36" y="214" fill="#6b7280" font-family="IBM Plex Mono,monospace" font-size="12">no join request, no token body, no signing recipe on this page</text>
       </svg>
+
       <pre class="term"><span class="hi">CVE-2026-82329</span>  JFrog Artifactory · self-hosted Access
 <span class="dim">class</span>            CWE-287  empty default join key
 <span class="dim">impact</span>           unauthenticated platform admin
+<span class="dim">lab build</span>        7.161.19
 <span class="ok">cloud</span>            not this class
 <span class="bad">self-host</span>        default empty key accepted
 
-<span class="dim">lab only · authorized instance · no mint on this page</span>
+<span class="dim">host / jwt / account names stripped</span>
 
 mitsec@artifactory:</pre>
-      <h2>What this page will not do</h2>
-      <ul>
-        <li>No join-endpoint walkthrough.</li>
-        <li>No signing-key derivation.</li>
-        <li>No token exchange, no admin-create flag, no recon query.</li>
-        <li>Persistence (“a user exists after”) is a follow-on, not the root finding.</li>
-      </ul>
-      <div class="call">Report the class as unauthenticated administrator token acquisition on a default self-hosted Access node. Patch first. Then rotate the join key so empty is rejected.</div>
-      <h2>Affected lines (vendor advisory)</h2>
-      <p>Vulnerable bands sat under 7.111.20, 7.117.27, 7.125.19, 7.133.28, 7.146.37, 7.161.19. Fixed counterparts start at the next build on each line; 7.191.14 is the later unified floor. Confirm on the box you own. Do not scan third-party hosts.</p>
+
+      <h2>Affected lines</h2>
+      <p>Vendor bands under 7.111.20, 7.117.27, 7.125.19, 7.133.28, 7.146.37, 7.161.19. Fixed counterparts start at the next build on each line. 7.191.14 is the later unified floor. Confirm on the box you own.</p>
+
       <h2>Fix</h2>
       <ul>
-        <li>Upgrade to a fixed self-hosted build before you argue about keys.</li>
+        <li>Upgrade before you argue about keys.</li>
         <li>Set a join key that is not empty. Restart Access so the old default is dead.</li>
         <li>Rotate tokens issued while the box was on a vulnerable build.</li>
-        <li>If the instance was on the public internet, treat it as compromised until logs say otherwise.</li>
+        <li>If it was on the public internet, treat the instance as compromised until logs say otherwise.</li>
       </ul>
+
       <h2>Repo</h2>
-      <p>Authorized lab helper lives next to this note. The site does not mirror the script.</p>
-      <p><a class="btn ghost" href="https://github.com/ynsmroztas/CVE-2026-82329-JFrog-Artifactory-Auth-Bypass" target="_blank" rel="me noopener">github.com/ynsmroztas/…Artifactory-Auth-Bypass</a></p>
+      <p>The public helper stays on GitHub. This page is the field note and the redacted still — not a mirror of the script, not a copy of live tokens.</p>
+      <p><a class="btn" href="https://github.com/ynsmroztas/CVE-2026-82329-JFrog-Artifactory-Auth-Bypass" target="_blank" rel="me noopener">Open the GitHub repo →</a></p>
       <p class="meta" style="margin-top:40px">YUNUS EMRE ÖZTAŞ · MITSEC · AUTHORIZED TESTING ONLY</p>
       <nav class="wire-nav" data-wire-nav>
         <span></span>
@@ -96,7 +109,7 @@ mitsec@artifactory:</pre>
     </article>
   </main>
   <footer><div class="wrap foot"><div>© 2026 Yunus Emre Öztaş — mitsec</div><div><a href="writeups.html">Writeups</a></div></div></footer>
-  <script src="assets/js/theme.js?v=15"></script>
-  <script src="assets/js/site.js?v=15"></script>
+  <script src="assets/js/theme.js?v=16"></script>
+  <script src="assets/js/site.js?v=16"></script>
   <script src="assets/js/w.js"></script>
 </body></html>
