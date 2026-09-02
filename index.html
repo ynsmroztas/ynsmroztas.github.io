@@ -24,10 +24,6 @@
     .xpost .who span{font-family:var(--mono);font-size:11px;color:var(--dim)}
     .xpost p{margin:0;color:var(--mute);font-size:14.5px;line-height:1.5}
     .xpost .when{display:block;margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--ph);letter-spacing:.08em;text-transform:uppercase}
-    .pin{display:block;border:1px solid var(--ph);border-radius:16px;padding:16px 18px;margin:8px 0 28px;background:var(--panel);color:inherit;text-decoration:none}
-    .pin em{font-style:normal;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ph)}
-    .pin h2{margin:6px 0 6px;font-size:22px}
-    .pin p{margin:0;color:var(--mute)}
     @media (max-width:800px){
       .xgrid{grid-template-columns:1fr}
       .xwire .wrap{display:block!important}
@@ -67,11 +63,6 @@
         <a class="btn ghost" href="mailto:m.i.t@mit.tc">Contact</a>
       </div>
     </section>
-    <a class="pin" href="artifactory-join.html">
-      <em>pinned · CVE-2026-82329</em>
-      <h2>Empty join key, admin token</h2>
-      <p>Self-hosted Artifactory Access trusted a blank join key. Lab still on 7.161.19. Host and JWT stripped.</p>
-    </a>
     <section class="cover-sec reveal d2">
       <div class="coverflow" data-cover>
         <a class="cover-card" href="artifactory-join.html" data-cover-card><span class="pill">auth · 16</span><h2 class="title3d">Empty join key, <em>admin token</em></h2><p>CVE-2026-82329. Self-hosted Artifactory trusted a blank join key.</p><b>read →</b></a>
@@ -130,6 +121,11 @@
         <p class="lead">Selected posts. Full feed stays on X.</p>
       </div>
       <div class="xgrid">
+        <a class="xpost" href="https://x.com/ynsmroztas/status/2095245199337222257" target="_blank" rel="me noopener">
+          <div class="who"><b>Yunus Emre Öztaş</b><span>@ynsmroztas</span></div>
+          <p>CVE-2026-82329 · JFrog Artifactory self-hosted. Blank join key class. Authorized testing only. Repo on GitHub.</p>
+          <span class="when">02 Sep 2026 · thread</span>
+        </a>
         <a class="xpost" href="https://x.com/ynsmroztas/status/2090748385657590217" target="_blank" rel="me noopener">
           <div class="who"><b>Yunus Emre Öztaş</b><span>@ynsmroztas</span></div>
           <p>P2 account takeover class: OAuth2 authorization code interception via custom URI scheme, PKCE missing entirely. How to hunt this on Android.</p>
@@ -143,11 +139,6 @@
         <a class="xpost" href="https://x.com/ynsmroztas/status/2074933107325915329" target="_blank" rel="me noopener">
           <div class="who"><b>Yunus Emre Öztaş</b><span>@ynsmroztas</span></div>
           <p>AndroScope — rootless gadget workflow. Patch once. PREPARE → ASSESS → RUNTIME on an unrooted phone.</p>
-          <span class="when">08 Jul 2026</span>
-        </a>
-        <a class="xpost" href="https://x.com/ynsmroztas/status/2074933242780696699" target="_blank" rel="me noopener">
-          <div class="who"><b>Yunus Emre Öztaş</b><span>@ynsmroztas</span></div>
-          <p>Part 2 — the arsenal. Defense, traffic, IPC, native, niche surfaces. Rootless. Evidence on every run.</p>
           <span class="when">08 Jul 2026</span>
         </a>
       </div>
