@@ -1,0 +1,29 @@
+name: wire-watch
+on:
+  schedule:
+    - cron: "0 9 * * 1"
+  workflow_dispatch:
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: open issues for tagged repos without a page
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          gh api "search/repositories?q=user:ynsmroztas+topic:mitsec-wire" --jq '.items[] | [.name,.html_url,.description] | @tsv' | while IFS=$'\t' read -r name url desc; do
+            [ -z "$name" ] && continue
+            if ls *.html | grep -qi "$name"; then
+              echo "page exists for $name"
+              continue
+            fi
+            title="wire: $name"
+            if gh issue list --search "$title in:title" --json number --jq 'length' | grep -q '^0$'; then
+              gh issue create --title "$title" --body "Tagged mitsec-wire. No matching HTML on the Pages repo yet.\n\nRepo: $url\n$desc\n\nDo not paste PoC scripts onto the site. Open the mitsec chat with the URL."
+            fi
+          done
