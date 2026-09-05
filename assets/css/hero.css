@@ -1,0 +1,15 @@
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.animate-blink{animation:blink 1s step-end infinite}
+.hero-type{min-height:1.15em}
+.hero-type .cursor{display:inline-block;width:2px;height:.92em;margin-left:3px;background:var(--ph);vertical-align:middle;animation:blink 1s step-end infinite}
+.hero-ask{margin:18px 0 8px;font-size:20px;font-weight:600;letter-spacing:-.03em;color:var(--title)}
+.hero-ask-sub{margin:0 0 14px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+.pill-btn{border:1px solid var(--line-2);background:var(--panel);color:var(--body);border-radius:999px;padding:8px 14px;font-family:var(--mono);font-size:12px;letter-spacing:.06em;cursor:pointer;transition:border-color .2s,background .2s,color .2s}
+.pill-btn:hover{border-color:var(--ph)}
+.pill-btn.on{background:var(--ph);color:#0b120e;border-color:var(--ph)}
+.pill-banner{border:1px solid var(--line-2);border-radius:14px;padding:12px 14px;background:var(--ink-2);font-size:13px;color:var(--mute);min-height:44px}
+.pill-banner b{color:var(--ph);font-weight:600}
+.pill-banner a{color:var(--ph);margin-left:10px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+.case-grid .tool.is-dim{opacity:.28;filter:grayscale(.4)}
+@media (prefers-reduced-motion:reduce){.animate-blink,.hero-type .cursor{animation:none}}
