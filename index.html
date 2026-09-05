@@ -9,9 +9,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="assets/css/site.css?v=16"/>
-  <link rel="stylesheet" href="assets/css/theme.css?v=16"/>
-  <link rel="stylesheet" href="assets/css/live.css?v=16"/>
+  <link rel="stylesheet" href="assets/css/site.css?v=17"/>
+  <link rel="stylesheet" href="assets/css/theme.css?v=17"/>
+  <link rel="stylesheet" href="assets/css/live.css?v=17"/>
+  <link rel="stylesheet" href="assets/css/hero.css?v=17"/>
   <style>
     .pgstat,[data-pgstat],.xtimeline,iframe.twitter-timeline{display:none!important}
     .xwire{border-top:1px solid var(--line);padding:36px 0 28px;position:relative;z-index:2}
@@ -51,14 +52,24 @@
   <main class="wrap">
     <section class="wire-head reveal">
       <div class="kicker">live wire · redacted field notes</div>
-      <h1 class="wordmark wire-title">FIELD <em>CASES</em></h1>
+      <h1 class="wordmark wire-title hero-type" data-typewriter="FIELD CASES">FIELD CASES</h1>
       <div class="livebar">
         <span class="chip on">● now reading</span>
         <span class="chip">clk <span data-clock>--:--:--</span></span>
         <span class="chip">16 notes on the wire</span>
       </div>
       <p class="sub">Yunus Emre Öztaş — mitsec. Artifactory join key. Provider SQLi. DEX load. WebView bridge.</p>
-      <div class="row">
+      <p class="hero-ask">What surface?</p>
+      <p class="hero-ask-sub">Select all that apply — notes stay on the page</p>
+      <div class="pills">
+        <button type="button" class="pill-btn" data-pill="platform">Platform</button>
+        <button type="button" class="pill-btn" data-pill="mobile">Mobile</button>
+        <button type="button" class="pill-btn" data-pill="runtime">Runtime</button>
+        <button type="button" class="pill-btn" data-pill="fintech">Fintech</button>
+        <button type="button" class="pill-btn" data-pill="webview">WebView</button>
+      </div>
+      <div class="pill-banner" data-pill-banner></div>
+      <div class="row" style="margin-top:18px">
         <a class="btn" href="writeups.html">Open the wire →</a>
         <a class="btn ghost" href="mailto:m.i.t@mit.tc">Contact</a>
       </div>
@@ -95,12 +106,12 @@
       <p class="h-k">On the wire</p>
       <h2>Every card is a redacted field note.</h2>
       <div class="tools case-grid" style="margin-top:16px">
-        <a class="tool" href="artifactory-join.html"><div class="top"><h3>Empty join key, admin token</h3><span class="pill">auth</span></div><p>CVE-2026-82329. Blank join key on self-hosted Access.</p><div class="meta">2026 · CVE</div></a>
-        <a class="tool" href="provider-sqli.html"><div class="top"><h3>Provider selection is SQL</h3><span class="pill">sqli</span></div><p>Exported provider glued selection into the query.</p><div class="meta">2026 · lab</div></a>
-        <a class="tool" href="dex-load.html"><div class="top"><h3>DEX from a writable path</h3><span class="pill">rce</span></div><p>Loader mapped extract output. No payload DEX.</p><div class="meta">2026 · lab</div></a>
-        <a class="tool" href="jsbridge-rce.html"><div class="top"><h3>Bridge on the wrong origin</h3><span class="pill">rce</span></div><p>Interface on a WebView that loaded an extra URL.</p><div class="meta">2026 · lab</div></a>
-        <a class="tool" href="conscrypt-mainline.html"><div class="top"><h3>Conscrypt owns the CA list</h3><span class="pill">tls</span></div><p>Mainline APEX store wins. User CA is a spectator.</p><div class="meta">2026 · lab</div></a>
-        <a class="tool" href="writeups.html"><div class="top"><h3>Full wire</h3><span class="pill">index</span></div><p>All notes, including JWT, OAuth, mTLS.</p><div class="meta">all notes</div></a>
+        <a class="tool" data-surface="platform" href="artifactory-join.html"><div class="top"><h3>Empty join key, admin token</h3><span class="pill">auth</span></div><p>CVE-2026-82329. Blank join key on self-hosted Access.</p><div class="meta">2026 · CVE</div></a>
+        <a class="tool" data-surface="mobile" href="provider-sqli.html"><div class="top"><h3>Provider selection is SQL</h3><span class="pill">sqli</span></div><p>Exported provider glued selection into the query.</p><div class="meta">2026 · lab</div></a>
+        <a class="tool" data-surface="runtime" href="dex-load.html"><div class="top"><h3>DEX from a writable path</h3><span class="pill">rce</span></div><p>Loader mapped extract output. No payload DEX.</p><div class="meta">2026 · lab</div></a>
+        <a class="tool" data-surface="webview mobile" href="jsbridge-rce.html"><div class="top"><h3>Bridge on the wrong origin</h3><span class="pill">rce</span></div><p>Interface on a WebView that loaded an extra URL.</p><div class="meta">2026 · lab</div></a>
+        <a class="tool" data-surface="runtime" href="conscrypt-mainline.html"><div class="top"><h3>Conscrypt owns the CA list</h3><span class="pill">tls</span></div><p>Mainline APEX store wins. User CA is a spectator.</p><div class="meta">2026 · lab</div></a>
+        <a class="tool" data-surface="fintech" href="wallet-link.html"><div class="top"><h3>Wallet link, static client id</h3><span class="pill">fintech</span></div><p>Static PIN client id. Vendor stripped.</p><div class="meta">2026 · redacted</div></a>
       </div>
     </section>
   </main>
@@ -151,8 +162,9 @@
       <div><a href="mailto:m.i.t@mit.tc">m.i.t@mit.tc</a></div>
     </div>
   </footer>
-  <script src="assets/js/theme.js?v=16"></script>
-  <script src="assets/js/site.js?v=16"></script>
+  <script src="assets/js/theme.js?v=17"></script>
+  <script src="assets/js/site.js?v=17"></script>
+  <script src="assets/js/hero.js?v=17"></script>
   <script>document.querySelectorAll('.pgstat,[data-pgstat],.xtimeline').forEach(function(el){el.remove();});</script>
 </body>
 </html>
