@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Reset-credentials ATO class — mitsec</title>
+  <meta name="description" content="CVE-2026-18963 field note. Keycloak reset-credentials. Unscoped selector plus unverified email action. Class only."/>
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml"/>
+  <link rel="stylesheet" href="assets/css/site.css?v=18"/>
+  <link rel="stylesheet" href="assets/css/theme.css?v=18"/>
+  <link rel="stylesheet" href="assets/css/live.css?v=18"/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+  <style>
+    .stills,.still{display:none!important}
+    .term{background:#07090c;border:1px solid var(--line-2);border-radius:16px;padding:14px 16px;font-family:var(--mono);font-size:12px;line-height:1.55;color:#9fe7b8;white-space:pre-wrap;margin:16px 0 24px}
+    .term .dim{color:#6b7280}.term .hi{color:#e879f9}.term .ok{color:#34d399}.term .bad{color:#fb7185}
+    .diag{width:100%;border:1px solid var(--line-2);border-radius:18px;display:block;margin:12px 0 28px}
+    .tag-row{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 20px}
+    .wire-nav{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;margin:40px 0 8px;padding-top:22px;border-top:1px solid var(--line)}
+    .wire-nav a{border:1px solid var(--line-2);border-radius:14px;padding:12px 14px;background:var(--panel);color:inherit;display:flex;flex-direction:column;gap:4px;text-decoration:none}
+    .wire-nav em{font-style:normal;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ph)}
+    .wire-nav span{color:#fff;font-size:14px}.wire-nav .next{text-align:right}
+    .wire-nav .index{align-self:center;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+    @media(max-width:700px){.wire-nav{grid-template-columns:1fr}.wire-nav .next{text-align:left}}
+  </style>
+  <script>(function(){try{var t=localStorage.getItem('mitsec-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body>
+  <div class="bg"></div>
+  <header class="nav"><div class="wrap nav-in"><a class="brand" href="index.html"><i></i><b>mit</b> <span>sec</span></a><nav class="links" data-links><a href="index.html">Home</a><a href="androscope.html">AndroScope</a><a href="tools.html">Tools</a><a class="on" href="writeups.html">Writeups</a><a href="research.html">Research</a></nav><button class="burger" data-burger aria-label="Menu">☰</button></div></header>
+  <main class="wrap">
+    <section class="page-hero slim">
+      <div>
+        <p class="meta">WRITEUP · PLATFORM · AUTH · CVE-2026-18963 · @YNSMROZTAS</p>
+        <h1>Reset-credentials ATO class</h1>
+        <div class="livebar"><span class="chip on">● live</span><span class="chip">clk <span data-clock>--:--:--</span></span><span class="chip">CWE-640 · CVSS 9.1</span></div>
+        <p class="lead">Keycloak forgot-password accepted an unscoped selector, then marked the email action successful without the user-id token. The password form opened without an email click. This page is the class, not the kit.</p>
+      </div>
+      <div><div class="scope mini-scope"><canvas data-radar></canvas><div class="beam"></div><div class="ring"></div><div class="scanline"></div><div class="scope-hud"><div class="top"><span>reset // keycloak</span><span>observe</span></div><div class="bot"><span>radar</span><span data-clock>--:--:--</span></div></div></div></div>
+    </section>
+    <article class="prose">
+      <div class="tag-row"><span class="chip on">CVE-2026-18963</span><span class="chip">Keycloak</span><span class="chip">Red Hat SSO</span><span class="chip">CWE-640</span></div>
+
+      <h2>Summary</h2>
+      <p>CVE-2026-18963 is an unauthenticated account-takeover class on Keycloak / Red Hat SSO. Two defects sit on the same reset-credentials path. Together they let a caller with a known username reach <code>UPDATE_PASSWORD</code> without the email proof the product advertised.</p>
+      <p>This is not “forgot password exists.” Forgot password existing is a feature. The finding is that the email step does not bind the session the way the design claims.</p>
+
+      <figure class="media-full" style="aspect-ratio:auto">
+        <img src="assets/img/keysniper-term.svg" alt="Redacted KeySniper session: ATO class, execution ids truncated, passwords stripped" style="aspect-ratio:16/9;object-fit:cover"/>
+        <figcaption>Lab still rebuilt from the operator capture. Host is sso.lab.local. Users, emails, tokens and the new password painted out.</figcaption>
+      </figure>
+
+      <h2>The two defects</h2>
+      <ul>
+        <li><code>tryAnotherWay</code> stored a generic selector note that was <strong>not scoped</strong> to the current execution id.</li>
+        <li><code>ResetCredentialEmail.action()</code> called <code>context.success()</code> <strong>without</strong> checking <code>ACTION_TOKEN_USER_ID</code>.</li>
+      </ul>
+      <p>Unscoped state plus an unverified success flag is the chain. Persistence (“the password is now something else”) is the follow-on. Report the chain, not the follow-on, as the root cause.</p>
+
+      <svg class="diag" viewBox="0 0 860 250" role="img" aria-label="reset credentials class">
+        <rect width="860" height="250" fill="#0b0d10" rx="18"/>
+        <rect x="36" y="40" width="240" height="92" rx="12" fill="#111827" stroke="#e879f9"/>
+        <text x="52" y="78" fill="#e879f9" font-family="IBM Plex Mono,monospace" font-size="13">selector note</text>
+        <text x="52" y="102" fill="#e5e7eb" font-family="Sora,sans-serif" font-size="14">not bound to exec id</text>
+        <rect x="310" y="40" width="240" height="92" rx="12" fill="#111827" stroke="#fbbf24"/>
+        <text x="326" y="78" fill="#fbbf24" font-family="IBM Plex Mono,monospace" font-size="13">email action</text>
+        <text x="326" y="102" fill="#9ca3af" font-family="Sora,sans-serif" font-size="14">success() unchecked</text>
+        <rect x="584" y="40" width="240" height="92" rx="12" fill="#111827" stroke="#fb7185"/>
+        <text x="600" y="78" fill="#fb7185" font-family="IBM Plex Mono,monospace" font-size="13">UPDATE_PASSWORD</text>
+        <text x="600" y="102" fill="#9ca3af" font-family="Sora,sans-serif" font-size="14">no email click</text>
+        <text x="36" y="180" fill="#fbbf24" font-family="IBM Plex Mono,monospace" font-size="13">fix</text>
+        <text x="80" y="180" fill="#9ca3af" font-family="Sora,sans-serif" font-size="14">26.7.2 / 26.6.6 / 26.4.15. Then keep Forgot Password off until the box is patched.</text>
+      </svg>
+
+      <h2>Confirm signal (class)</h2>
+      <p>A honest confirm is not a 200 on the login page. On an authorized lab the operator still looked for three things together:</p>
+      <ul>
+        <li>the selector form came back on the original reset URL</li>
+        <li>the <code>execution=</code> UUID rotated between the first selector and the pivot</li>
+        <li>the response carried <code>kc-passwd-update-form</code></li>
+      </ul>
+      <p>Selector leak without the update form is not this CVE. That path is a skip.</p>
+
+      <pre class="term"><span class="hi">CVE-2026-18963</span>  Keycloak / Red Hat SSO
+<span class="dim">class</span>            CWE-640  weak password recovery
+<span class="dim">impact</span>           unauthenticated account takeover
+<span class="dim">auth</span>             none
+<span class="ok">patched</span>          26.7.2 · 26.6.6 · 26.4.15
+<span class="bad">lab</span>              sso.lab.local · realm=master
+
+<span class="dim">detect is the default mode · no password body on this page</span>
+
+mitsec@keycloak:</pre>
+
+      <h2>Phases on the still</h2>
+      <p>The capture is an authorized lab tape. Phases, not a request list:</p>
+      <ol>
+        <li><strong>Probe</strong> — Keycloak origin, realm live, version often hidden.</li>
+        <li><strong>Reset reachable</strong> — forgot-password is enabled on that realm.</li>
+        <li><strong>Unscoped selector</strong> — the note is not tied to one execution id.</li>
+        <li><strong>Pivot</strong> — execution UUID changes. That is the leak.</li>
+        <li><strong>UPDATE_PASSWORD class</strong> — form present without the email click. This is <code>VULN</code>.</li>
+        <li><strong>ATO class</strong> — password actually written. That is a separate, destructive mode. Default on the public helper is detect.</li>
+      </ol>
+      <div class="call">Do not run a destructive mode on a host you do not own. Detect answers the question. Changing a password is an incident, not a screenshot.</div>
+
+      <h2>Affected lines</h2>
+      <p>Vulnerable below 26.7.2, and on the 26.6 / 26.4 trains below 26.6.6 and 26.4.15. Vendor fix is in those builds (Keycloak PR 51844). Confirm on the box you administer.</p>
+
+      <h2>Fix</h2>
+      <ul>
+        <li>Upgrade first.</li>
+        <li>Until the box is on a fixed build, disable Forgot Password on every realm.</li>
+        <li>If the instance was reachable, treat reset sessions from the vulnerable window as untrusted and rotate those accounts.</li>
+      </ul>
+
+      <h2>Repo</h2>
+      <p>KeySniper stays on GitHub. This page does not mirror the script, the default new password, or a mass pipeline.</p>
+      <p><a class="btn" href="https://github.com/ynsmroztas/KeySniper" target="_blank" rel="me noopener">Open github.com/ynsmroztas/KeySniper →</a></p>
+      <p class="meta" style="margin-top:40px">YUNUS EMRE ÖZTAŞ · MITSEC · AUTHORIZED TESTING ONLY</p>
+      <nav class="wire-nav" data-wire-nav>
+        <span></span>
+        <a class="index" href="writeups.html">all notes</a>
+        <a class="next" href="artifactory-join.html"><em>next</em><span>Empty join key, admin token</span></a>
+      </nav>
+    </article>
+  </main>
+  <footer><div class="wrap foot"><div>© 2026 Yunus Emre Öztaş — mitsec</div><div><a href="writeups.html">Writeups</a></div></div></footer>
+  <script src="assets/js/theme.js?v=18"></script>
+  <script src="assets/js/site.js?v=18"></script>
+  <script src="assets/js/w.js"></script>
+</body></html>
