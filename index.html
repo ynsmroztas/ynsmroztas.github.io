@@ -4,15 +4,15 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>mitsec — field cases / Yunus Emre Öztaş</title>
-  <meta name="description" content="Redacted field cases. CVE-2026-18963 Keycloak reset, Artifactory join key."/>
+  <meta name="description" content="Redacted field cases. CVE-2026-26123 unclaimed ms-msa scheme. Keycloak reset."/>
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="assets/css/site.css?v=18"/>
-  <link rel="stylesheet" href="assets/css/theme.css?v=18"/>
-  <link rel="stylesheet" href="assets/css/live.css?v=18"/>
-  <link rel="stylesheet" href="assets/css/hero.css?v=18"/>
+  <link rel="stylesheet" href="assets/css/site.css?v=19"/>
+  <link rel="stylesheet" href="assets/css/theme.css?v=19"/>
+  <link rel="stylesheet" href="assets/css/live.css?v=19"/>
+  <link rel="stylesheet" href="assets/css/hero.css?v=19"/>
   <style>
     .pgstat,[data-pgstat],.xtimeline,iframe.twitter-timeline{display:none!important}
     .xwire{border-top:1px solid var(--line);padding:36px 0 28px;position:relative;z-index:2}
@@ -56,9 +56,9 @@
       <div class="livebar">
         <span class="chip on">● now reading</span>
         <span class="chip">clk <span data-clock>--:--:--</span></span>
-        <span class="chip">17 notes on the wire</span>
+        <span class="chip">18 notes on the wire</span>
       </div>
-      <p class="sub">Yunus Emre Öztaş — mitsec. Keycloak reset-credentials. Artifactory join key. Provider SQLi.</p>
+      <p class="sub">Yunus Emre Öztaş — mitsec. Unclaimed ms-msa. Keycloak reset. Artifactory join key.</p>
       <p class="hero-ask">What surface?</p>
       <p class="hero-ask-sub">Select all that apply — notes stay on the page</p>
       <div class="pills">
@@ -76,13 +76,13 @@
     </section>
     <section class="cover-sec reveal d2">
       <div class="coverflow" data-cover>
+        <a class="cover-card" href="msa-deeplink.html" data-cover-card><span class="pill">mobile · 18</span><h2 class="title3d">Unclaimed <em>ms-msa</em> scheme</h2><p>CVE-2026-26123. Authenticator emitted the scheme and did not claim it.</p><b>read →</b></a>
         <a class="cover-card" href="keycloak-reset.html" data-cover-card><span class="pill">auth · 17</span><h2 class="title3d">Reset-credentials <em>ATO class</em></h2><p>CVE-2026-18963. Keycloak forgot-password. Email step did not bind.</p><b>read →</b></a>
         <a class="cover-card" href="artifactory-join.html" data-cover-card><span class="pill">auth · 16</span><h2 class="title3d">Empty join key, <em>admin token</em></h2><p>CVE-2026-82329. Self-hosted Artifactory trusted a blank join key.</p><b>read →</b></a>
         <a class="cover-card" href="provider-sqli.html" data-cover-card><span class="pill">sqli · 13</span><h2 class="title3d">Provider selection is <em>SQL</em></h2><p>Exported notes URI. selection concatenated. Bind args unused.</p><b>read →</b></a>
         <a class="cover-card" href="dex-load.html" data-cover-card><span class="pill">rce · 14</span><h2 class="title3d">DEX from a <em>writable path</em></h2><p>Loader mapped extract output. No payload on this page.</p><b>read →</b></a>
         <a class="cover-card" href="jsbridge-rce.html" data-cover-card><span class="pill">rce · 15</span><h2 class="title3d">Bridge on the <em>wrong origin</em></h2><p>Interface attached. loadUrl came from an extra.</p><b>read →</b></a>
-        <a class="cover-card" href="conscrypt-mainline.html" data-cover-card><span class="pill">tls · 12</span><h2 class="title3d">Conscrypt owns the <em>CA list</em></h2><p>Mainline APEX store wins. User CA is a spectator.</p><b>read →</b></a>
-        <a class="cover-card" href="wallet-link.html" data-cover-card><span class="pill">fintech · 11</span><h2 class="title3d">Wallet link, <em>static id</em></h2><p>PIN client id public since 2024. Unlink reset. Emulator posture.</p><b>read →</b></a>
+        <a class="cover-card" href="oauth-scheme.html" data-cover-card><span class="pill">mobile · 06</span><h2 class="title3d">Custom scheme, <em>no PKCE</em></h2><p>Unverified OAuth redirect plus no code_challenge.</p><b>read →</b></a>
       </div>
       <div class="dots" data-cover-dots></div>
     </section>
@@ -97,7 +97,7 @@
       <h2>What I hunt.</h2>
       <div class="skills">
         <div class="skill"><b>Fintech</b><span>linking API · static client id · unlink state</span></div>
-        <div class="skill"><b>Platform</b><span>reset-credentials · join key · admin token class</span></div>
+        <div class="skill"><b>Platform</b><span>reset-credentials · join key · unclaimed scheme</span></div>
         <div class="skill"><b>WebView</b><span>bridge · intent:// · loadUrl extra</span></div>
         <div class="skill"><b>Runtime</b><span>dex load · conscrypt store · mTLS</span></div>
       </div>
@@ -106,12 +106,12 @@
       <p class="h-k">On the wire</p>
       <h2>Every card is a redacted field note.</h2>
       <div class="tools case-grid" style="margin-top:16px">
+        <a class="tool" data-surface="mobile" href="msa-deeplink.html"><div class="top"><h3>Unclaimed ms-msa scheme</h3><span class="pill">mobile</span></div><p>CVE-2026-26123. Authenticator emitted the scheme and did not claim it.</p><div class="meta">2026 · CVE</div></a>
         <a class="tool" data-surface="platform" href="keycloak-reset.html"><div class="top"><h3>Reset-credentials ATO class</h3><span class="pill">auth</span></div><p>CVE-2026-18963. Keycloak forgot-password. Email step did not bind.</p><div class="meta">2026 · CVE</div></a>
         <a class="tool" data-surface="platform" href="artifactory-join.html"><div class="top"><h3>Empty join key, admin token</h3><span class="pill">auth</span></div><p>CVE-2026-82329. Blank join key on self-hosted Access.</p><div class="meta">2026 · CVE</div></a>
         <a class="tool" data-surface="mobile" href="provider-sqli.html"><div class="top"><h3>Provider selection is SQL</h3><span class="pill">sqli</span></div><p>Exported provider glued selection into the query.</p><div class="meta">2026 · lab</div></a>
         <a class="tool" data-surface="runtime" href="dex-load.html"><div class="top"><h3>DEX from a writable path</h3><span class="pill">rce</span></div><p>Loader mapped extract output. No payload DEX.</p><div class="meta">2026 · lab</div></a>
         <a class="tool" data-surface="webview mobile" href="jsbridge-rce.html"><div class="top"><h3>Bridge on the wrong origin</h3><span class="pill">rce</span></div><p>Interface on a WebView that loaded an extra URL.</p><div class="meta">2026 · lab</div></a>
-        <a class="tool" data-surface="runtime" href="conscrypt-mainline.html"><div class="top"><h3>Conscrypt owns the CA list</h3><span class="pill">tls</span></div><p>Mainline APEX store wins. User CA is a spectator.</p><div class="meta">2026 · lab</div></a>
       </div>
     </section>
   </main>
@@ -162,9 +162,9 @@
       <div><a href="mailto:m.i.t@mit.tc">m.i.t@mit.tc</a></div>
     </div>
   </footer>
-  <script src="assets/js/theme.js?v=18"></script>
-  <script src="assets/js/site.js?v=18"></script>
-  <script src="assets/js/hero.js?v=18"></script>
+  <script src="assets/js/theme.js?v=19"></script>
+  <script src="assets/js/site.js?v=19"></script>
+  <script src="assets/js/hero.js?v=19"></script>
   <script>document.querySelectorAll('.pgstat,[data-pgstat],.xtimeline').forEach(function(el){el.remove();});</script>
 </body>
 </html>
