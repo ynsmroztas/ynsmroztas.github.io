@@ -4,15 +4,15 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>mitsec — field cases / Yunus Emre Öztaş</title>
-  <meta name="description" content="Redacted field cases. CVE-2026-26123 unclaimed ms-msa scheme. Keycloak reset."/>
+  <meta name="description" content="Redacted field cases. CVE-2026-85706 GitLab file-read. Unclaimed ms-msa. Keycloak reset."/>
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="assets/css/site.css?v=19"/>
-  <link rel="stylesheet" href="assets/css/theme.css?v=19"/>
-  <link rel="stylesheet" href="assets/css/live.css?v=19"/>
-  <link rel="stylesheet" href="assets/css/hero.css?v=19"/>
+  <link rel="stylesheet" href="assets/css/site.css?v=20"/>
+  <link rel="stylesheet" href="assets/css/theme.css?v=20"/>
+  <link rel="stylesheet" href="assets/css/live.css?v=20"/>
+  <link rel="stylesheet" href="assets/css/hero.css?v=20"/>
   <style>
     .pgstat,[data-pgstat],.xtimeline,iframe.twitter-timeline{display:none!important}
     .xwire{border-top:1px solid var(--line);padding:36px 0 28px;position:relative;z-index:2}
@@ -56,9 +56,9 @@
       <div class="livebar">
         <span class="chip on">● now reading</span>
         <span class="chip">clk <span data-clock>--:--:--</span></span>
-        <span class="chip">18 notes on the wire</span>
+        <span class="chip">19 notes on the wire</span>
       </div>
-      <p class="sub">Yunus Emre Öztaş — mitsec. Unclaimed ms-msa. Keycloak reset. Artifactory join key.</p>
+      <p class="sub">Yunus Emre Öztaş — mitsec. GitLab file-read. Unclaimed ms-msa. Keycloak reset.</p>
       <p class="hero-ask">What surface?</p>
       <p class="hero-ask-sub">Select all that apply — notes stay on the page</p>
       <div class="pills">
@@ -76,6 +76,7 @@
     </section>
     <section class="cover-sec reveal d2">
       <div class="coverflow" data-cover>
+        <a class="cover-card" href="gitlab-sniper.html" data-cover-card><span class="pill">platform · 19</span><h2 class="title3d">Unauthenticated <em>GitLab</em> file-read</h2><p>CVE-2026-85706. Workhorse miss. Puma routed. File.open before auth.</p><b>read →</b></a>
         <a class="cover-card" href="msa-deeplink.html" data-cover-card><span class="pill">mobile · 18</span><h2 class="title3d">Unclaimed <em>ms-msa</em> scheme</h2><p>CVE-2026-26123. Authenticator emitted the scheme and did not claim it.</p><b>read →</b></a>
         <a class="cover-card" href="keycloak-reset.html" data-cover-card><span class="pill">auth · 17</span><h2 class="title3d">Reset-credentials <em>ATO class</em></h2><p>CVE-2026-18963. Keycloak forgot-password. Email step did not bind.</p><b>read →</b></a>
         <a class="cover-card" href="artifactory-join.html" data-cover-card><span class="pill">auth · 16</span><h2 class="title3d">Empty join key, <em>admin token</em></h2><p>CVE-2026-82329. Self-hosted Artifactory trusted a blank join key.</p><b>read →</b></a>
@@ -97,7 +98,7 @@
       <h2>What I hunt.</h2>
       <div class="skills">
         <div class="skill"><b>Fintech</b><span>linking API · static client id · unlink state</span></div>
-        <div class="skill"><b>Platform</b><span>reset-credentials · join key · unclaimed scheme</span></div>
+        <div class="skill"><b>Platform</b><span>reset-credentials · join key · gitlab file-read</span></div>
         <div class="skill"><b>WebView</b><span>bridge · intent:// · loadUrl extra</span></div>
         <div class="skill"><b>Runtime</b><span>dex load · conscrypt store · mTLS</span></div>
       </div>
@@ -106,6 +107,7 @@
       <p class="h-k">On the wire</p>
       <h2>Every card is a redacted field note.</h2>
       <div class="tools case-grid" style="margin-top:16px">
+        <a class="tool" data-surface="platform" href="gitlab-sniper.html"><div class="top"><h3>Unauthenticated GitLab file-read</h3><span class="pill">platform</span></div><p>CVE-2026-85706. Workhorse vs Puma. File.open before authenticate!.</p><div class="meta">2026 · CVE</div></a>
         <a class="tool" data-surface="mobile" href="msa-deeplink.html"><div class="top"><h3>Unclaimed ms-msa scheme</h3><span class="pill">mobile</span></div><p>CVE-2026-26123. Authenticator emitted the scheme and did not claim it.</p><div class="meta">2026 · CVE</div></a>
         <a class="tool" data-surface="platform" href="keycloak-reset.html"><div class="top"><h3>Reset-credentials ATO class</h3><span class="pill">auth</span></div><p>CVE-2026-18963. Keycloak forgot-password. Email step did not bind.</p><div class="meta">2026 · CVE</div></a>
         <a class="tool" data-surface="platform" href="artifactory-join.html"><div class="top"><h3>Empty join key, admin token</h3><span class="pill">auth</span></div><p>CVE-2026-82329. Blank join key on self-hosted Access.</p><div class="meta">2026 · CVE</div></a>
@@ -132,6 +134,11 @@
         <p class="lead">Selected posts. Full feed stays on X.</p>
       </div>
       <div class="xgrid">
+        <a class="xpost" href="https://github.com/ynsmroztas/GitLabSniper" target="_blank" rel="me noopener">
+          <div class="who"><b>Yunus Emre Öztaş</b><span>@ynsmroztas</span></div>
+          <p>CVE-2026-85706 · GitLab CE/EE self-managed. Unauthenticated file-read class. GitLabSniper on GitHub. Authorized testing only.</p>
+          <span class="when">12 Sep 2026 · repo</span>
+        </a>
         <a class="xpost" href="https://x.com/ynsmroztas/status/2096682683921260947" target="_blank" rel="me noopener">
           <div class="who"><b>Yunus Emre Öztaş</b><span>@ynsmroztas</span></div>
           <p>CVE-2026-18963 · Keycloak self-hosted. Reset-credentials ATO class. KeySniper on GitHub. Authorized testing only.</p>
@@ -162,9 +169,9 @@
       <div><a href="mailto:m.i.t@mit.tc">m.i.t@mit.tc</a></div>
     </div>
   </footer>
-  <script src="assets/js/theme.js?v=19"></script>
-  <script src="assets/js/site.js?v=19"></script>
-  <script src="assets/js/hero.js?v=19"></script>
+  <script src="assets/js/theme.js?v=20"></script>
+  <script src="assets/js/site.js?v=20"></script>
+  <script src="assets/js/hero.js?v=20"></script>
   <script>document.querySelectorAll('.pgstat,[data-pgstat],.xtimeline').forEach(function(el){el.remove();});</script>
 </body>
 </html>
