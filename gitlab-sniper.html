@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>GitLab unauthenticated file-read class — mitsec</title>
+  <meta name="description" content="CVE-2026-85706 field note. GitLab CE/EE Workhorse vs Puma path decode. Classifier, not a kit."/>
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml"/>
+  <link rel="stylesheet" href="assets/css/site.css?v=20"/>
+  <link rel="stylesheet" href="assets/css/theme.css?v=20"/>
+  <link rel="stylesheet" href="assets/css/live.css?v=20"/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+  <style>
+    .stills,.still{display:none!important}
+    .term{background:#07090c;border:1px solid var(--line-2);border-radius:16px;padding:14px 16px;font-family:var(--mono);font-size:12px;line-height:1.55;color:#9fe7b8;white-space:pre-wrap;margin:16px 0 24px}
+    .term .dim{color:#6b7280}.term .hi{color:#34d399}.term .ok{color:#34d399}.term .bad{color:#fb7185}
+    .diag{width:100%;border:1px solid var(--line-2);border-radius:18px;display:block;margin:12px 0 28px}
+    .tag-row{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 20px}
+    .wire-nav{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;margin:40px 0 8px;padding-top:22px;border-top:1px solid var(--line)}
+    .wire-nav a{border:1px solid var(--line-2);border-radius:14px;padding:12px 14px;background:var(--panel);color:inherit;display:flex;flex-direction:column;gap:4px;text-decoration:none}
+    .wire-nav em{font-style:normal;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ph)}
+    .wire-nav span{color:#fff;font-size:14px}.wire-nav .next{text-align:right}
+    .wire-nav .index{align-self:center;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+    @media(max-width:700px){.wire-nav{grid-template-columns:1fr}.wire-nav .next{text-align:left}}
+  </style>
+  <script>(function(){try{var t=localStorage.getItem('mitsec-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body>
+  <div class="bg"></div>
+  <header class="nav"><div class="wrap nav-in"><a class="brand" href="index.html"><i></i><b>mit</b> <span>sec</span></a><nav class="links" data-links><a href="index.html">Home</a><a href="androscope.html">AndroScope</a><a href="tools.html">Tools</a><a class="on" href="writeups.html">Writeups</a><a href="research.html">Research</a></nav><button class="burger" data-burger aria-label="Menu">☰</button></div></header>
+  <main class="wrap">
+    <section class="page-hero slim">
+      <div>
+        <p class="meta">WRITEUP · PLATFORM · GITLAB · CVE-2026-85706 · @YNSMROZTAS</p>
+        <h1>Unauthenticated file-read class</h1>
+        <div class="livebar"><span class="chip on">● live</span><span class="chip">clk <span data-clock>--:--:--</span></span><span class="chip">CWE-22 · CVSS 10.0</span></div>
+        <p class="lead">Self-managed GitLab CE/EE opened an absolute path from a repository upload field before authenticate!. Workhorse missed the route. Puma decoded it. This page is the class and the classifier. The public helper stays on GitHub.</p>
+      </div>
+      <div><div class="scope mini-scope"><canvas data-radar></canvas><div class="beam"></div><div class="ring"></div><div class="scanline"></div><div class="scope-hud"><div class="top"><span>gitlab // workhorse</span><span>observe</span></div><div class="bot"><span>radar</span><span data-clock>--:--:--</span></div></div></div></div>
+    </section>
+    <article class="prose">
+      <div class="tag-row"><span class="chip on">CVE-2026-85706</span><span class="chip">GitLab CE/EE</span><span class="chip">Workhorse</span><span class="chip">CWE-22</span></div>
+      <h2>Summary</h2>
+      <p>CVE-2026-85706 is an unauthenticated local file read on self-managed GitLab Community Edition and Enterprise Edition. Three repository endpoints sit behind Workhorse <code>requestBodyUploader</code>. Rails takes the raw <code>file.path</code> field and runs <code>File.open</code> before <code>authenticate!</code>.</p>
+      <p><code>require_gitlab_workhorse!</code> is not a gate here. Workhorse already stamps a valid <code>Gitlab-Workhorse-Api-Request</code> JWT on anything it proxies. The bug is the parser split: Workhorse matches <code>EscapedPath()</code> and a <code>path.Clean</code> clone that never percent-decodes. Puma decodes <code>%XX</code> before Grape routing. One side misses. The other routes. Rails opens the path.</p>
+      <p>gitlab.com and GitLab Dedicated are out of scope. The patch window is 19.1.8 / 19.2.6 / 19.3.2 (2026-09-10).</p>
+      <figure class="media-full" style="aspect-ratio:auto">
+        <img src="assets/img/gitlab-sniper-term.svg" alt="Redacted GitLabSniper session" style="aspect-ratio:16/9;object-fit:cover"/>
+        <figcaption>Lab still. Host is gitlab.lab.local. File bytes, project ids and secrets painted out. Classifier tape, not a request list.</figcaption>
+      </figure>
+      <h2>The split</h2>
+      <svg class="diag" viewBox="0 0 860 280" role="img" aria-label="workhorse puma split">
+        <rect width="860" height="280" fill="#0b0d10" rx="18"/>
+        <rect x="28" y="28" width="250" height="88" rx="12" fill="#111827" stroke="#34d399"/>
+        <text x="44" y="62" fill="#34d399" font-family="IBM Plex Mono,monospace" font-size="13">Workhorse</text>
+        <text x="44" y="86" fill="#9ca3af" font-family="Sora,sans-serif" font-size="14">EscapedPath · no %XX decode</text>
+        <rect x="305" y="28" width="250" height="88" rx="12" fill="#111827" stroke="#fbbf24"/>
+        <text x="321" y="62" fill="#fbbf24" font-family="IBM Plex Mono,monospace" font-size="13">Puma / Grape</text>
+        <text x="321" y="86" fill="#9ca3af" font-family="Sora,sans-serif" font-size="14">decodes · routes to Rails</text>
+        <rect x="582" y="28" width="250" height="88" rx="12" fill="#111827" stroke="#fb7185"/>
+        <text x="598" y="62" fill="#fb7185" font-family="IBM Plex Mono,monospace" font-size="13">Rails</text>
+        <text x="598" y="86" fill="#9ca3af" font-family="Sora,sans-serif" font-size="14">File.open before auth</text>
+        <text x="28" y="160" fill="#fbbf24" font-family="IBM Plex Mono,monospace" font-size="13">echo</text>
+        <text x="80" y="160" fill="#9ca3af" font-family="Sora,sans-serif" font-size="14">urlencoded branch · invalid %-encoding (file bytes)</text>
+        <text x="28" y="198" fill="#34d399" font-family="IBM Plex Mono,monospace" font-size="13">id</text>
+        <text x="80" y="198" fill="#9ca3af" font-family="Sora,sans-serif" font-size="14">project id is a URL piece. file.path is an absolute server path.</text>
+        <text x="28" y="236" fill="#fb7185" font-family="IBM Plex Mono,monospace" font-size="13">fix</text>
+        <text x="80" y="236" fill="#9ca3af" font-family="Sora,sans-serif" font-size="14">19.1.8 / 19.2.6 / 19.3.2. Hunt logs for repository POST with a file.path field.</text>
+      </svg>
+      <h2>Confirm signal (class)</h2>
+      <p>A honest confirm is not “GitLab HTML 200.” On an authorized lab the operator looked for the leak substring in the 400 body:</p>
+      <pre class="term"><span class="hi">invalid %-encoding (</span>
+<span class="dim">file bytes after the paren · that is FILE LEAK</span></pre>
+      <p>Files with no lone <code>%</code> can still be opened. That returns <code>read-noecho</code>. That is an oracle. Do not file a critical on an oracle.</p>
+      <h2>Verdicts</h2>
+      <ul>
+        <li><code>leak</code> — bytes in <code>invalid %-encoding (</code>. Reportable.</li>
+        <li><code>leak-fragment</code> — partial echo. Attach the body.</li>
+        <li><code>read-noecho</code> — opened, not echoed. Oracle only.</li>
+        <li><code>missing</code> — bypass reached disk, file absent.</li>
+        <li><code>project-gate</code> — 404 Project Not Found. Another public id.</li>
+        <li><code>rewrite</code> — Workhorse rewrote the body. That form is dead.</li>
+        <li><code>noroute</code> — plain 404. Patched or wrong path.</li>
+      </ul>
+      <pre class="term"><span class="hi">CVE-2026-85706</span>  GitLab CE/EE self-managed
+<span class="dim">class</span>            CWE-22  path used before auth
+<span class="dim">impact</span>           unauthenticated local file read
+<span class="dim">auth</span>             none
+<span class="ok">patched</span>          19.1.8 · 19.2.6 · 19.3.2
+<span class="bad">lab</span>              gitlab.lab.local
+
+<span class="dim">affected</span>         18.7–19.1.7 · 19.2.0–19.2.5 · 19.3.0–19.3.1
+<span class="dim">out of scope</span>     gitlab.com · GitLab Dedicated
+
+mitsec@gitlab:</pre>
+      <h2>What GitLabSniper does on the wire</h2>
+      <p>The public helper fingerprints GitLab, enumerates public project ids, walks the Workhorse-miss matrix, and only prints <strong>FILE LEAK</strong> when the 400 body carries the encoding echo. Pipeline mode accepts raw hosts and httpx lines.</p>
+      <p>This page does not reprint the request matrix or a ready-to-paste request. Those live in the repo for people who already have scope.</p>
+      <h2>Fix</h2>
+      <ul>
+        <li>Upgrade to 19.1.8 / 19.2.6 / 19.3.2.</li>
+        <li>If the instance was reachable in the window, rotate secret_key_base, otp_key_base, DB passwords and SSH material on disk.</li>
+        <li>Hunt access logs for repository POST traffic that carried a file.path field.</li>
+      </ul>
+      <h2>Repo</h2>
+      <p>GitLabSniper stays on GitHub. Classifier model: guneykabel/cve-2026-85706. Vendor report credit: s3ntago via GitLab HackerOne.</p>
+      <p><a class="btn" href="https://github.com/ynsmroztas/GitLabSniper" target="_blank" rel="me noopener">Open github.com/ynsmroztas/GitLabSniper →</a></p>
+      <p class="meta" style="margin-top:40px">YUNUS EMRE ÖZTAŞ · MITSEC · AUTHORIZED TESTING ONLY</p>
+      <nav class="wire-nav" data-wire-nav>
+        <span></span>
+        <a class="index" href="writeups.html">all notes</a>
+        <a class="next" href="msa-deeplink.html"><em>next</em><span>Unclaimed ms-msa scheme</span></a>
+      </nav>
+    </article>
+  </main>
+  <footer><div class="wrap foot"><div>© 2026 Yunus Emre Öztaş — mitsec</div><div><a href="writeups.html">Writeups</a></div></div></footer>
+  <script src="assets/js/theme.js?v=20"></script>
+  <script src="assets/js/site.js?v=20"></script>
+  <script src="assets/js/w.js"></script>
+</body>
+</html>

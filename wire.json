@@ -1,6 +1,15 @@
 {
   "notes": [
     {
+      "id": "gitlab-sniper",
+      "href": "gitlab-sniper.html",
+      "title": "Unauthenticated GitLab file-read",
+      "pill": "platform",
+      "blurb": "CVE-2026-85706. Workhorse miss, Puma route, File.open before auth.",
+      "repo": "https://github.com/ynsmroztas/GitLabSniper",
+      "year": 2026
+    },
+    {
       "id": "artifactory-join",
       "href": "artifactory-join.html",
       "title": "Empty join key, admin token",
