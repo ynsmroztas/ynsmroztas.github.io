@@ -9,11 +9,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="assets/css/site.css?v=21"/>
-  <link rel="stylesheet" href="assets/css/theme.css?v=21"/>
-  <link rel="stylesheet" href="assets/css/live.css?v=21"/>
-  <link rel="stylesheet" href="assets/css/hero.css?v=21"/>
-  <link rel="stylesheet" href="assets/css/deck.css?v=21"/>
+  <link rel="stylesheet" href="assets/css/site.css?v=22"/>
+  <link rel="stylesheet" href="assets/css/theme.css?v=22"/>
+  <link rel="stylesheet" href="assets/css/live.css?v=22"/>
+  <link rel="stylesheet" href="assets/css/hero.css?v=22"/>
+  <link rel="stylesheet" href="assets/css/deck.css?v=22"/>
   <style>
     .pgstat,[data-pgstat],.xtimeline,iframe.twitter-timeline{display:none!important}
     .xwire{border-top:1px solid var(--line);padding:36px 0 28px}
@@ -60,7 +60,7 @@
       <div class="deck-copy">
         <p class="kicker">mitsec // field · authorized only</p>
         <h1 class="wordmark hero-type" data-typewriter="FIELD CASES">FIELD CASES</h1>
-        <p class="lead">Yunus Emre Öztaş. Redacted class notes. One featured case on the right. The tape under it is the rest of the wire — not a second copy of the same grid.</p>
+        <p class="lead">Yunus Emre Öztaş. Redacted class notes. One featured case on the right. Tape changes the still. Scope map filters the dossier.</p>
         <div class="deck-chips">
           <span class="chip on">● live</span>
           <span class="chip">clk <span data-clock>--:--:--</span></span>
@@ -72,7 +72,15 @@
           <a class="btn ghost" href="androscope.html">AndroScope</a>
         </div>
       </div>
-      <a class="featured" data-featured href="gitlab-sniper.html"></a>
+      <a class="featured" data-featured href="gitlab-sniper.html">
+        <img src="assets/img/gitlab-sniper-term.svg" alt=""/>
+        <div class="body">
+          <span class="pill">platform · leak class</span>
+          <h2>Unauthenticated GitLab file-read</h2>
+          <p>CVE-2026-85706. Workhorse missed the path. Puma routed it. File.open ran before authenticate!.</p>
+          <span class="go">read the class →</span>
+        </div>
+      </a>
     </section>
     <div class="tape" data-tape></div>
     <section class="split">
@@ -97,7 +105,7 @@
       <div class="console-pane">
         <div class="cass-top"><i></i><i></i><i></i><span>androscope · rootless</span></div>
         <pre><span class="hi">╭─ AndroSCOPE</span>  · @ynsmroztas
-<span class="dim">│</span> target: app.lab.local
+<span class="dim">│</span> target: lab.sample.app
 <span class="dim">│</span> mode: rootless mobile pentest
 <span class="dim">╰</span> evidence: full
 
@@ -161,9 +169,9 @@ mitsec@androscope:</pre>
       <div><a href="mailto:m.i.t@mit.tc">m.i.t@mit.tc</a></div>
     </div>
   </footer>
-  <script src="assets/js/theme.js?v=21"></script>
-  <script src="assets/js/site.js?v=21"></script>
-  <script src="assets/js/hero.js?v=21"></script>
-  <script src="assets/js/deck.js?v=21"></script>
+  <script src="assets/js/theme.js?v=22"></script>
+  <script src="assets/js/site.js?v=22"></script>
+  <script src="assets/js/hero.js?v=22"></script>
+  <script src="assets/js/home-deck.js?v=22"></script>
 </body>
 </html>
