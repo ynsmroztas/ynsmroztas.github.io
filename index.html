@@ -4,32 +4,28 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>mitsec — field cases / Yunus Emre Öztaş</title>
-  <meta name="description" content="Redacted field cases. CVE-2026-85706 GitLab file-read. Unclaimed ms-msa. Keycloak reset."/>
+  <meta name="description" content="Command deck. Redacted field cases. CVE-2026-85706 GitLab file-read. AndroScope."/>
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="assets/css/site.css?v=20"/>
-  <link rel="stylesheet" href="assets/css/theme.css?v=20"/>
-  <link rel="stylesheet" href="assets/css/live.css?v=20"/>
-  <link rel="stylesheet" href="assets/css/hero.css?v=20"/>
+  <link rel="stylesheet" href="assets/css/site.css?v=21"/>
+  <link rel="stylesheet" href="assets/css/theme.css?v=21"/>
+  <link rel="stylesheet" href="assets/css/live.css?v=21"/>
+  <link rel="stylesheet" href="assets/css/hero.css?v=21"/>
+  <link rel="stylesheet" href="assets/css/deck.css?v=21"/>
   <style>
     .pgstat,[data-pgstat],.xtimeline,iframe.twitter-timeline{display:none!important}
-    .xwire{border-top:1px solid var(--line);padding:36px 0 28px;position:relative;z-index:2}
-    .xwire-head{margin-bottom:16px}
+    .xwire{border-top:1px solid var(--line);padding:36px 0 28px}
     .xgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-    .xpost{display:block;border:1px solid var(--line-2);border-radius:16px;padding:16px 16px 14px;background:var(--panel);color:inherit;min-height:0}
+    .xpost{display:block;border:1px solid var(--line-2);border-radius:16px;padding:16px;background:var(--panel);color:inherit}
     .xpost:hover{border-color:var(--ph)}
-    .xpost .who{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+    .xpost .who{display:flex;gap:10px;margin-bottom:10px}
     .xpost .who b{color:#fff;font-size:14px}
     .xpost .who span{font-family:var(--mono);font-size:11px;color:var(--dim)}
     .xpost p{margin:0;color:var(--mute);font-size:14.5px;line-height:1.5}
     .xpost .when{display:block;margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--ph);letter-spacing:.08em;text-transform:uppercase}
-    @media (max-width:800px){
-      .xgrid{grid-template-columns:1fr}
-      .xwire .wrap{display:block!important}
-      .nav .mark + .mark, header .theme-orb{display:none}
-    }
+    @media (max-width:800px){.xgrid{grid-template-columns:1fr}}
   </style>
   <script>(function(){try{var t=localStorage.getItem('mitsec-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 </head>
@@ -49,115 +45,111 @@
       <button class="burger" data-burger aria-label="Menu">☰</button>
     </div>
   </header>
-  <main class="wrap">
-    <section class="wire-head reveal">
-      <div class="kicker">live wire · redacted field notes</div>
-      <h1 class="wordmark wire-title hero-type" data-typewriter="FIELD CASES">FIELD CASES</h1>
-      <div class="livebar">
-        <span class="chip on">● now reading</span>
-        <span class="chip">clk <span data-clock>--:--:--</span></span>
-        <span class="chip">19 notes on the wire</span>
-      </div>
-      <p class="sub">Yunus Emre Öztaş — mitsec. GitLab file-read. Unclaimed ms-msa. Keycloak reset.</p>
-      <p class="hero-ask">What surface?</p>
-      <p class="hero-ask-sub">Select all that apply — notes stay on the page</p>
-      <div class="pills">
-        <button type="button" class="pill-btn" data-pill="platform">Platform</button>
-        <button type="button" class="pill-btn" data-pill="mobile">Mobile</button>
-        <button type="button" class="pill-btn" data-pill="runtime">Runtime</button>
-        <button type="button" class="pill-btn" data-pill="fintech">Fintech</button>
-        <button type="button" class="pill-btn" data-pill="webview">WebView</button>
-      </div>
-      <div class="pill-banner" data-pill-banner></div>
-      <div class="row" style="margin-top:18px">
-        <a class="btn" href="writeups.html">Open the wire →</a>
-        <a class="btn ghost" href="mailto:m.i.t@mit.tc">Contact</a>
-      </div>
-    </section>
-    <section class="cover-sec reveal d2">
-      <div class="coverflow" data-cover>
-        <a class="cover-card" href="gitlab-sniper.html" data-cover-card><span class="pill">platform · 19</span><h2 class="title3d">Unauthenticated <em>GitLab</em> file-read</h2><p>CVE-2026-85706. Workhorse miss. Puma routed. File.open before auth.</p><b>read →</b></a>
-        <a class="cover-card" href="msa-deeplink.html" data-cover-card><span class="pill">mobile · 18</span><h2 class="title3d">Unclaimed <em>ms-msa</em> scheme</h2><p>CVE-2026-26123. Authenticator emitted the scheme and did not claim it.</p><b>read →</b></a>
-        <a class="cover-card" href="keycloak-reset.html" data-cover-card><span class="pill">auth · 17</span><h2 class="title3d">Reset-credentials <em>ATO class</em></h2><p>CVE-2026-18963. Keycloak forgot-password. Email step did not bind.</p><b>read →</b></a>
-        <a class="cover-card" href="artifactory-join.html" data-cover-card><span class="pill">auth · 16</span><h2 class="title3d">Empty join key, <em>admin token</em></h2><p>CVE-2026-82329. Self-hosted Artifactory trusted a blank join key.</p><b>read →</b></a>
-        <a class="cover-card" href="provider-sqli.html" data-cover-card><span class="pill">sqli · 13</span><h2 class="title3d">Provider selection is <em>SQL</em></h2><p>Exported notes URI. selection concatenated. Bind args unused.</p><b>read →</b></a>
-        <a class="cover-card" href="dex-load.html" data-cover-card><span class="pill">rce · 14</span><h2 class="title3d">DEX from a <em>writable path</em></h2><p>Loader mapped extract output. No payload on this page.</p><b>read →</b></a>
-        <a class="cover-card" href="jsbridge-rce.html" data-cover-card><span class="pill">rce · 15</span><h2 class="title3d">Bridge on the <em>wrong origin</em></h2><p>Interface attached. loadUrl came from an extra.</p><b>read →</b></a>
-        <a class="cover-card" href="oauth-scheme.html" data-cover-card><span class="pill">mobile · 06</span><h2 class="title3d">Custom scheme, <em>no PKCE</em></h2><p>Unverified OAuth redirect plus no code_challenge.</p><b>read →</b></a>
-      </div>
-      <div class="dots" data-cover-dots></div>
-    </section>
-    <div class="stats">
-      <a class="stat" href="research.html"><b>100+</b><span>HoF entries</span></a>
-      <a class="stat" href="research.html"><b>2430+</b><span>Vulns reported</span></a>
-      <a class="stat" href="research.html"><b>1100+</b><span>P1 critical</span></a>
-      <div class="stat"><b>12+</b><span>Years exp</span></div>
-    </div>
-    <section>
-      <p class="h-k">Surface</p>
-      <h2>What I hunt.</h2>
-      <div class="skills">
-        <div class="skill"><b>Fintech</b><span>linking API · static client id · unlink state</span></div>
-        <div class="skill"><b>Platform</b><span>reset-credentials · join key · gitlab file-read</span></div>
-        <div class="skill"><b>WebView</b><span>bridge · intent:// · loadUrl extra</span></div>
-        <div class="skill"><b>Runtime</b><span>dex load · conscrypt store · mTLS</span></div>
-      </div>
-    </section>
-    <section>
-      <p class="h-k">On the wire</p>
-      <h2>Every card is a redacted field note.</h2>
-      <div class="tools case-grid" style="margin-top:16px">
-        <a class="tool" data-surface="platform" href="gitlab-sniper.html"><div class="top"><h3>Unauthenticated GitLab file-read</h3><span class="pill">platform</span></div><p>CVE-2026-85706. Workhorse vs Puma. File.open before authenticate!.</p><div class="meta">2026 · CVE</div></a>
-        <a class="tool" data-surface="mobile" href="msa-deeplink.html"><div class="top"><h3>Unclaimed ms-msa scheme</h3><span class="pill">mobile</span></div><p>CVE-2026-26123. Authenticator emitted the scheme and did not claim it.</p><div class="meta">2026 · CVE</div></a>
-        <a class="tool" data-surface="platform" href="keycloak-reset.html"><div class="top"><h3>Reset-credentials ATO class</h3><span class="pill">auth</span></div><p>CVE-2026-18963. Keycloak forgot-password. Email step did not bind.</p><div class="meta">2026 · CVE</div></a>
-        <a class="tool" data-surface="platform" href="artifactory-join.html"><div class="top"><h3>Empty join key, admin token</h3><span class="pill">auth</span></div><p>CVE-2026-82329. Blank join key on self-hosted Access.</p><div class="meta">2026 · CVE</div></a>
-        <a class="tool" data-surface="mobile" href="provider-sqli.html"><div class="top"><h3>Provider selection is SQL</h3><span class="pill">sqli</span></div><p>Exported provider glued selection into the query.</p><div class="meta">2026 · lab</div></a>
-        <a class="tool" data-surface="runtime" href="dex-load.html"><div class="top"><h3>DEX from a writable path</h3><span class="pill">rce</span></div><p>Loader mapped extract output. No payload DEX.</p><div class="meta">2026 · lab</div></a>
-        <a class="tool" data-surface="webview mobile" href="jsbridge-rce.html"><div class="top"><h3>Bridge on the wrong origin</h3><span class="pill">rce</span></div><p>Interface on a WebView that loaded an extra URL.</p><div class="meta">2026 · lab</div></a>
-      </div>
-    </section>
-  </main>
-  <div class="marquee"><div class="marquee-track"><span>APPLE</span><span>MICROSOFT</span><span>META</span><span>IBM</span><span>INTIGRITI</span><span>YESWEHACK</span><span>BUGCROWD</span><span>HACKERONE</span><span>APPLE</span><span>MICROSOFT</span><span>META</span><span>IBM</span><span>INTIGRITI</span><span>YESWEHACK</span><span>BUGCROWD</span><span>HACKERONE</span></div></div>
-  <main class="wrap">
-    <section>
-      <p class="h-k">The instrument</p>
-      <h2>AndroScope lives on its own page.</h2>
-      <p class="lead">Home is the wire. The console sits under AndroScope.</p>
-      <p style="margin-top:22px"><a class="btn ghost" href="androscope.html">Full technical writeup</a></p>
-    </section>
-  </main>
-  <section class="xwire" data-xwire>
+  <div class="proof-slim">
     <div class="wrap">
-      <div class="xwire-head">
-        <p class="h-k">From X</p>
-        <h2>@ynsmroztas</h2>
-        <p class="lead">Selected posts. Full feed stays on X.</p>
+      <a href="research.html"><b>100+</b> HoF</a>
+      <a href="research.html"><b>2430+</b> vuln</a>
+      <a href="research.html"><b>1100+</b> P1</a>
+      <span><b>12+</b> yr</span>
+      <i>·</i>
+      <span>Microsoft · Meta · IBM · Intigriti · YesWeHack · Bugcrowd · HackerOne</span>
+    </div>
+  </div>
+  <main class="wrap">
+    <section class="deck">
+      <div class="deck-copy">
+        <p class="kicker">mitsec // field · authorized only</p>
+        <h1 class="wordmark hero-type" data-typewriter="FIELD CASES">FIELD CASES</h1>
+        <p class="lead">Yunus Emre Öztaş. Redacted class notes. One featured case on the right. The tape under it is the rest of the wire — not a second copy of the same grid.</p>
+        <div class="deck-chips">
+          <span class="chip on">● live</span>
+          <span class="chip">clk <span data-clock>--:--:--</span></span>
+          <span class="chip">19 notes</span>
+          <span class="chip">CVE-2026-85706</span>
+        </div>
+        <div class="row">
+          <a class="btn" href="writeups.html">Open the wire →</a>
+          <a class="btn ghost" href="androscope.html">AndroScope</a>
+        </div>
       </div>
+      <a class="featured" data-featured href="gitlab-sniper.html"></a>
+    </section>
+    <div class="tape" data-tape></div>
+    <section class="split">
+      <div class="scope-board">
+        <p class="h-k">Scope map</p>
+        <h2>What surface.</h2>
+        <div class="scope mini-scope">
+          <canvas data-radar></canvas>
+          <div class="beam"></div>
+          <div class="ring"></div>
+          <div class="scanline"></div>
+          <div class="scope-hud"><div class="top"><span>radar // field</span><span>filter</span></div><div class="bot"><span>live</span><span data-clock>--:--:--</span></div></div>
+        </div>
+        <div class="sats">
+          <button type="button" data-sat="platform">Platform</button>
+          <button type="button" data-sat="mobile">Mobile</button>
+          <button type="button" data-sat="runtime">Runtime</button>
+          <button type="button" data-sat="fintech">Fintech</button>
+          <button type="button" data-sat="webview">WebView</button>
+        </div>
+      </div>
+      <div class="console-pane">
+        <div class="cass-top"><i></i><i></i><i></i><span>androscope · rootless</span></div>
+        <pre><span class="hi">╭─ AndroSCOPE</span>  · @ynsmroztas
+<span class="dim">│</span> target: app.lab.local
+<span class="dim">│</span> mode: rootless mobile pentest
+<span class="dim">╰</span> evidence: full
+
+<span class="dim">── ASSESS ──</span>
+ 3  Analyze APK
+ 4  Static Audit
+ 5  Exploitability Radar
+
+<span class="dim">── RUNTIME ──</span>
+ 6  Select Module
+ 7  Shell
+
+mitsec@androscope:</pre>
+        <a class="btn ghost" href="androscope.html">Open the console →</a>
+      </div>
+    </section>
+    <p class="h-k">Dossier</p>
+    <h2>Lead, then the stack.</h2>
+    <div class="dossier">
+      <a class="lead-card" data-surface="platform" href="gitlab-sniper.html">
+        <span class="pill">lead · platform</span>
+        <h2>Unauthenticated GitLab file-read</h2>
+        <p>CVE-2026-85706. Workhorse miss, Puma route, File.open before auth. Classifier only. Repo on GitHub.</p>
+      </a>
+      <div class="stack">
+        <a data-surface="mobile" href="msa-deeplink.html"><span class="pill">mobile</span><h3>Unclaimed ms-msa scheme</h3><p>CVE-2026-26123. Scheme emitted, not claimed.</p></a>
+        <a data-surface="platform" href="keycloak-reset.html"><span class="pill">auth</span><h3>Reset-credentials ATO class</h3><p>CVE-2026-18963. Email step did not bind.</p></a>
+      </div>
+    </div>
+    <div class="rest">
+      <a data-surface="platform" href="artifactory-join.html"><h3>Empty join key</h3><p>CVE-2026-82329. Blank join key class.</p></a>
+      <a data-surface="mobile" href="provider-sqli.html"><h3>Provider selection is SQL</h3><p>Exported provider. Bind args unused.</p></a>
+      <a data-surface="runtime" href="dex-load.html"><h3>DEX from a writable path</h3><p>Loader mapped extract output.</p></a>
+      <a data-surface="webview mobile" href="jsbridge-rce.html"><h3>Bridge on the wrong origin</h3><p>Interface. Extra loadUrl.</p></a>
+      <a data-surface="fintech" href="wallet-link.html"><h3>Wallet link, static client id</h3><p>Unlink reset. Vendor stripped.</p></a>
+      <a data-surface="mobile" href="oauth-scheme.html"><h3>Custom scheme, no PKCE</h3><p>Unverified OAuth redirect.</p></a>
+    </div>
+  </main>
+  <section class="xwire">
+    <div class="wrap">
+      <p class="h-k">From X</p>
+      <h2>@ynsmroztas</h2>
       <div class="xgrid">
         <a class="xpost" href="https://github.com/ynsmroztas/GitLabSniper" target="_blank" rel="me noopener">
           <div class="who"><b>Yunus Emre Öztaş</b><span>@ynsmroztas</span></div>
-          <p>CVE-2026-85706 · GitLab CE/EE self-managed. Unauthenticated file-read class. GitLabSniper on GitHub. Authorized testing only.</p>
+          <p>CVE-2026-85706 · GitLab CE/EE. Unauthenticated file-read class. GitLabSniper on GitHub.</p>
           <span class="when">12 Sep 2026 · repo</span>
         </a>
         <a class="xpost" href="https://x.com/ynsmroztas/status/2096682683921260947" target="_blank" rel="me noopener">
           <div class="who"><b>Yunus Emre Öztaş</b><span>@ynsmroztas</span></div>
-          <p>CVE-2026-18963 · Keycloak self-hosted. Reset-credentials ATO class. KeySniper on GitHub. Authorized testing only.</p>
+          <p>CVE-2026-18963 · Keycloak reset-credentials ATO class. KeySniper on GitHub.</p>
           <span class="when">06 Sep 2026 · thread</span>
-        </a>
-        <a class="xpost" href="https://x.com/ynsmroztas/status/2095245199337222257" target="_blank" rel="me noopener">
-          <div class="who"><b>Yunus Emre Öztaş</b><span>@ynsmroztas</span></div>
-          <p>CVE-2026-82329 · JFrog Artifactory self-hosted. Blank join key class. Authorized testing only. Repo on GitHub.</p>
-          <span class="when">02 Sep 2026 · thread</span>
-        </a>
-        <a class="xpost" href="https://x.com/ynsmroztas/status/2090748385657590217" target="_blank" rel="me noopener">
-          <div class="who"><b>Yunus Emre Öztaş</b><span>@ynsmroztas</span></div>
-          <p>P2 account takeover class: OAuth2 authorization code interception via custom URI scheme, PKCE missing entirely.</p>
-          <span class="when">21 Aug 2026 · thread</span>
-        </a>
-        <a class="xpost" href="https://x.com/ynsmroztas/status/2074929881754833052" target="_blank" rel="me noopener">
-          <div class="who"><b>Yunus Emre Öztaş</b><span>@ynsmroztas</span></div>
-          <p>Working the Android 0-day surface. Six findings, sandbox escapes in particular. AndroScope goes to GitHub in limited form.</p>
-          <span class="when">08 Jul 2026</span>
         </a>
       </div>
       <p style="margin-top:18px"><a class="btn ghost" href="https://x.com/ynsmroztas" target="_blank" rel="me noopener">Open x.com/ynsmroztas →</a></p>
@@ -165,13 +157,13 @@
   </section>
   <footer>
     <div class="wrap foot">
-      <div>© 2026 Yunus Emre Öztaş — mitsec</div>
+      <div>© 2026 Yunus Emre Öztaş — mitsec · <a href="research.html">100+ HoF · 2430+ vuln · 1100+ P1 · 12+ yr</a></div>
       <div><a href="mailto:m.i.t@mit.tc">m.i.t@mit.tc</a></div>
     </div>
   </footer>
-  <script src="assets/js/theme.js?v=20"></script>
-  <script src="assets/js/site.js?v=20"></script>
-  <script src="assets/js/hero.js?v=20"></script>
-  <script>document.querySelectorAll('.pgstat,[data-pgstat],.xtimeline').forEach(function(el){el.remove();});</script>
+  <script src="assets/js/theme.js?v=21"></script>
+  <script src="assets/js/site.js?v=21"></script>
+  <script src="assets/js/hero.js?v=21"></script>
+  <script src="assets/js/deck.js?v=21"></script>
 </body>
 </html>
