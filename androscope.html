@@ -3,15 +3,27 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>AndroScope — technical writeup · mitsec</title>
+  <title>AndroScope — operator console · mitsec</title>
+  <meta name="description" content="AndroScope. Rootless Android pentest framework. Instrument the lab target. Walk it. Keep the transcript."/>
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="assets/css/site.css?v=12"/>
-  <link rel="stylesheet" href="assets/css/op.css?v=12"/>
-  <link rel="stylesheet" href="assets/css/theme.css?v=12"/>
-  <link rel="stylesheet" href="assets/css/live.css?v=12"/>
+  <link rel="stylesheet" href="assets/css/site.css?v=22"/>
+  <link rel="stylesheet" href="assets/css/op.css?v=22"/>
+  <link rel="stylesheet" href="assets/css/theme.css?v=22"/>
+  <link rel="stylesheet" href="assets/css/live.css?v=22"/>
+  <style>
+    .stills,.still{display:none!important}
+    .scope-page .page-hero{align-items:center;gap:28px}
+    .scope-page .wordmark{font-size:clamp(36px,6vw,64px)}
+    .hud-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:8px 0 22px}
+    .hud-strip .card{border:1px solid var(--line-2);border-radius:16px;padding:14px 16px;background:var(--panel)}
+    .hud-strip .tag{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--ph)}
+    .op{min-height:72vh}
+    .op-grid{min-height:520px}
+    @media(max-width:800px){.hud-strip{grid-template-columns:1fr}}
+  </style>
   <script>(function(){try{var t=localStorage.getItem('mitsec-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 </head>
 <body class="scope-page">
@@ -25,7 +37,7 @@
         <a href="tools.html">Tools</a>
         <a href="writeups.html">Writeups</a>
         <a href="research.html">Research</a>
-        <a class="cta" href="index.html">mitsec</a>
+        <a class="cta" href="mailto:m.i.t@mit.tc">m.i.t@mit.tc</a>
       </nav>
       <button class="burger" data-burger aria-label="Menu">☰</button>
     </div>
@@ -33,17 +45,17 @@
   <main class="wrap">
     <section class="page-hero">
       <div class="reveal">
-        <p class="meta">WRITEUP · MOBILE · JUL 2026 · @YNSMROZTAS</p>
-        <h1 class="wordmark" aria-label="AndroScope">ANDRO<em>SC<span class="oh">O<i></i></span>PE</em></h1>
-        <p class="deck">Rootless Android pentest framework. Instrument the target. Walk it. Keep the transcript.</p>
+        <p class="meta">CONSOLE · MOBILE · ROOTLESS · @YNSMROZTAS</p>
+        <h1 class="wordmark" aria-label="AndroScope">ANDRO<em>SCOPE</em></h1>
+        <p class="deck">Rootless Android pentest framework. Instrument the authorized lab build. Walk it. Keep the transcript.</p>
         <div class="livebar">
           <span class="chip on">● live radar</span>
           <span class="chip">clk <span data-clock>--:--:--</span></span>
           <span class="chip">PREPARE · ASSESS · RUNTIME</span>
         </div>
         <div class="toc">
-          <a href="#what">Model</a>
           <a href="#deck">Deck</a>
+          <a href="#what">Model</a>
           <a href="#surface">Surface</a>
           <a href="#pipeline">Pipeline</a>
           <a href="#runtime">Runtime</a>
@@ -73,10 +85,10 @@
       <span>lab.sample.app</span><span>surface complete</span><span>6 activities</span><span>4 deeplinks</span><span>14 native libs</span><span>FH-ID ready</span>
       <span>lab.sample.app</span><span>surface complete</span><span>6 activities</span><span>4 deeplinks</span><span>14 native libs</span><span>FH-ID ready</span>
     </div></div>
-    <div class="pipe">
-      <div class="card"><div class="tag">01</div><h3>PREPARE</h3><p>Bytes in. Inventory out.</p></div>
-      <div class="card"><div class="tag">02</div><h3>ASSESS</h3><p>FH-IDs that match this binary.</p></div>
-      <div class="card"><div class="tag">03</div><h3>RUNTIME</h3><p>The log follows your hands.</p></div>
+    <div class="hud-strip">
+      <div class="card"><div class="tag">01 PREPARE</div><h3>Bytes in</h3><p>Lab variant. Gadget in-process. Store APK untouched.</p></div>
+      <div class="card"><div class="tag">02 ASSESS</div><h3>Map first</h3><p>FH-IDs that match this binary. No invented surface.</p></div>
+      <div class="card"><div class="tag">03 RUNTIME</div><h3>Hands on</h3><p>The log follows taps. Empty means you missed that path.</p></div>
     </div>
     <section id="deck" class="op">
       <div class="term-bar"><i></i><i></i><i></i><span>androscope · session · tty</span></div>
@@ -84,7 +96,7 @@
         <div><b>AndroSCOPE Final Edition</b> · @ynsmroztas</div>
         <div>target: <span class="tgt">lab.sample.app</span> · mode: rootless · evidence: full</div>
       </div>
-      <div class="deck-toolbar" data-deck-filters style="padding:10px 12px 0"></div>
+      <div class="deck-toolbar" data-deck-filters></div>
       <div class="op-grid">
         <div class="op-menu" data-op-menu></div>
         <div class="op-detail" data-op-detail></div>
@@ -154,11 +166,12 @@
   <footer>
     <div class="wrap foot">
       <div>© 2026 Yunus Emre Öztaş — mitsec</div>
-      <div><a href="index.html">Home</a> · <a href="tools.html">Tools</a> · <a href="https://x.com/ynsmroztas">X</a></div>
+      <div><a href="index.html">Home</a> · <a href="writeups.html">Writeups</a> · <a href="https://x.com/ynsmroztas">X</a></div>
     </div>
   </footer>
-  <script src="assets/js/theme.js?v=12"></script>
-  <script src="assets/js/site.js?v=12"></script>
-  <script src="assets/js/deck.js?v=12"></script>
+  <script src="assets/js/theme.js?v=22"></script>
+  <script src="assets/js/site.js?v=22"></script>
+  <script src="assets/js/deck.js?v=22"></script>
+  <script src="assets/js/w.js"></script>
 </body>
 </html>
