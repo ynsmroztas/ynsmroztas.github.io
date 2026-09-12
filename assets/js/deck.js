@@ -1,49 +1,79 @@
-(function () {
-  var cases = [
-    { href: "gitlab-sniper.html", pill: "platform · leak class", title: "Unauthenticated GitLab file-read", blurb: "CVE-2026-85706. Workhorse missed the path. Puma routed it. File.open ran before authenticate!.", img: "assets/img/gitlab-sniper-term.svg", surface: "platform" },
-    { href: "msa-deeplink.html", pill: "mobile · scheme", title: "Unclaimed ms-msa scheme", blurb: "CVE-2026-26123. Authenticator emitted the scheme and did not claim it.", img: "assets/img/deeplink-term.svg", surface: "mobile" },
-    { href: "keycloak-reset.html", pill: "platform · ATO class", title: "Reset-credentials ATO class", blurb: "CVE-2026-18963. Keycloak forgot-password. Email step did not bind the session.", img: "assets/img/keysniper-term.svg", surface: "platform" },
-    { href: "artifactory-join.html", pill: "platform · auth", title: "Empty join key, admin token", blurb: "CVE-2026-82329. Self-hosted Artifactory trusted a blank join key.", img: "assets/img/artifactory-term.svg", surface: "platform" },
-    { href: "jsbridge-rce.html", pill: "webview · rce", title: "Bridge on the wrong origin", blurb: "Interface attached. loadUrl came from an extra.", img: "assets/img/sdk-proxy-term.svg", surface: "webview mobile" },
-    { href: "dex-load.html", pill: "runtime · rce", title: "DEX from a writable path", blurb: "Loader mapped extract output. No payload on this page.", img: "assets/img/adb-term.svg", surface: "runtime" }
-  ];
-  var feat = document.querySelector("[data-featured]");
-  var tape = document.querySelector("[data-tape]");
-  if (tape) {
-    tape.innerHTML = cases.map(function (c, i) {
-      return '<button type="button" class="tape-item' + (i === 0 ? " on" : "") + '" data-i="' + i + '" data-surface="' + c.surface + '"><em>' + c.pill + "</em><b>" + c.title + "</b></button>";
-    }).join("");
+(function(){
+  const menu = document.querySelector("[data-op-menu]");
+  const detail = document.querySelector("[data-op-detail]");
+  const prompt = document.querySelector("[data-op-prompt]");
+  const filters = document.querySelector("[data-deck-filters]");
+  if (!menu || !detail) return;
+  const labels = {menu:"OPERATOR MENU",A:"SURFACE & RECON",B:"APP ATTACK SURFACE",C:"TRAFFIC & SECRETS",D:"NATIVE & RUNTIME",E:"DEFENSE"};
+  const groups = ["menu","A","B","C","D","E"];
+  var typeTimer = 0;
+  function typeInto(el, text) {
+    clearInterval(typeTimer);
+    el.textContent = "";
+    var i = 0;
+    typeTimer = setInterval(function () {
+      i += 1;
+      el.textContent = text.slice(0, i);
+      if (i >= text.length) clearInterval(typeTimer);
+    }, 12);
   }
-  function show(i) {
-    var c = cases[i];
-    if (!c || !feat) return;
-    feat.setAttribute("href", c.href);
-    feat.innerHTML = '<img src="' + c.img + '" alt=""/><div class="body"><span class="pill">' + c.pill + "</span><h2>" + c.title + "</h2><p>" + c.blurb + '</p><span class="go">read the class →</span></div>';
-    if (tape) tape.querySelectorAll("button").forEach(function (b) { b.classList.toggle("on", b.getAttribute("data-i") === String(i)); });
+  function openMod(DECK, id, btn){
+    const m = DECK.find(x => x.id === id);
+    if (!m) return;
+    menu.querySelectorAll(".op-item").forEach(el => el.classList.remove("on"));
+    if (btn) btn.classList.add("on");
+    var stage = m.stage || "RUNTIME";
+    var log =
+      '<div>[scope] attach lab.sample.app</div>' +
+      '<div>[deck] load ' + m.id + ' · ' + stage + '</div>' +
+      '<div>[map] starred=' + (m.star ? 'yes' : 'no') + ' · group=' + m.group + '</div>' +
+      '<div>[note] authorized lab build only</div>';
+    detail.innerHTML =
+      '<div class="chips"><b>' + stage + '</b><b>' + m.group + '</b>' + (m.star ? '<b>start-here</b>' : '') + '</div>' +
+      '<h3>' + String(m.n).padStart(2,"0") + ' · ' + m.title + '</h3>' +
+      '<p data-type></p>' +
+      '<div class="why"><b style="color:var(--ph)">what it does · </b>Runs against the instrumented lab process only. Empty output means that surface was not hit.</div>' +
+      '<div class="op-log">' + log + '</div>';
+    typeInto(detail.querySelector("[data-type]"), m.desc);
+    if (prompt) prompt.textContent = " " + String(m.n) + " · " + m.title;
   }
-  show(0);
-  if (tape) tape.addEventListener("click", function (e) {
-    var b = e.target.closest("[data-i]");
-    if (b) show(b.getAttribute("data-i"));
-  });
-  var selected = [];
-  var sats = document.querySelectorAll("[data-sat]");
-  var cards = document.querySelectorAll("[data-surface]");
-  function paint() {
-    sats.forEach(function (b) { b.classList.toggle("on", selected.indexOf(b.getAttribute("data-sat")) >= 0); });
-    cards.forEach(function (c) {
-      var tags = (c.getAttribute("data-surface") || "").split(/\s+/);
-      var hit = !selected.length || selected.some(function (s) { return tags.indexOf(s) >= 0; });
-      c.classList.toggle("is-dim", !hit);
+  function paint(DECK, gid){
+    menu.innerHTML = "";
+    (gid ? [gid] : groups).forEach(g => {
+      const items = DECK.filter(m => m.gid === g);
+      if (!items.length) return;
+      const h = document.createElement("h5");
+      h.textContent = labels[g] || g;
+      menu.appendChild(h);
+      items.forEach(m => {
+        const b = document.createElement("button");
+        b.className = "op-item";
+        b.type = "button";
+        b.innerHTML = '<span class="n">' + String(m.n).padStart(2,"0") + '</span><span>' + m.title + '</span>' + (m.star ? '<span class="star">★</span>' : '');
+        b.addEventListener("click", () => openMod(DECK, m.id, b));
+        menu.appendChild(b);
+      });
     });
   }
-  sats.forEach(function (b) {
-    b.addEventListener("click", function () {
-      var k = b.getAttribute("data-sat");
-      var i = selected.indexOf(k);
-      if (i >= 0) selected.splice(i, 1); else selected.push(k);
-      paint();
+  fetch("assets/js/deck-data.json?v=21").then(r => r.json()).then(DECK => {
+    if (filters){
+      [["all","All"],["menu","Menu"],["A","A recon"],["B","B surface"],["C","C traffic"],["D","D native"],["E","E defense"]].forEach(([id,label],i) => {
+        const b = document.createElement("button");
+        b.textContent = label;
+        if (i===0) b.className = "on";
+        b.addEventListener("click", () => {
+          filters.querySelectorAll("button").forEach(x => x.classList.remove("on"));
+          b.classList.add("on");
+          paint(DECK, id === "all" ? null : id);
+        });
+        filters.appendChild(b);
+      });
+    }
+    paint(DECK, null);
+    var first = DECK.find(m => m.id === "D49") || DECK[0];
+    var btn = Array.prototype.find.call(menu.querySelectorAll(".op-item"), function (el) {
+      return el.textContent.indexOf(first.title) !== -1;
     });
+    openMod(DECK, first.id, btn);
   });
-  paint();
 })();
