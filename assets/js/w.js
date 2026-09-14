@@ -16,6 +16,10 @@
   }
 
   var WIRE = [
+    ["scheme-token.html", "Bearer token on an unverified scheme"],
+    ["gitlab-sniper.html", "Unauthenticated GitLab file-read"],
+    ["msa-deeplink.html", "Unclaimed ms-msa scheme"],
+    ["keycloak-reset.html", "Reset-credentials ATO class"],
     ["artifactory-join.html", "Empty join key, admin token"],
     ["provider-sqli.html", "Provider selection is SQL"],
     ["dex-load.html", "DEX from a writable path"],
