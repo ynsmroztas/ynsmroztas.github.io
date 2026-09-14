@@ -4,16 +4,16 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>mitsec — field cases / Yunus Emre Öztaş</title>
-  <meta name="description" content="Command deck. Redacted field cases. CVE-2026-85706 GitLab file-read. AndroScope."/>
+  <meta name="description" content="Command deck. Bearer token on an unverified scheme. GitLab file-read. AndroScope."/>
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="assets/css/site.css?v=22"/>
-  <link rel="stylesheet" href="assets/css/theme.css?v=22"/>
-  <link rel="stylesheet" href="assets/css/live.css?v=22"/>
-  <link rel="stylesheet" href="assets/css/hero.css?v=22"/>
-  <link rel="stylesheet" href="assets/css/deck.css?v=22"/>
+  <link rel="stylesheet" href="assets/css/site.css?v=23"/>
+  <link rel="stylesheet" href="assets/css/theme.css?v=23"/>
+  <link rel="stylesheet" href="assets/css/live.css?v=23"/>
+  <link rel="stylesheet" href="assets/css/hero.css?v=23"/>
+  <link rel="stylesheet" href="assets/css/deck.css?v=23"/>
   <style>
     .pgstat,[data-pgstat],.xtimeline,iframe.twitter-timeline{display:none!important}
     .xwire{border-top:1px solid var(--line);padding:36px 0 28px}
@@ -64,20 +64,20 @@
         <div class="deck-chips">
           <span class="chip on">● live</span>
           <span class="chip">clk <span data-clock>--:--:--</span></span>
-          <span class="chip">19 notes</span>
-          <span class="chip">CVE-2026-85706</span>
+          <span class="chip">20 notes</span>
+          <span class="chip">scheme token</span>
         </div>
         <div class="row">
           <a class="btn" href="writeups.html">Open the wire →</a>
           <a class="btn ghost" href="androscope.html">AndroScope</a>
         </div>
       </div>
-      <a class="featured" data-featured href="gitlab-sniper.html">
-        <img src="assets/img/gitlab-sniper-term.svg" alt=""/>
+      <a class="featured" data-featured href="scheme-token.html">
+        <img src="assets/img/scheme-token-term.svg" alt=""/>
         <div class="body">
-          <span class="pill">platform · leak class</span>
-          <h2>Unauthenticated GitLab file-read</h2>
-          <p>CVE-2026-85706. Workhorse missed the path. Puma routed it. File.open ran before authenticate!.</p>
+          <span class="pill">mobile · oauth</span>
+          <h2>Bearer token on an unverified scheme</h2>
+          <p>Server 302 to a custom scheme with the access token in the query. Chooser hijack class. Vendor stripped.</p>
           <span class="go">read the class →</span>
         </div>
       </a>
@@ -105,7 +105,7 @@
       <div class="console-pane">
         <div class="cass-top"><i></i><i></i><i></i><span>androscope · rootless</span></div>
         <pre><span class="hi">╭─ AndroSCOPE</span>  · @ynsmroztas
-<span class="dim">│</span> target: lab.sample.app
+<span class="dim">│</span> target: lab.learn.app
 <span class="dim">│</span> mode: rootless mobile pentest
 <span class="dim">╰</span> evidence: full
 
@@ -125,23 +125,23 @@ mitsec@androscope:</pre>
     <p class="h-k">Dossier</p>
     <h2>Lead, then the stack.</h2>
     <div class="dossier">
-      <a class="lead-card" data-surface="platform" href="gitlab-sniper.html">
-        <span class="pill">lead · platform</span>
-        <h2>Unauthenticated GitLab file-read</h2>
-        <p>CVE-2026-85706. Workhorse miss, Puma route, File.open before auth. Classifier only. Repo on GitHub.</p>
+      <a class="lead-card" data-surface="mobile" href="scheme-token.html">
+        <span class="pill">lead · oauth</span>
+        <h2>Bearer token on an unverified scheme</h2>
+        <p>OIDC callback emitted learnapp:// plus a live JWT. Chooser + masquerade. Tokens not on this page.</p>
       </a>
       <div class="stack">
+        <a data-surface="platform" href="gitlab-sniper.html"><span class="pill">platform</span><h3>Unauthenticated GitLab file-read</h3><p>CVE-2026-85706. File.open before auth.</p></a>
         <a data-surface="mobile" href="msa-deeplink.html"><span class="pill">mobile</span><h3>Unclaimed ms-msa scheme</h3><p>CVE-2026-26123. Scheme emitted, not claimed.</p></a>
-        <a data-surface="platform" href="keycloak-reset.html"><span class="pill">auth</span><h3>Reset-credentials ATO class</h3><p>CVE-2026-18963. Email step did not bind.</p></a>
       </div>
     </div>
     <div class="rest">
+      <a data-surface="platform" href="keycloak-reset.html"><h3>Reset-credentials ATO class</h3><p>CVE-2026-18963. Email step did not bind.</p></a>
       <a data-surface="platform" href="artifactory-join.html"><h3>Empty join key</h3><p>CVE-2026-82329. Blank join key class.</p></a>
       <a data-surface="mobile" href="provider-sqli.html"><h3>Provider selection is SQL</h3><p>Exported provider. Bind args unused.</p></a>
       <a data-surface="runtime" href="dex-load.html"><h3>DEX from a writable path</h3><p>Loader mapped extract output.</p></a>
       <a data-surface="webview mobile" href="jsbridge-rce.html"><h3>Bridge on the wrong origin</h3><p>Interface. Extra loadUrl.</p></a>
-      <a data-surface="fintech" href="wallet-link.html"><h3>Wallet link, static client id</h3><p>Unlink reset. Vendor stripped.</p></a>
-      <a data-surface="mobile" href="oauth-scheme.html"><h3>Custom scheme, no PKCE</h3><p>Unverified OAuth redirect.</p></a>
+      <a data-surface="mobile" href="oauth-scheme.html"><h3>Custom scheme, no PKCE</h3><p>Auth code class. Different note.</p></a>
     </div>
   </main>
   <section class="xwire">
@@ -149,15 +149,15 @@ mitsec@androscope:</pre>
       <p class="h-k">From X</p>
       <h2>@ynsmroztas</h2>
       <div class="xgrid">
+        <a class="xpost" href="scheme-token.html">
+          <div class="who"><b>Yunus Emre Öztaş</b><span>@ynsmroztas</span></div>
+          <p>Custom-scheme OAuth redirect carrying a Bearer token. Server 302. Chooser hijack class. Vendor and JWTs stripped. AndroScope session.</p>
+          <span class="when">14 Sep 2026 · note</span>
+        </a>
         <a class="xpost" href="https://github.com/ynsmroztas/GitLabSniper" target="_blank" rel="me noopener">
           <div class="who"><b>Yunus Emre Öztaş</b><span>@ynsmroztas</span></div>
           <p>CVE-2026-85706 · GitLab CE/EE. Unauthenticated file-read class. GitLabSniper on GitHub.</p>
           <span class="when">12 Sep 2026 · repo</span>
-        </a>
-        <a class="xpost" href="https://x.com/ynsmroztas/status/2096682683921260947" target="_blank" rel="me noopener">
-          <div class="who"><b>Yunus Emre Öztaş</b><span>@ynsmroztas</span></div>
-          <p>CVE-2026-18963 · Keycloak reset-credentials ATO class. KeySniper on GitHub.</p>
-          <span class="when">06 Sep 2026 · thread</span>
         </a>
       </div>
       <p style="margin-top:18px"><a class="btn ghost" href="https://x.com/ynsmroztas" target="_blank" rel="me noopener">Open x.com/ynsmroztas →</a></p>
@@ -169,9 +169,9 @@ mitsec@androscope:</pre>
       <div><a href="mailto:m.i.t@mit.tc">m.i.t@mit.tc</a></div>
     </div>
   </footer>
-  <script src="assets/js/theme.js?v=22"></script>
-  <script src="assets/js/site.js?v=22"></script>
-  <script src="assets/js/hero.js?v=22"></script>
-  <script src="assets/js/home-deck.js?v=22"></script>
+  <script src="assets/js/theme.js?v=23"></script>
+  <script src="assets/js/site.js?v=23"></script>
+  <script src="assets/js/hero.js?v=23"></script>
+  <script src="assets/js/home-deck.js?v=23"></script>
 </body>
 </html>
