@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 520">
+  <rect width="920" height="520" rx="18" fill="#0b0d10"/>
+  <text x="28" y="40" fill="#e5e7eb" font-family="IBM Plex Mono,monospace" font-size="16">=== LearnApp — intent capture PoC ===</text>
+  <text x="28" y="64" fill="#6b7280" font-family="IBM Plex Mono,monospace" font-size="12">2026-09-14  lab session</text>
+  <text x="28" y="100" fill="#9fe7b8" font-family="IBM Plex Mono,monospace" font-size="13">CAPTURED URI:</text>
+  <text x="28" y="124" fill="#fbbf24" font-family="IBM Plex Mono,monospace" font-size="13">learnapp://google_oauth2?new_user=false&amp;token=eyJhbGciOiJSUzI1Ni...[REDACTED]</text>
+  <text x="28" y="160" fill="#c5d4cc" font-family="IBM Plex Mono,monospace" font-size="13">Scheme: learnapp</text>
+  <text x="28" y="182" fill="#c5d4cc" font-family="IBM Plex Mono,monospace" font-size="13">Host:   google_oauth2</text>
+  <text x="28" y="220" fill="#6b7280" font-family="IBM Plex Mono,monospace" font-size="13">Query params:</text>
+  <text x="28" y="242" fill="#c5d4cc" font-family="IBM Plex Mono,monospace" font-size="13">  new_user = false</text>
+  <text x="28" y="264" fill="#c5d4cc" font-family="IBM Plex Mono,monospace" font-size="13">  token    = eyJ...[REDACTED]   (logcat: SCHEME_POC)</text>
+  <text x="28" y="308" fill="#9fe7b8" font-family="IBM Plex Mono,monospace" font-size="13">--- Replaying token against mobile-api.learnapp.lab/graphql ---</text>
+  <text x="28" y="330" fill="#6b7280" font-family="IBM Plex Mono,monospace" font-size="13">socialLogin mutation — token presence only, no live account use</text>
+  <text x="28" y="364" fill="#fb7185" font-family="IBM Plex Mono,monospace" font-size="13">HTTP 400 | field-selection error (email not on CurrentUser)</text>
+  <text x="28" y="392" fill="#9ca3af" font-family="IBM Plex Mono,monospace" font-size="13">Rejected before loginByToken resolver. Interception primitive already holds.</text>
+  <text x="28" y="430" fill="#34d399" font-family="IBM Plex Mono,monospace" font-size="13">no root · no special permission · same-device intent-filter only</text>
+</svg>

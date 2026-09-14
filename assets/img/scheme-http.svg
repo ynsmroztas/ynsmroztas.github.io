@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 420">
+  <rect width="920" height="420" rx="18" fill="#07090d"/>
+  <text x="28" y="40" fill="#6b7280" font-family="IBM Plex Mono,monospace" font-size="12">network · custom tab · OIDC callback</text>
+  <text x="28" y="72" fill="#9fe7b8" font-family="IBM Plex Mono,monospace" font-size="13">GET /users/auth/openid_connect/callback?kc_idp_hint=google&amp;state=[REDACTED]&amp;code=[REDACTED]</text>
+  <text x="28" y="94" fill="#6b7280" font-family="IBM Plex Mono,monospace" font-size="13">Host: www.learnapp.lab</text>
+  <text x="28" y="130" fill="#fbbf24" font-family="IBM Plex Mono,monospace" font-size="14">HTTP/1.1 302</text>
+  <text x="28" y="160" fill="#fb7185" font-family="IBM Plex Mono,monospace" font-size="13">Location: learnapp://google_oauth2?new_user=false&amp;token=eyJ[REDACTED]</text>
+  <text x="28" y="190" fill="#6b7280" font-family="IBM Plex Mono,monospace" font-size="13">Set-Cookie: _dct=&lt;same JWT class&gt;; Secure; HttpOnly; SameSite=Lax</text>
+  <text x="28" y="230" fill="#c5d4cc" font-family="IBM Plex Mono,monospace" font-size="13">backend emits the custom-scheme Location — not the Android client</text>
+  <text x="28" y="258" fill="#c5d4cc" font-family="IBM Plex Mono,monospace" font-size="13">same Bearer class is also a first-party web session cookie</text>
+  <text x="28" y="300" fill="#34d399" font-family="IBM Plex Mono,monospace" font-size="13">fix surface: OIDC callback handler + App Link + auth code + PKCE</text>
+  <text x="28" y="340" fill="#4b5563" font-family="IBM Plex Mono,monospace" font-size="12">cookies, codes, JWTs stripped for the public note</text>
+</svg>

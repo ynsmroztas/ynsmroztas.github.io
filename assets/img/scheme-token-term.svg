@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 520">
+  <rect width="920" height="520" rx="18" fill="#07090d"/>
+  <rect x="0" y="0" width="920" height="36" fill="#12161e"/>
+  <circle cx="22" cy="18" r="5" fill="#fb7185"/>
+  <circle cx="40" cy="18" r="5" fill="#fbbf24"/>
+  <circle cx="58" cy="18" r="5" fill="#34d399"/>
+  <text x="78" y="22" fill="#7cffb2" font-family="IBM Plex Mono,monospace" font-size="11">androscope · oauth auditor · lab.learn.app</text>
+  <text x="28" y="68" fill="#6b7280" font-family="IBM Plex Mono,monospace" font-size="13">[annex] OAuth deep-link auditor armed</text>
+  <text x="28" y="90" fill="#9fe7b8" font-family="IBM Plex Mono,monospace" font-size="13">[OAUTH-REDIRECT] onNewIntent captured OAuth redirect</text>
+  <text x="28" y="118" fill="#fbbf24" font-family="IBM Plex Mono,monospace" font-size="13">URI: learnapp://google_oauth2?new_user=false&amp;token=eyJ[REDACTED]</text>
+  <text x="28" y="148" fill="#6b7280" font-family="IBM Plex Mono,monospace" font-size="13">scheme=learnapp   host=google_oauth2   query.token=Bearer JWT</text>
+  <text x="28" y="178" fill="#fb7185" font-family="IBM Plex Mono,monospace" font-size="13">PLAN CHANGED  clienttrust = HIGH</text>
+  <text x="28" y="210" fill="#9fe7b8" font-family="IBM Plex Mono,monospace" font-size="13">[1] POST https://mobile-api.learnapp.lab/graphql</text>
+  <text x="28" y="232" fill="#c5d4cc" font-family="IBM Plex Mono,monospace" font-size="13">    op=socialLogin  token="&lt;REDACTED&gt;"  application=NATIVE_ANDROID</text>
+  <text x="28" y="262" fill="#9fe7b8" font-family="IBM Plex Mono,monospace" font-size="13">[6] POST .../graphql  op=SingleLoginTokenQuery</text>
+  <text x="28" y="284" fill="#c5d4cc" font-family="IBM Plex Mono,monospace" font-size="13">    query { me { id singleLoginToken } }</text>
+  <text x="28" y="320" fill="#6b7280" font-family="IBM Plex Mono,monospace" font-size="13">jwt.typ=Bearer  jwt.aud=account  roles=manage-account</text>
+  <text x="28" y="342" fill="#6b7280" font-family="IBM Plex Mono,monospace" font-size="13">email=[REDACTED]  sub=[REDACTED]  signature omitted</text>
+  <text x="28" y="380" fill="#34d399" font-family="IBM Plex Mono,monospace" font-size="13">mitsec@lab.learn.app:</text>
+  <text x="28" y="420" fill="#4b5563" font-family="IBM Plex Mono,monospace" font-size="12">authorized lab · gadget-in-target · no live token on this page</text>
+</svg>
