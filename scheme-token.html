@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Bearer token on an unverified scheme — mitsec</title>
+  <meta name="description" content="Redacted AndroScope case: server-side 302 to a custom scheme carrying a full OAuth Bearer token. Chooser hijack class."/>
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/site.css?v=23"/>
+  <link rel="stylesheet" href="assets/css/theme.css?v=23"/>
+  <link rel="stylesheet" href="assets/css/live.css?v=23"/>
+  <style>
+    .stills,.still{display:none!important}
+    .shot-row img,.media-full img{background:#07090d}
+  </style>
+  <script>(function(){try{var t=localStorage.getItem('mitsec-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body>
+  <div class="bg"></div>
+  <header class="nav">
+    <div class="wrap nav-in">
+      <a class="brand" href="index.html"><i></i><b>mit</b> <span>sec</span></a>
+      <nav class="links" data-links>
+        <a href="index.html">Home</a>
+        <a href="androscope.html">AndroScope</a>
+        <a href="tools.html">Tools</a>
+        <a class="on" href="writeups.html">Writeups</a>
+        <a href="research.html">Research</a>
+      </nav>
+      <button class="burger" data-burger aria-label="Menu">☰</button>
+    </div>
+  </header>
+  <main class="wrap">
+    <section class="page-hero slim">
+      <div>
+        <p class="meta">WRITEUP · MOBILE · OAUTH · 2026 · @YNSMROZTAS</p>
+        <h1>Bearer token on an unverified scheme</h1>
+        <div class="livebar">
+          <span class="chip on">● live</span>
+          <span class="chip">clk <span data-clock>--:--:--</span></span>
+          <span class="chip">lab.learn.app</span>
+        </div>
+        <p class="lead">AndroScope rootless session. Vendor chrome stripped. JWTs, cookies, emails, and live account ids are not on this page.</p>
+      </div>
+      <div>
+        <div class="scope mini-scope">
+          <canvas data-radar></canvas>
+          <div class="beam"></div>
+          <div class="ring"></div>
+          <div class="scanline"></div>
+          <div class="scope-hud"><div class="top"><span>oauth // hijack</span><span>unrooted</span></div><div class="bot"><span>radar</span><span data-clock>--:--:--</span></div></div>
+        </div>
+      </div>
+    </section>
+    <article class="prose">
+      <h2>Summary</h2>
+      <p>A public Android client I call <code>com.learn.app</code> finishes “Sign in with Google” by returning into the app on an unverified custom scheme: <code>learnapp://google_oauth2</code>. The redirect is not assembled by the APK. The lab IdP callback on <code>www.learnapp.lab</code> answers the OIDC code exchange with HTTP <code>302</code> and a <code>Location</code> header that already contains a full Bearer JWT in the query string.</p>
+      <p>Android does not prove who owns a custom scheme. A second package on the same device can register the identical <code>intent-filter</code>. When the Custom Tab hands the URI to the OS, the resolver shows “Open with…”. Pick the second app and the token is yours. No root. No special permission. No injection into the real process — that last path was only used as a second camera on the same URI.</p>
+      <div class="call">Class: server-issued custom-scheme redirect carrying a live access token. Not an authorization-code + missing-PKCE note. The secret in the URI is already the session.</div>
+      <h2>Lab frame</h2>
+      <p>Target label on the operator prompt: <code>LearnApp_163.0.0</code>. Mode: rootless, gadget-in-target. Package and hosts below are stand-ins. Original program identifiers, researcher mailbox, and every JWT are redacted.</p>
+      <figure class="media-full">
+        <img src="assets/img/scheme-token-term.svg" alt="Redacted AndroScope OAuth redirect capture"/>
+        <figcaption>AndroScope OAuth auditor — onNewIntent, then GraphQL socialLogin. Token body stripped.</figcaption>
+      </figure>
+      <h2>Root cause</h2>
+      <p>Android has two ways to land an external redirect:</p>
+      <ol>
+        <li><strong>Custom scheme</strong> (<code>learnapp://…</code>) — any installed app may claim it. Ownership is not verified. Collision produces a chooser.</li>
+        <li><strong>App Link</strong> (<code>https://</code> + <code>autoVerify</code> + <code>assetlinks.json</code>) — domain ownership is checked at install. No chooser.</li>
+      </ol>
+      <p>This client used option 1. Three independent views of the same fact:</p>
+      <ol>
+        <li>AndroScope hook on the genuine lab process: <code>onNewIntent</code> logged <code>learnapp://google_oauth2?token=eyJ[REDACTED]</code>.</li>
+        <li>A separate PoC APK with the same filter received the same Intent on an unrooted phone.</li>
+        <li>Raw HTTP from the Custom Tab: the site itself emitted that Location header.</li>
+      </ol>
+      <h2>Chooser</h2>
+      <p>Neutral PoC labelled “Scheme PoC”. Second variant used the same display name as the lab app, different <code>applicationId</code>. The dialog then offered two icons both called LearnApp. Label is not a control.</p>
+      <div class="shot-row">
+        <figure class="shot-card">
+          <img src="assets/img/scheme-chooser.svg" alt="Redacted Open with chooser"/>
+          <figcaption>Open with — neutral PoC, lab package, masquerade. Vendor chrome removed.</figcaption>
+        </figure>
+        <figure class="shot-card">
+          <img src="assets/img/scheme-poc.svg" alt="Redacted PoC capture screen"/>
+          <figcaption>PoC activity after the user picked the wrong handler. Token truncated.</figcaption>
+        </figure>
+      </div>
+      <p>Manifest shape on the PoC (scheme and host are the lab stand-ins):</p>
+      <pre style="padding:16px;background:#07090d;border:1px solid var(--line-2);border-radius:14px;overflow:auto"><code><data android:scheme="learnapp" android:host="google_oauth2" /></code></pre>
+      <h2>What the JWT was</h2>
+      <p>Header and payload class only. Signature and every identifying claim are omitted.</p>
+      <ul>
+        <li><code>typ: Bearer</code>, <code>aud: account</code></li>
+        <li>IdP: lab realm on <code>auth.learnapp.lab</code></li>
+        <li>Roles observed in class: <code>manage-account</code>, <code>manage-account-links</code>, <code>view-profile</code></li>
+        <li>Scope class: <code>openid email profile</code> plus vendor user-id claims</li>
+        <li><code>preferred_username</code> / <code>email</code> — redacted</li>
+      </ul>
+      <p>This is a general-purpose account credential, not a one-shot mobile code.</p>
+      <h2>Network — the 302</h2>
+      <figure class="media-full">
+        <img src="assets/img/scheme-http.svg" alt="Redacted HTTP 302 Location header"/>
+        <figcaption>OIDC callback. Location is the custom scheme plus the Bearer. Cookie twin of the same JWT class also set HttpOnly.</figcaption>
+      </figure>
+      <p>Request class:</p>
+      <p><code>GET https://www.learnapp.lab/users/auth/openid_connect/callback?kc_idp_hint=google&state=[REDACTED]&code=[REDACTED]</code></p>
+      <p>Response class:</p>
+      <p><code>302 Location: learnapp://google_oauth2?new_user=false&token=eyJ[REDACTED]</code></p>
+      <p>The Android client does not choose that URI. The callback handler does. A manifest-only patch is incomplete.</p>
+      <h2>How the app spends the token</h2>
+      <p>Same session, AndroScope RN / HTTP recorder, after the redirect landed in the real package:</p>
+      <ol>
+        <li><code>POST mobile-api.learnapp.lab/graphql</code> — <code>socialLogin</code> with the JWT and <code>application: NATIVE_ANDROID</code></li>
+        <li><code>SingleLoginTokenQuery</code> — <code>me { id singleLoginToken }</code></li>
+        <li>Dashboard / XP queries under that session</li>
+      </ol>
+      <p>PoC replay against the same mutation used a field that is not on <code>CurrentUser</code> (<code>email</code>). GraphQL answered <code>400</code> at schema validation, before the resolver that would accept or reject the token. That response does not prove or disprove token acceptance. The interception primitive does not depend on it. A minimal <code>me { id }</code> query is the private follow-up, not a public kit.</p>
+      <h2>Impact (class)</h2>
+      <ul>
+        <li>Full-scope Bearer travels only on an unverified scheme.</li>
+        <li>Any app on the device can register the filter and sit in the chooser.</li>
+        <li>Masquerade removes the last user-visible distinction.</li>
+        <li>Holder of the JWT can call <code>socialLogin</code> and inherit the mobile session — pending the private resolver check.</li>
+      </ul>
+      <h2>Fix</h2>
+      <ol>
+        <li>Change the OIDC callback so <code>Location</code> is an <code>https://</code> App Link. Publish <code>assetlinks.json</code>. Set <code>android:autoVerify="true"</code>.</li>
+        <li>Stop putting a long-lived Bearer in a URI query. Return a one-time authorization code. Exchange it over HTTPS. PKCE S256 on that code.</li>
+        <li>If a custom scheme must remain for old builds, bind the redirect to a value only the real app can prove — and still migrate.</li>
+      </ol>
+      <h2>What this page is not</h2>
+      <ul>
+        <li>Not the PoC APK, Gradle tree, or masquerade resources.</li>
+        <li>Not a live token, cookie, or mailbox.</li>
+        <li>Not a packing guide. AndroScope here is the camera: intent hook, RN bridge spy, HTTP recorder.</li>
+      </ul>
+      <p>Environment class: Android 13-class unrooted device, production-track lab build, Frida gadget via the operator console, Custom Tab for the Google leg.</p>
+      <p class="meta" style="margin-top:40px">YUNUS EMRE ÖZTAŞ · MITSEC · LAB BUILD ONLY · TOKENS ROTATED</p>
+    </article>
+  </main>
+  <footer>
+    <div class="wrap foot">
+      <div>© 2026 Yunus Emre Öztaş — mitsec</div>
+      <div><a href="writeups.html">Writeups</a> · <a href="androscope.html">AndroScope</a></div>
+    </div>
+  </footer>
+  <script src="assets/js/theme.js?v=23"></script>
+  <script src="assets/js/site.js?v=23"></script>
+  <script src="assets/js/w.js?v=23"></script>
+</body>
+</html>
