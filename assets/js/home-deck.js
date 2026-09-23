@@ -1,5 +1,6 @@
 (function () {
   var cases = [
+    { href: "nextforge.html", pill: "platform · next.js", title: "NextForge — Next.js class matrix", blurb: "One-file lab scanner. Profile App/Pages/middleware, fire the matching RCE / SSRF class, print curl + report snippet. Host stripped.", img: "assets/img/nextforge-term.svg", surface: "platform" },
     { href: "scheme-token.html", pill: "mobile · oauth", title: "Bearer token on an unverified scheme", blurb: "Server 302 to learnapp:// with a full access token in the query. Chooser hijack class. Vendor stripped.", img: "assets/img/scheme-token-term.svg", surface: "mobile" },
     { href: "gitlab-sniper.html", pill: "platform · leak class", title: "Unauthenticated GitLab file-read", blurb: "CVE-2026-85706. Workhorse missed the path. Puma routed it. File.open ran before authenticate!.", img: "assets/img/gitlab-sniper-term.svg", surface: "platform" },
     { href: "msa-deeplink.html", pill: "mobile · scheme", title: "Unclaimed ms-msa scheme", blurb: "CVE-2026-26123. Authenticator emitted the scheme and did not claim it.", img: "assets/img/deeplink-term.svg", surface: "mobile" },

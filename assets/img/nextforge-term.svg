@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 540" role="img" aria-label="Redacted NextForge lab session">
+  <rect width="920" height="540" fill="#07090c" rx="16"/>
+  <rect x="20" y="16" width="880" height="52" rx="8" fill="#0a1210" stroke="#34d399" stroke-width="1.2"/>
+  <text x="36" y="38" fill="#34d399" font-family="IBM Plex Mono,monospace" font-size="14">NextForge v2.1</text>
+  <text x="176" y="38" fill="#a7f3d0" font-family="IBM Plex Mono,monospace" font-size="13">Next.js class matrix · authorized lab</text>
+  <text x="36" y="56" fill="#6b7280" font-family="IBM Plex Mono,monospace" font-size="11">profile · matrix · evidence · --full</text>
+  <text x="36" y="96" fill="#34d399" font-family="IBM Plex Mono,monospace" font-size="12">[radar] target  https://lab.nextforge.local</text>
+  <text x="36" y="118" fill="#9ca3af" font-family="IBM Plex Mono,monospace" font-size="12">[radar] fingerprint  App Router · RSC Flight · x-nextjs-*</text>
+  <text x="36" y="140" fill="#9ca3af" font-family="IBM Plex Mono,monospace" font-size="12">[radar] middleware header present · turbopack marker absent</text>
+  <text x="36" y="162" fill="#fbbf24" font-family="IBM Plex Mono,monospace" font-size="12">[radar] class 55182 / 66478  Flight RCE  · digest resolved uid=1001</text>
+  <rect x="24" y="186" width="872" height="36" rx="6" fill="#1a0a10" stroke="#fb7185"/>
+  <text x="36" y="209" fill="#fb7185" font-family="IBM Plex Mono,monospace" font-size="12">[HIT] lab.nextforge.local · RCE class closed · host [REDACTED]</text>
+  <text x="36" y="250" fill="#9ca3af" font-family="IBM Plex Mono,monospace" font-size="12">[radar] 75604 Win cache  · 404 + %5c..%5c  ignored  (not a hit)</text>
+  <text x="36" y="272" fill="#9ca3af" font-family="IBM Plex Mono,monospace" font-size="12">[radar] 75604 confirm   · HTTP 200 + encryptionKey / win.ini only</text>
+  <text x="36" y="294" fill="#9ca3af" font-family="IBM Plex Mono,monospace" font-size="12">[radar] 44578 WS-SSRF    · self-host probe · no OAST in this pass</text>
+  <text x="36" y="316" fill="#9ca3af" font-family="IBM Plex Mono,monospace" font-size="12">[radar] 64649 Host SSRF  · --oast missing · marked ready, not fired</text>
+  <text x="36" y="356" fill="#34d399" font-family="IBM Plex Mono,monospace" font-size="12">mode --full   report only · shell never opened</text>
+  <text x="36" y="378" fill="#6b7280" font-family="IBM Plex Mono,monospace" font-size="12">cloud IMDS strings painted out · no live credentials on this still</text>
+  <text x="36" y="416" fill="#e879f9" font-family="IBM Plex Mono,monospace" font-size="12">lab host · digest · action-id · source map  [REDACTED]</text>
+  <text x="36" y="448" fill="#6b7280" font-family="IBM Plex Mono,monospace" font-size="12">this still is a classifier tape · not a payload kit</text>
+  <text x="36" y="508" fill="#34d399" font-family="IBM Plex Mono,monospace" font-size="13">mitsec@nextforge:</text>
+</svg>

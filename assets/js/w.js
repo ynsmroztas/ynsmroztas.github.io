@@ -16,6 +16,7 @@
   }
 
   var WIRE = [
+    ["nextforge.html", "NextForge — Next.js class matrix"],
     ["scheme-token.html", "Bearer token on an unverified scheme"],
     ["gitlab-sniper.html", "Unauthenticated GitLab file-read"],
     ["msa-deeplink.html", "Unclaimed ms-msa scheme"],

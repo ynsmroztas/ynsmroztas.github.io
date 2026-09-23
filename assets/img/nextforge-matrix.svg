@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 320" role="img" aria-label="NextForge class matrix">
+  <rect width="860" height="320" fill="#0b0d10" rx="18"/>
+  <text x="28" y="36" fill="#34d399" font-family="IBM Plex Mono,monospace" font-size="13">PROFILE</text>
+  <text x="28" y="58" fill="#9ca3af" font-family="Sora,sans-serif" font-size="14">App / Pages · middleware · Turbopack · Flight</text>
+  <rect x="28" y="78" width="190" height="72" rx="12" fill="#111827" stroke="#34d399"/>
+  <text x="44" y="108" fill="#34d399" font-family="IBM Plex Mono,monospace" font-size="12">RCE</text>
+  <text x="44" y="130" fill="#9ca3af" font-family="Sora,sans-serif" font-size="13">55182 · 66478</text>
+  <rect x="232" y="78" width="190" height="72" rx="12" fill="#111827" stroke="#fbbf24"/>
+  <text x="248" y="108" fill="#fbbf24" font-family="IBM Plex Mono,monospace" font-size="12">SSRF</text>
+  <text x="248" y="130" fill="#9ca3af" font-family="Sora,sans-serif" font-size="13">44578 · 64649</text>
+  <rect x="436" y="78" width="190" height="72" rx="12" fill="#111827" stroke="#60a5fa"/>
+  <text x="452" y="108" fill="#60a5fa" font-family="IBM Plex Mono,monospace" font-size="12">MIDDLEWARE</text>
+  <text x="452" y="130" fill="#9ca3af" font-family="Sora,sans-serif" font-size="13">29927 · 44573–75</text>
+  <rect x="640" y="78" width="192" height="72" rx="12" fill="#111827" stroke="#fb7185"/>
+  <text x="656" y="108" fill="#fb7185" font-family="IBM Plex Mono,monospace" font-size="12">LEAK</text>
+  <text x="656" y="130" fill="#9ca3af" font-family="Sora,sans-serif" font-size="13">75604 · 55183 · 64643</text>
+  <text x="28" y="188" fill="#fbbf24" font-family="IBM Plex Mono,monospace" font-size="12">rule</text>
+  <text x="80" y="188" fill="#9ca3af" font-family="Sora,sans-serif" font-size="14">fingerprint first. only matching classes light up.</text>
+  <text x="28" y="222" fill="#34d399" font-family="IBM Plex Mono,monospace" font-size="12">full</text>
+  <text x="80" y="222" fill="#9ca3af" font-family="Sora,sans-serif" font-size="14">--full prints curl + report snippet. no shell.</text>
+  <text x="28" y="256" fill="#fb7185" font-family="IBM Plex Mono,monospace" font-size="12">fp</text>
+  <text x="80" y="256" fill="#9ca3af" font-family="Sora,sans-serif" font-size="14">404 + encoded .. is not 75604. need 200 + marker.</text>
+  <text x="28" y="290" fill="#e879f9" font-family="IBM Plex Mono,monospace" font-size="12">oast</text>
+  <text x="80" y="290" fill="#9ca3af" font-family="Sora,sans-serif" font-size="14">64649 stays ready until --oast is set. does not fire blind.</text>
+</svg>
