@@ -1,12 +1,12 @@
 (function () {
   var cases = [
+    { href: "wpsniper.html", pill: "platform · wordpress", title: "WPSniper — page-template LFI class", blurb: "CVE-2026-87902. get_page_template include. VULN only on unique PEAR banner. Detect-only. Host stripped.", img: "assets/img/wpsniper-term.svg", surface: "platform" },
     { href: "nextforge.html", pill: "platform · next.js", title: "NextForge — Next.js class matrix", blurb: "One-file lab scanner. Profile App/Pages/middleware, fire the matching RCE / SSRF class, print curl + report snippet. Host stripped.", img: "assets/img/nextforge-term.svg", surface: "platform" },
     { href: "scheme-token.html", pill: "mobile · oauth", title: "Bearer token on an unverified scheme", blurb: "Server 302 to learnapp:// with a full access token in the query. Chooser hijack class. Vendor stripped.", img: "assets/img/scheme-token-term.svg", surface: "mobile" },
     { href: "gitlab-sniper.html", pill: "platform · leak class", title: "Unauthenticated GitLab file-read", blurb: "CVE-2026-85706. Workhorse missed the path. Puma routed it. File.open ran before authenticate!.", img: "assets/img/gitlab-sniper-term.svg", surface: "platform" },
     { href: "msa-deeplink.html", pill: "mobile · scheme", title: "Unclaimed ms-msa scheme", blurb: "CVE-2026-26123. Authenticator emitted the scheme and did not claim it.", img: "assets/img/deeplink-term.svg", surface: "mobile" },
     { href: "keycloak-reset.html", pill: "platform · ATO class", title: "Reset-credentials ATO class", blurb: "CVE-2026-18963. Keycloak forgot-password. Email step did not bind the session.", img: "assets/img/keysniper-term.svg", surface: "platform" },
-    { href: "artifactory-join.html", pill: "platform · auth", title: "Empty join key, admin token", blurb: "CVE-2026-82329. Self-hosted Artifactory trusted a blank join key.", img: "assets/img/artifactory-term.svg", surface: "platform" },
-    { href: "oauth-scheme.html", pill: "mobile · pkce", title: "Custom scheme, no PKCE", blurb: "Authorization code on an unverified scheme. Different class from the Bearer-in-query note.", img: "assets/img/deeplink-term.svg", surface: "mobile" }
+    { href: "artifactory-join.html", pill: "platform · auth", title: "Empty join key, admin token", blurb: "CVE-2026-82329. Self-hosted Artifactory trusted a blank join key.", img: "assets/img/artifactory-term.svg", surface: "platform" }
   ];
   var feat = document.querySelector("[data-featured]");
   var tape = document.querySelector("[data-tape]");

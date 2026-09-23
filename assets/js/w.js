@@ -16,6 +16,7 @@
   }
 
   var WIRE = [
+    ["wpsniper.html", "WPSniper — page-template LFI class"],
     ["nextforge.html", "NextForge — Next.js class matrix"],
     ["scheme-token.html", "Bearer token on an unverified scheme"],
     ["gitlab-sniper.html", "Unauthenticated GitLab file-read"],
