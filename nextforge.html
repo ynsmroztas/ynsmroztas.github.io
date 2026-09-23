@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>NextForge — Next.js class matrix — mitsec</title>
+  <meta name="description" content="NextForge v2.1. One-file Next.js lab scanner. Profile the target, fire the matching RCE / SSRF / middleware class, dump curl + a report snippet."/>
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml"/>
+  <link rel="stylesheet" href="assets/css/site.css?v=24"/>
+  <link rel="stylesheet" href="assets/css/theme.css?v=24"/>
+  <link rel="stylesheet" href="assets/css/live.css?v=24"/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+  <style>
+    .stills,.still{display:none!important}
+    .term{background:#07090c;border:1px solid var(--line-2);border-radius:16px;padding:14px 16px;font-family:var(--mono);font-size:12px;line-height:1.55;color:#9fe7b8;white-space:pre-wrap;margin:16px 0 24px}
+    .term .dim{color:#6b7280}.term .hi{color:#34d399}.term .ok{color:#34d399}.term .bad{color:#fb7185}.term .warn{color:#fbbf24}
+    .diag{width:100%;border:1px solid var(--line-2);border-radius:18px;display:block;margin:12px 0 28px}
+    .tag-row{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 20px}
+  </style>
+  <script>(function(){try{var t=localStorage.getItem('mitsec-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body>
+  <div class="bg"></div>
+  <header class="nav"><div class="wrap nav-in"><a class="brand" href="index.html"><i></i><b>mit</b> <span>sec</span></a><nav class="links" data-links><a href="index.html">Home</a><a href="androscope.html">AndroScope</a><a href="tools.html">Tools</a><a class="on" href="writeups.html">Writeups</a><a href="research.html">Research</a></nav><button class="burger" data-burger aria-label="Menu">☰</button></div></header>
+  <main class="wrap">
+    <section class="page-hero slim">
+      <div>
+        <p class="meta">WRITEUP · PLATFORM · NEXT.JS · @YNSMROZTAS</p>
+        <h1>NextForge — class matrix, not a kit</h1>
+        <div class="livebar"><span class="chip on">● live</span><span class="chip">clk <span data-clock>--:--:--</span></span><span class="chip">v2.1 · --full</span></div>
+        <p class="lead">One file. Point it at an authorized Next.js lab. It fingerprints App Router / Pages / middleware / Turbopack, lights only the matching class, and prints curl plus a report snippet. Shell stays off unless you ask.</p>
+      </div>
+      <div><div class="scope mini-scope"><canvas data-radar></canvas><div class="beam"></div><div class="ring"></div><div class="scanline"></div><div class="scope-hud"><div class="top"><span>next // forge</span><span>observe</span></div><div class="bot"><span>radar</span><span data-clock>--:--:--</span></div></div></div></div>
+    </section>
+    <article class="prose">
+      <div class="tag-row"><span class="chip on">Next.js</span><span class="chip">RSC Flight</span><span class="chip">SSRF</span><span class="chip">middleware</span><span class="chip">authorized lab</span></div>
+      <h2>Summary</h2>
+      <p>Next.js stopped being one surface years ago. App Router, Pages Router, middleware, Turbopack, Server Actions, RSC Flight, incremental cache each have their own parser and their own year of CVEs. A generic scan-the-host script either misses the class or fills the report with 404 noise.</p>
+      <p>NextForge is the operator pass for that stack. Profile first. Matrix second. Evidence third. The public helper lives on GitHub. This page is the class note: what it looks for, what it refuses to call a hit, and what a redacted lab session prints.</p>
+      <p>No payload bodies on this page. No live cloud host. No IMDS secrets. The still below is a classifier tape from an authorized lab labeled <code>lab.nextforge.local</code>.</p>
+      <figure class="media-full" style="aspect-ratio:auto">
+        <img src="assets/img/nextforge-term.svg" alt="Redacted NextForge session" style="aspect-ratio:16/9;object-fit:cover"/>
+        <figcaption>Lab still. Real hostname, digest bytes and cloud metadata painted out. --full only. Shell never opened.</figcaption>
+      </figure>
+      <h2>What the tool is</h2>
+      <p>A single Python file. No daemon. No SaaS. You give it a URL you already have written scope for.</p>
+      <pre class="term"><span class="hi">python3 nextforge.py -t https://lab.nextforge.local --full</span>
+<span class="dim">profile → matching class → curl snippet → report block</span>
+<span class="dim">--auto   operator mode. shell only after a closed hit.</span>
+<span class="dim">--pipe   subfinder | httpx | nextforge. shell never opens.</span></pre>
+      <p><code>--full</code> is the report pass. Matching techniques run. It does not drop a shell. <code>--auto</code> is the operator pass: if a class closes, the session can hand you a prompt. <code>--pipe</code> is detect-only on purpose.</p>
+      <p>CVE-2026-64649 (Server Action host-header SSRF) needs an out-of-band listener. If <code>--oast</code> is missing the tool marks the class ready and does not fire. Blind SSRF noise is how reports die.</p>
+      <h2>Fingerprint before fire</h2>
+      <p>The first packets are not exploits. They are a profile:</p>
+      <ul>
+        <li>App Router vs Pages Router headers and HTML markers.</li>
+        <li>Middleware presence (<code>x-middleware-*</code>, rewrite fingerprints).</li>
+        <li>Turbopack vs webpack build marks.</li>
+        <li>RSC Flight endpoints and action-id leakage surface.</li>
+        <li>Windows vs POSIX cache layout — this decides whether 75604 is even in scope.</li>
+      </ul>
+      <p>If the version string is not public, NextForge does not invent one. Classes that need a confirmed parser only light when the marker is there.</p>
+      <figure class="media-full" style="aspect-ratio:auto">
+        <img src="assets/img/nextforge-matrix.svg" alt="NextForge class matrix" style="aspect-ratio:860/320;object-fit:cover"/>
+        <figcaption>Four buckets. Fingerprint decides which lights. The rest stay dark.</figcaption>
+      </figure>
+      <h2>The matrix (class, not recipe)</h2>
+      <p>Names below are public CVE classes. This page does not reprint request bodies, gadget chains or Flight payloads.</p>
+      <ul>
+        <li><strong>RCE / Flight</strong> — CVE-2025-55182 and related Flight deserialization class (66478 window). Confirm is not HTTP 500. Confirm is a digest that resolves an operator marker such as <code>uid=</code> / <code>gid=</code> on an authorized lab.</li>
+        <li><strong>WS-upgrade SSRF</strong> — CVE-2026-44578. Self-hosted upgrade path. Cloud frontends often eat the probe.</li>
+        <li><strong>Middleware / prefetch / i18n</strong> — CVE-2025-29927 plus 2026 cousins 44573–44575. Signal is a protected route answering as if the gate was not there. A public 200 is not that signal.</li>
+        <li><strong>Action-id + Host SSRF</strong> — CVE-2026-64643 / 64649. Action-id disclosure is a finding. Host-header SSRF stays pending until OAST is wired.</li>
+        <li><strong>Source leak</strong> — CVE-2025-55183 class. Source map / server-reference artifacts on a production host.</li>
+        <li><strong>Windows incremental-cache traversal</strong> — CVE-2026-75604. See the false-positive rule below.</li>
+      </ul>
+      <h2>The 75604 rule</h2>
+      <p>Windows cache traversal is the noisiest class. Encoded <code>..\</code> plus a 404 is not a hit. NextForge only closes 75604 when all of this is true:</p>
+      <ul>
+        <li>HTTP 200 on the cache path, not 404 / 403 / 500.</li>
+        <li>Body carries <code>encryptionKey</code>, <code>server-reference-manifest</code>, or a Windows file tell such as <code>win.ini</code>.</li>
+        <li>The profile already said the host looks like a Windows incremental-cache layout.</li>
+      </ul>
+      <pre class="term"><span class="warn">404 + %5c..%5c     ignored</span>
+<span class="ok">200 + encryptionKey  class closed</span>
+<span class="dim">do not file 75604 on a path list</span></pre>
+      <h2>Redacted lab pass</h2>
+      <p>Authorized lab. Host renamed. Cloud metadata and digest bytes stripped. Mode was <code>--full</code>.</p>
+      <pre class="term"><span class="hi">NextForge v2.1</span>  target https://lab.nextforge.local
+<span class="dim">fingerprint</span>     App Router · RSC Flight · x-nextjs-*
+<span class="dim">middleware</span>      header present
+<span class="dim">turbopack</span>       absent
+
+<span class="warn">class 55182 / 66478</span>  Flight RCE
+<span class="ok">confirm</span>             digest resolved uid=1001
+<span class="bad">HIT</span>                 RCE class closed · host [REDACTED]
+
+<span class="dim">class 75604</span>         Win cache
+<span class="dim">paths</span>               404 + encoded traversal  ignored
+<span class="dim">confirm rule</span>        200 + marker only
+
+<span class="dim">class 44578</span>         WS-upgrade SSRF · no OAST this pass
+<span class="dim">class 64649</span>         Host SSRF · ready, not fired (--oast off)
+
+<span class="ok">mode</span>                --full · report only · shell never opened
+mitsec@nextforge:</pre>
+      <p>The RCE class closed because the Flight digest carried a process marker, not because the status line was 500. That distinction matters when a WAF returns 500 on every odd Content-Type.</p>
+      <h2>WAF and parser notes</h2>
+      <p>Managed edges rewrite Flight and multipart in ways that look like a miss. NextForge tags a blocked probe <code>edge-ate</code> instead of <code>safe</code>. Safe means the class was reached and the parser rejected it. Edge-ate means you never spoke to the app.</p>
+      <p>Cloud IMDS probes exist in the operator binary for authorized cloud labs. This page does not print those URLs or any harvested keys.</p>
+      <h2>What this page will not do</h2>
+      <ul>
+        <li>No Flight gadget, no proto-then body, no ready-to-paste RCE.</li>
+        <li>No live AWS / GCP hostname.</li>
+        <li>No instruction to run this against a host you do not own or have in writing.</li>
+      </ul>
+      <p>If you need the operator file, it is the public repo. If you need a finding, attach the curl snippet NextForge already prints and the confirm rule from this note.</p>
+      <h2>Fix posture (defenders)</h2>
+      <ul>
+        <li>Stay current on the App Router / Flight / middleware advisories listed above.</li>
+        <li>Do not expose Server Actions or RSC endpoints without the vendor mitigations for 55182 / 64649.</li>
+        <li>Windows hosts: incremental cache directories are not a public document root.</li>
+        <li>Strip source maps and server-reference manifests from production.</li>
+        <li>Treat action-id disclosure as a finding even when SSRF is blocked.</li>
+      </ul>
+      <h2>Repo</h2>
+      <p>NextForge stays on GitHub. Classifier model only. Written scope. Own lab.</p>
+      <p><a class="btn" href="https://github.com/ynsmroztas/NextForge" target="_blank" rel="me noopener">Open github.com/ynsmroztas/NextForge →</a></p>
+      <p class="meta" style="margin-top:40px">YUNUS EMRE ÖZTAŞ · MITSEC · AUTHORIZED TESTING ONLY</p>
+    </article>
+  </main>
+  <footer><div class="wrap foot"><div>© 2026 Yunus Emre Öztaş — mitsec</div><div><a href="writeups.html">Writeups</a></div></div></footer>
+  <script src="assets/js/theme.js?v=24"></script>
+  <script src="assets/js/site.js?v=24"></script>
+  <script src="assets/js/w.js?v=24"></script>
+</body>
+</html>
