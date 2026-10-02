@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AndroScope v12.5 — Live Session</title>
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/live-session.css?v=26"/>
+</head>
+<body>
+<a class="sitebar" href="androscope.html"><b>mit</b>sec<span>AndroScope</span><em>live session · v12.5</em></a>
+<div class="stage" id="stage">
+  <canvas id="gl"></canvas>
+  <div class="vignette"></div>
+  <div class="devices" id="devices">
+    <div class="phone" id="pTerm">
+      <div class="screen">
+        <div class="sbar"><div class="time">21:23 <i>>_</i></div><div class="icons"><svg width="11" height="10" viewBox="0 0 24 24" fill="#fff"><path d="M12 19l3-4H9l3 4zM2 8a15 15 0 0120 0l-2 2a12 12 0 00-16 0L2 8zm4 4a9 9 0 0112 0l-2 2a6 6 0 00-8 0l-2-2z"/></svg><svg width="20" height="11" viewBox="0 0 44 24"><rect x="1" y="1" width="42" height="22" rx="8" fill="#e9e4f5"/><text x="22" y="17" text-anchor="middle" font-family="monospace" font-size="13" fill="#0b0b0b">96</text></svg></div></div>
+        <div class="term" id="term"></div>
+        <div class="keys"><div class="krow"><span>ESC</span><span>/</span><span>—</span><span>HOME</span><span>↑</span><span>END</span><span>PGUP</span></div><div class="krow"><span>⇥</span><span>CTRL</span><span>ALT</span><span>←</span><span>↓</span><span>→</span><span>PGDN</span></div></div>
+        <div class="nav"><span>|||</span><span>◯</span><span>‹</span></div>
+      </div>
+    </div>
+    <div class="phone" id="pApp">
+      <div class="screen">
+        <div class="sbar"><div class="time">21:23</div><div class="icons"><svg width="20" height="11" viewBox="0 0 44 24"><rect x="1" y="1" width="42" height="22" rx="8" fill="#e9e4f5"/><text x="22" y="17" text-anchor="middle" font-family="monospace" font-size="13" fill="#0b0b0b">96</text></svg></div></div>
+        <div class="ascr" id="appScreen"></div>
+        <div class="nav"><span>|||</span><span>◯</span><span>‹</span></div>
+      </div>
+    </div>
+    <div class="cap" id="capTerm">termux · androscope</div>
+    <div class="cap" id="capApp">target · com.lab.wallet</div>
+  </div>
+  <div class="railbg"></div>
+  <div class="rail">
+    <div class="step" id="stepLabel">step 01 / 15</div>
+    <h2 class="rtitle" id="stepTitle">Set up once</h2>
+    <p class="rsub" id="stepSub">Everything runs inside Termux on a stock phone.</p>
+    <div class="dots" id="dots"></div>
+  </div>
+  <svg id="arrows" viewBox="0 0 1280 720" preserveAspectRatio="none"><defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" stroke="none"/></marker></defs></svg>
+  <div class="outro" id="outro"><div class="wordmark"><span class="p1">Andro</span><span class="p2">SCOPE</span></div><p class="tagline">Rootless mobile pentest framework · v12.5 · 74 modules</p><p class="handle">@ynsmroztas · mitsec</p></div>
+</div>
+<div class="controls">
+  <button id="play">Pause</button>
+  <button id="prev">◀ Step</button>
+  <button id="next">Step ▶</button>
+  <button id="speed">1×</button>
+  <button id="zoomBtn">Auto</button>
+  <button id="restart">Restart</button>
+  <div class="bar-wrap"><div id="bar"></div></div>
+  <div class="count" id="count">1 / 15</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="assets/js/live-session.js?v=26"></script>
+</body>
+</html>
