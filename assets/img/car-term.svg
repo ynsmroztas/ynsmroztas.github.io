@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 540" role="img" aria-label="AndroScope OAuth scheme capture">
+  <rect width="920" height="540" fill="#07090c" rx="16"/>
+  <rect x="20" y="16" width="880" height="52" rx="8" fill="#0a1210" stroke="#34d399"/>
+  <text x="36" y="40" fill="#34d399" font-family="IBM Plex Mono,monospace" font-size="14">AndroScope · OAuth scheme auditor</text>
+  <text x="36" y="58" fill="#6b7280" font-family="IBM Plex Mono,monospace" font-size="11">lab session · redacted</text>
+  <text x="36" y="100" fill="#9ca3af" font-family="IBM Plex Mono,monospace" font-size="13">Intent.getData()</text>
+  <text x="36" y="128" fill="#fbbf24" font-family="IBM Plex Mono,monospace" font-size="13">carapp://redirect/login/?state=[REDACTED]&amp;code=eyJ***[REDACTED]</text>
+  <text x="36" y="160" fill="#34d399" font-family="IBM Plex Mono,monospace" font-size="13">scheme     carapp      custom — no OS ownership</text>
+  <text x="36" y="184" fill="#9ca3af" font-family="IBM Plex Mono,monospace" font-size="13">host       redirect</text>
+  <text x="36" y="208" fill="#9ca3af" font-family="IBM Plex Mono,monospace" font-size="13">state      present</text>
+  <text x="36" y="232" fill="#fb7185" font-family="IBM Plex Mono,monospace" font-size="13">iss        absent   RFC 9207 not in use</text>
+  <text x="36" y="256" fill="#9ca3af" font-family="IBM Plex Mono,monospace" font-size="13">app links  not verified — no assetlinks.json</text>
+  <rect x="24" y="284" width="872" height="40" rx="6" fill="#1a0a10" stroke="#fb7185"/>
+  <text x="36" y="309" fill="#fb7185" font-family="IBM Plex Mono,monospace" font-size="13">FINDING  unclaimed custom scheme · code leaves the app</text>
+  <text x="36" y="352" fill="#6b7280" font-family="IBM Plex Mono,monospace" font-size="12">car app · lab build · own account · no third-party data</text>
+  <text x="36" y="500" fill="#34d399" font-family="IBM Plex Mono,monospace" font-size="13">mitsec@androscope:</text>
+</svg>

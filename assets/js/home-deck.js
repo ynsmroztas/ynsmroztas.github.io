@@ -1,6 +1,6 @@
 (function () {
   var cases = [
-    { href: "myskoda-scheme.html", pill: "mobile · oauth", title: "Unclaimed myskoda scheme", blurb: "Login callback on myskoda://. No OS ownership. 12 KB lab app, no permissions, received the code. Tokens stripped.", img: "assets/img/myskoda-term.svg", surface: "mobile" },
+    { href: "car-scheme.html", pill: "mobile · oauth", title: "Unclaimed car-app scheme", blurb: "Login callback on carapp://. No OS ownership. 12 KB lab app, no permissions, received the code. Tokens stripped.", img: "assets/img/car-term.svg", surface: "mobile" },
     { href: "wpsniper.html", pill: "platform · wordpress", title: "WPSniper — page-template LFI class", blurb: "CVE-2026-87902. get_page_template include. VULN only on unique PEAR banner. Detect-only. Host stripped.", img: "assets/img/wpsniper-term.svg", surface: "platform" },
     { href: "nextforge.html", pill: "platform · next.js", title: "NextForge — Next.js class matrix", blurb: "One-file lab scanner. Profile App/Pages/middleware, fire the matching RCE / SSRF class, print curl + report snippet. Host stripped.", img: "assets/img/nextforge-term.svg", surface: "platform" },
     { href: "scheme-token.html", pill: "mobile · oauth", title: "Bearer token on an unverified scheme", blurb: "Server 302 to learnapp:// with a full access token in the query. Chooser hijack class. Vendor stripped.", img: "assets/img/scheme-token-term.svg", surface: "mobile" },
